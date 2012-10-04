@@ -1,0 +1,19 @@
+Thu Oct  4 14:23:48 CEST 2012
+-----------------------------
+	new file:   desktop/obconf/obconf.SlackBuild
+	new file:   desktop/openbox/openbox.SlackBuild
+	new file:   development/apache-ant/apache-ant.SlackBuild
+	new file:   development/medit/medit.SlackBuild
+	new file:   development/openjdk/openjdk.SlackBuild
+	new file:   libraries/compat32-libraries/compat32-libraries.SlackBuild
+	new file:   libraries/icedtea-web/icedtea-web.SlackBuild
+	new file:   libraries/imlib2/imlib2.SlackBuild
+	new file:   libraries/libdvdcss/libdvdcss.SlackBuild
+	new file:   libraries/rhino/rhino.SlackBuild
+	new file:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+	new file:   system/nvidia-linux/nvidia-linux.SlackBuild
+	new file:   system/slapt-get/slapt-get.SlackBuild
+	new file:   system/unrar/unrar.SlackBuild
+	new file:   utilities/requiredbuilder/requiredbuilder.SlackBuild
+	new file:   utilities/slackyd/slackyd.SlackBuild
+

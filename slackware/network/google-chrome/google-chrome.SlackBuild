@@ -1,0 +1,173 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://dev.chromium.org/getting-involved/dev-channel
+# Packager Andrea Sciucca ( gohanz at infinito.it)
+# Thanks to H.Hanson script.
+# http://www.slacky.eu
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Required: gconf, google-chrome-pam-solibs, seamonkey (Compilation), seamonkey-solibs, orbit2
+
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=google-chrome
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+ARCH=${ARCH:-i386} # i386 or x86_64
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+
+# Just in case:
+case "$ARCH" in
+  i?86) DEBARCH="i386" ; LIBDIRSUFFIX="" ; ARCH=i386 ;;
+  x86_64) DEBARCH="amd64" ; LIBDIRSUFFIX="64" ;;
+esac
+
+SOURCE=http://dl.google.com/linux/direct/google-chrome-stable_current'_'$DEBARCH.deb
+
+# Download sorce tarball if still not present
+if [ ! -e google-chrome-stable_current'_'$DEBARCH.deb ]; then
+wget -c $SOURCE
+fi
+
+# Get the real version, thanks to Fred Richards.
+VERSION=$(ar p google-chrome-stable_current'_'$DEBARCH.deb control.tar.gz | tar zxO ./control | grep Version | awk '{print $2}' | cut -d- -f1)
+
+
+
+rm -rf $PKG
+mkdir -p $TMP $PKG 
+
+
+cd $TMP
+ar -x $CWD/google-chrome-stable_current'_'$DEBARCH.deb || exit 1
+
+echo -e "\E[0;32m+--------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Google-Chrome |\E[0;0m"
+echo -e "\E[0;32m+--------------------------------+\E[0;0m"
+
+cd $PKG
+# Decompress the source tarball
+tar xf $TMP/data.tar.lzma || exit 1
+
+chmod 0755 $PKG # Put this back.
+rm -rf etc/ # The cron job is debian/ubuntu only.
+
+#Add documentation files: readme, changelog and so on
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+# Installing menu voice
+( mkdir -p $PKG/usr/share/applications
+cd $PKG/usr/share/applications
+ln -s /opt/google/chrome/google-chrome.desktop . )
+
+# Installing icons directory
+cd $PKG/opt/google/chrome
+for res in 16 22 24 32 48 64 128 256 ;do
+  dir=${PKG}/usr/share/icons/hicolor/${res}x${res}/apps
+  mkdir -p ${dir}
+  install -m0644 product_logo_${res}.png \
+                 ${dir}/${PKGNAME}.png || exit 1 
+done
+
+
+# Fix default mandir
+mkdir -p $PKG/usr/man/man1
+mv $PKG/usr/share/man/man1/* $PKG/usr/man/man1
+rm -r $PKG/usr/share/man
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+
+# Building some symlinks to mozilla libraries inside the /install/doinst.sh
+cat << EOF > $PKG/install/doinst.sh
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libnss3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libnss3.so libnss3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libnssutil3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libnssutil3.so libnssutil3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libsmime3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libsmime3.so libsmime3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libssl3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libssl3.so libssl3.so.1d )
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libplds4.so.0d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libplds4.so libplds4.so.0d )
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libplc4.so.0d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libplc4.so libplc4.so.0d )
+( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libnspr4.so.0d )
+( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libnspr4.so libnspr4.so.0d )
+chmod 4755 /opt/google/chrome/chrome-sandbox
+EOF
+
+
+# Building some post-install execution script 	
+	echo "if [ -x /usr/bin/update-mime-database ]; then
+  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(google-chrome-pam-solibs\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(seamonkey-solibs\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
+
+
+

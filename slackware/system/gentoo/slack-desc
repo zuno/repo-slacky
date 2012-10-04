@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+gentoo: Gentoo (GTK2+ File Manager)
+gentoo:
+gentoo: Gentoo is a modern, powerful, flexible, and utterly configurable
+gentoo: file  manager  for  UNIX systems, written using the GTK+ toolkit
+gentoo: It  aims  to  be  100% graphically configurable; there's no need
+gentoo: to  edit  config  files by hand and then restart the application
+gentoo: gentoo is  somewhat  inspired in  its look & feel by the classic
+gentoo: Amiga program.
+gentoo:
+gentoo:
+gentoo:

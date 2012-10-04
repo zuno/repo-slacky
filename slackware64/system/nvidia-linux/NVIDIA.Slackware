@@ -1,0 +1,36 @@
+Slackware Notes:
+
+This version of NVIDIA driver is taken from the original site:
+NVIDIA-Linux-x86_64-304.43.run
+or
+NVIDIA-Linux-x86-304.43.run
+
+The package should already contain the nvidia.ko kernel module.
+If not or if you recompile or upgrade your kernel, you must recompile the module
+using the script:
+/usr/share/nvidia-linux/makekernelmodule.sh
+Be sure that nouveau driver is not loaded (or reboot in runlevel 3 to ensure).
+
+
+These drivers conflict, for libGL and libglx, with the preinstalled drivers 
+(xorg-server and mesa packages).
+The libglx.so will be backupped in
+/usr/lib/xorg/modules/extensions/libglx.so-prenvidia
+or
+/usr/lib64/xorg/modules/extensions/libglx.so-prenvidia
+
+If you remove the nvidia-linux package, you MUST restore this file and launch the
+command "ldconfig"
+
+If during a system upgrade (to current or patches) the 'mesa' or 'xorg-server' 
+packages will be upgraded, you MUST rerun the nvidia-linux postinstall script:
+# cd /
+# bash /var/log/scripts/nvidia-linux-*
+
+
+This package add the files /etc/X11/xorg.d/nvidia.conf to configure your driver.
+If you use the nvidia-xconfig tools to reconfigure the driver, you must delete it.
+
+Also the package contains the file /etc/adobe/mms.cfg-nvidia
+If you use the flash player 11.2 you should rename it in mms.cfg to solve some
+problem with youtube videos.

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler----------------------------------------------------|
+google-chrome: Google Chrome (Google Browser Project)
+google-chrome:
+google-chrome: Google Chrome is a browser that combines a minimal design with
+google-chrome: sophisticated  technology  to  make the web faster, safer, and
+google-chrome: easier.
+google-chrome:
+google-chrome:                     *** W A R N I N G ***
+google-chrome:     Google Chrome work with some Seamonkey-Solibs libraries.
+google-chrome:            Do not remove Seamonkey-Solibs package.
+google-chrome:
+google-chrome:

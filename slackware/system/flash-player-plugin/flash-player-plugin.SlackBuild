@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Loris Vincenzi (http://www.slacky.eu)
+# Last build from Loris Vincenzi (http://www.slacky.eu)
+
+# Slackware build script for flash-player-plugin
+# Official Site: http://www.adobe.com
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+# Exit on most errors
+set -e
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=flash-player-plugin
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-11.2.202.238}
+ARCH=${ARCH:-i386} # i386 or x86_64
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+
+# Just in case:
+case "$ARCH" in
+  i?86) TARBALLARCH="i386" ; LIBDIRSUFFIX="" ; ARCH=i386 ;;
+  x86_64) TARBALLARCH="x86_64" ; LIBDIRSUFFIX="64" ;;
+esac
+
+
+
+SOURCE="http://fpdownload.macromedia.com/get/flashplayer/current/install_flash_player_11_linux.$TARBALLARCH.tar.gz"
+
+# Download binary tarball if still not present
+if [ ! -e $CWD/install_flash_player_11_linux.$TARBALLARCH.tar.gz ]; then
+    wget -c $SOURCE
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+
+# Decompress the source tarball
+cd $TMP
+tar xzvf $CWD/install_flash_player_11_linux.$TARBALLARCH.tar.gz
+
+echo -e "\E[0;32m+--------------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Flash Player Plugin |\E[0;0m"
+echo -e "\E[0;32m+--------------------------------------+\E[0;0m"
+
+# Installing Flash Player library
+ install -m 0755 -p -D libflashplayer.so $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins/libflashplayer.so
+
+cp -a -r usr $PKG
+
+# Installing basic config file
+mkdir -p $PKG/etc/adobe
+cat << EOF > $PKG/etc/adobe/mms.cfg.new
+# Set EnableLinuxHWVideoDecode=1 to enable hardware acceleration
+EnableLinuxHWVideoDecode=0
+EOF
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+# Building some post-install execution script 	
+	echo "if [ -x /usr/bin/update-mime-database ]; then
+  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+chmod -R u+w,go+r-w,a-s .
+if [ -x /usr/bin/requiredbuilder ];then
+requiredbuilder -y -v -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP
+fi
+
