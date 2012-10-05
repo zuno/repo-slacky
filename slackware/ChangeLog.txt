@@ -1,3 +1,8 @@
+Fri Oct  5 05:02:17 CEST 2012
+-----------------------------
+	new file:   system/gslapt/gslapt.SlackBuild
+	new file:   system/slapt-get/slapt-get.SlackBuild
+
 Thu Oct  4 14:16:54 CEST 2012
 -----------------------------
 	new file:   libraries/lame/lame.SlackBuild
