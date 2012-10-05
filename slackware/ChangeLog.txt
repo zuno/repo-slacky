@@ -1,5 +1,12 @@
 Thu Oct  4 14:16:54 CEST 2012
 -----------------------------
+	new file:   libraries/lame/lame.SlackBuild
+	new file:   multimedia/celt/celt.SlackBuild
+	new file:   multimedia/x264/x264.SlackBuild
+	new file:   office/adobe-reader-it/adobe-reader-it.SlackBuild
+
+Thu Oct  4 14:16:54 CEST 2012
+-----------------------------
 	new file:   desktop/krusader/krusader.SlackBuild
 	new file:   network/google-chrome/google-chrome.SlackBuild
 	new file:   system/flash-player-plugin/flash-player-plugin.SlackBuild
