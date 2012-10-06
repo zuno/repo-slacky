@@ -1,3 +1,9 @@
+Sat Oct  6 05:03:17 CEST 2012
+-----------------------------
+	modified:   network/google-chrome/google-chrome.SlackBuild
+	new file:   office/adobe-reader/adobe-reader.SlackBuild
+	modified:   system/slapt-get/slapt-get.SlackBuild
+
 Fri Oct  5 05:02:17 CEST 2012
 -----------------------------
 	new file:   development/fontforge/fontforge.SlackBuild

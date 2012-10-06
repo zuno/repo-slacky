@@ -1,3 +1,12 @@
+Sat Oct  6 05:08:48 CEST 2012
+-----------------------------
+	new file:   libraries/cryptopp/cryptopp.SlackBuild
+	new file:   libraries/libmspack/libmspack.SlackBuild
+	new file:   libraries/libupnp/libupnp.SlackBuild
+	new file:   libraries/wxGTK/wxGTK.SlackBuild
+	new file:   network/aMule/aMule.SlackBuild
+	new file:   network/geoip/geoip.SlackBuild
+
 Fri Oct  5 05:04:16 CEST 2012
 -----------------------------
 	new file:   network/skype_static/skype_static.SlackBuild

@@ -23,7 +23,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: gconf, google-chrome-pam-solibs, seamonkey (Compilation), seamonkey-solibs, orbit2
+# Required:  google-chrome-pam-solibs, mozilla-nss
 
 
 
@@ -34,7 +34,7 @@ PKGNAME=google-chrome
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
 ARCH=${ARCH:-i386} # i386 or x86_64
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-5}
 TAG=${TAG:-sl}
 
 
@@ -44,7 +44,7 @@ case "$ARCH" in
   x86_64) DEBARCH="amd64" ; LIBDIRSUFFIX="64" ;;
 esac
 
-SOURCE=http://dl.google.com/linux/direct/google-chrome-stable_current'_'$DEBARCH.deb
+SOURCE=https://dl.google.com/linux/direct/google-chrome-stable_current'_'$DEBARCH.deb
 
 # Download sorce tarball if still not present
 if [ ! -e google-chrome-stable_current'_'$DEBARCH.deb ]; then
@@ -114,24 +114,6 @@ fi
 
 
 
-# Building some symlinks to mozilla libraries inside the /install/doinst.sh
-cat << EOF > $PKG/install/doinst.sh
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libnss3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libnss3.so libnss3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libnssutil3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libnssutil3.so libnssutil3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libsmime3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libsmime3.so libsmime3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libssl3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libssl3.so libssl3.so.1d )
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libplds4.so.0d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libplds4.so libplds4.so.0d )
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libplc4.so.0d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libplc4.so libplc4.so.0d )
-( cd usr/lib${LIBDIRSUFFIX} ; rm -rf libnspr4.so.0d )
-( cd usr/lib${LIBDIRSUFFIX} ; ln -sf /usr/lib${LIBDIRSUFFIX}/seamonkey/libnspr4.so libnspr4.so.0d )
-chmod 4755 /opt/google/chrome/chrome-sandbox
-EOF
 
 
 # Building some post-install execution script 	
@@ -155,7 +137,7 @@ cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
 ADD=$(ls /var/log/packages/ | sed -ne 's/\(google-chrome-pam-solibs\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(seamonkey-solibs\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+-e 's/\(mozilla-nss\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package

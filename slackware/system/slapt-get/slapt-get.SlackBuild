@@ -2,6 +2,7 @@
 # Heavily based on the Slackware 14.0 SlackBuild
 # http://software.jaos.org
 # Packager Andrea Sciucca ( gohanz at infinito.it)
+# Thanks to miklos < ardutu at gmail dot com >
 # http://www.slacky.eu
 #
 # Redistribution and use of this script, with or without modification, is
@@ -35,7 +36,7 @@ PKG=$TMP/package
 VERSION=${VERSION:-0.10.2o}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
 
@@ -97,6 +98,23 @@ chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 # Backup configuration file
 cd $PKG/etc/slapt-get
 mv slapt-getrc slapt-getrc.new
+
+# fix 14.0 repository
+sed -i 's/13.37/14.0/' $PKG/etc/slapt-get/slapt-getrc.new
+
+# add slacky repositories
+cat >> $PKG/etc/slapt-get/slapt-getrc.new << EOF
+
+# Slacky.eu 32bit source
+# SOURCE=http://repository.slacky.eu/slackware-14.0/:CUSTOM
+# SOURCE=http://darkstar.ist.utl.pt/slackware/addon/slacky/slackware-14.0/:CUSTOM
+# SOURCE=http://slack.isper.sk/pub/slackware-14.0/:CUSTOM
+
+# Slacky.eu 64bit source
+# SOURCE=http://repository.slacky.eu/slackware64-14.0/:CUSTOM
+# SOURCE=http://darkstar.ist.utl.pt/slackware/addon/slacky/slackware64-14.0/:CUSTOM
+# SOURCE=http://slack.isper.sk/pub/slackware64-14.0/:CUSTOM
+EOF
 
 
 # Also add the slack-desk file and this slackbuild to the package

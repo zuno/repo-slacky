@@ -1,0 +1,133 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Loris Vincenzi ( http://www.slacky.eu )
+# Last build from Loris Vincenzi ( http://www.slacky.eu )
+
+# Slackware build script for Adobe Reader (Italian Version)
+# Official Site: http://www.adobe.com/products/reader.html
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Exit the script on errors:
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}"' ERR
+
+# Catch variables:
+PKGNAME=adobe-reader
+VERSION=9.5.1
+V=$(echo $VERSION | cut -d . -f 1)
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+CWD=${CWD:-`pwd`}
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=${PKG:-$TMP/package-$PKGNAME}
+OUTPUT=${OUTPUT:-$CWD}
+SOURCE="ftp://ftp.adobe.com/pub/adobe/reader/unix/$V.x/$VERSION/enu/AdbeRdr$VERSION-1_${ARCH}linux_enu.tar.bz2"
+
+case "$ARCH" in
+  i[4-6]86) LIBDIRSUFFIX="" ;;
+  # No ARCH=x86_64 for now, only i486:
+  # x86_64) LIBDIRSUFFIX="64" ;;
+         *) echo "error: unknown or invalid ARCH=$ARCH... aborting the build"; exit 1 ;;
+esac
+
+# Source file availability:
+if [ ! -e $CWD/$(basename $SOURCE) ] ; then
+  wget $SOURCE
+fi
+
+# Create working directories:
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+
+# Extract the sources:
+cd $TMP
+tar xvf $CWD/$(basename $SOURCE)
+
+echo -e "\e[0;32m+-------------------------------+\e[m"
+echo -e "\e[0;32m| Start SlackBuild adobe-reader |\e[m"
+echo -e "\e[0;32m+-------------------------------+\e[m"
+
+# Create directory structure and extract files from archives:
+mkdir -p $PKG/opt
+cd $PKG/opt
+tar xf $TMP/AdobeReader/COMMON.TAR
+tar xf $TMP/AdobeReader/ILINXR.TAR
+
+# Remove stuff we don't need:
+rm -rf $PKG/opt/Adobe/Reader$V/Reader/HowTo
+rm -r $PKG/opt/Adobe/Reader$V/Browser/{HowTo,install_browser_plugin}
+
+# Add some symlinks;
+# Binary:
+mkdir -p $PKG/usr/bin
+ln -sf /opt/Adobe/Reader$V/bin/acroread $PKG/usr/bin
+# Browser plugin:
+mkdir -p $PKG/usr/lib$LIBDIRSUFFIX/mozilla/plugins
+ln -sf /opt/Adobe/Reader$V/Browser/intellinux/nppdf.so $PKG/usr/lib$LIBDIRSUFFIX/mozilla/plugins
+# AdobeReader.xml for correct mimetype:
+mkdir -p $PKG/usr/share/mime/packages
+ln -sf /opt/Adobe/Reader$V/Resource/Support/AdobeReader.xml $PKG/usr/share/mime/packages
+# Manpage:
+mkdir -p $PKG/usr/man/man1
+ln -sf /opt/Adobe/Reader$V/Resource/Shell/acroread.1.gz $PKG/usr/man/man1
+# Bash completion:
+mkdir -p $PKG/etc/bash_completion.d
+ln -sf /opt/Adobe/Reader$V/Resource/Shell/acroread_tab $PKG/etc/bash_completion.d/acroread
+# Menu entry (.desktop file):
+mkdir -p $PKG/usr/share/applications
+ln -sf /opt/Adobe/Reader$V/Resource/Support/AdobeReader.desktop $PKG/usr/share/applications
+# Icon:
+mkdir -p $PKG/usr/share/pixmaps
+ln -sf /opt/Adobe/Reader$V/Resource/Icons/128x128/AdobeReader$V.png \
+  $PKG/usr/share/pixmaps
+
+# Fix bug in bash completion script by redefining "_filedir" function 
+# to "_acroread_filedir" as suggested on the adobe forum:
+# http://forums.adobe.com/thread/745833
+sed -i 's/_filedir/_acroread_filedir/g' $PKG/opt/Adobe/Reader$V/Resource/Shell/acroread_tab
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a $TMP/AdobeReader/ReadMe.htm $PKG/usr/doc/$PKGNAME-$VERSION
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+
+# Add slack-desc, doinst.sh and slack-required:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+fi
+
+# Fix ownership and permissions:
+cd $PKG
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Make the package:
+/sbin/makepkg -p -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+# Clean up the extra stuff:
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP $PKG
+fi
