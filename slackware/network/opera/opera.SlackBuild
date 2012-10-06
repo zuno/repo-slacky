@@ -1,0 +1,117 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://www.opera.com
+# Packager Andrea Sciucca ( gohanz at infinito.it )
+# Thanks to Martin Lefebvre <dadexter@gmail.com>
+# Robby Workman, Northport, Alabama, USA
+# Many thanks to  Ruario and to all the Opera Unix team.
+#
+# All rights reserved.
+# http://www.slacky.eu
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+# Exit on most errors
+set -e
+
+
+# Set variables:
+CWD=$(pwd)
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=opera
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-12.02}
+REVISION=${REVISION:-1578}
+ARCH=$(echo ${ARCH:-$(uname -m)} | sed "s/i.86/i686/") # i686 or x86_64 only
+OARCH=$(echo $ARCH | sed "s/i686/i386/") # Opera calls some packages i386 but they are really i686 ;)
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+SOURCE="ftp://ftp.opera.com/pub/opera/linux/${VERSION/./}/$PKGNAME-$VERSION-$REVISION.$OARCH.rpm"
+
+
+# Download sorce tarball if still not present
+if [ ! -e $PKGNAME-$VERSION-$REVISION.$OARCH.rpm ]; then
+  wget -c $SOURCE
+fi
+
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+cd $PKG
+
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Opera |\E[0;0m"
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+
+rm -rf $PKGNAME-$VERSION-$REVISION.$OARCH
+bsdtar xf $CWD/$PKGNAME-$VERSION-$REVISION.$OARCH.rpm
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+
+# Fix man page directory and documentation directory paths
+mv $PKG/usr/share/{man,doc} $PKG/usr
+mv $PKG/usr/doc/$PKGNAME $PKG/usr/doc/${PKGNAME}-$VERSION
+if [ -f "$PKG/usr/doc/$PKGNAME-$VERSION/LICENSE" ]; then
+  find $PKG/usr/share/$PKGNAME/{defaults,locale/en*} -name license.txt -type l -delete
+  mv $PKG/usr/doc/$PKGNAME-$VERSION/LICENSE $PKG/usr/share/$PKGNAME/defaults/license.txt
+  ( cd $PKG/usr/doc/$PKGNAME-$VERSION/ ; ln -s ../../share/$PKGNAME/defaults/license.txt LICENSE )
+fi
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+
+
+# Add doinst.sh to install
+cat <<EOS > $PKG/install/doinst.sh
+if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1
+fi
+
+if [ -x /usr/bin/update-mime-database ]; then
+  /usr/bin/update-mime-database usr/share/mime >/dev/null 2>&1
+fi
+
+if [ -e usr/share/icons/hicolor/icon-theme.cache ]; then
+  if [ -x /usr/bin/gtk-update-icon-cache ]; then
+    /usr/bin/gtk-update-icon-cache usr/share/icons/hicolor >/dev/null 2>&1
+  fi
+fi
+EOS
+
+
+cd $PKG
+chown -R root:root $PKG
+# Create txz package
+/sbin/makepkg -l y -c n -p $OUTPUT/$PKGNAME-$VERSION.$REVISION-$OARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+

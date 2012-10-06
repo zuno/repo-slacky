@@ -1,5 +1,20 @@
 Fri Oct  5 05:02:17 CEST 2012
 -----------------------------
+	new file:   development/fontforge/fontforge.SlackBuild
+	new file:   libraries/libgsm/libgsm.SlackBuild
+	new file:   libraries/libmspack/libmspack.SlackBuild
+	new file:   libraries/openal-soft/openal-soft.SlackBuild
+	new file:   multimedia/minitube/minitube.SlackBuild
+	new file:   multimedia/musictube/musictube.SlackBuild
+	new file:   multimedia/musique/musique.SlackBuild
+	new file:   multimedia/smplayer/smplayer.SlackBuild
+	new file:   multimedia/smtube/smtube.SlackBuild
+	new file:   network/opera-next/opera-next.SlackBuild
+	new file:   network/opera/opera.SlackBuild
+	new file:   network/qupzilla/qupzilla.SlackBuild
+
+Fri Oct  5 05:02:17 CEST 2012
+-----------------------------
 	new file:   system/gslapt/gslapt.SlackBuild
 	new file:   system/slapt-get/slapt-get.SlackBuild
 

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+smtube: SMtube (Qt4 SMPlayer Youtube Browser)
+smtube:
+smtube: SMPlayer now includes a  Youtube browser which  I called SMTube. The
+smtube: code was taken from UMPlayer (developed by Ori Rejwan). This browser
+smtube: allows to search Youtube videos but it's also capable of downloading
+smtube: them.
+smtube:
+smtube:
+smtube:
+smtube:
+smtube:

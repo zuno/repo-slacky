@@ -1,0 +1,176 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
+# Thanks to  Flamelab <panosfilip@gmail.com>
+# Thanks to  WAntilles <wantilles@adslgr.com>
+# Thanks to Erik Hanson  erik@slackbuilds.org
+
+# Slackware build script for smplayer
+# Official Site: http://smplayer.sourceforge.net
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Exit on most errors
+set -e 
+
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=smplayer
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-0.8.1}
+FREEVER=${FREEVER:-20120919}
+NONFVER=${NONFVER:-0.1.1}
+ARCH=${ARCH:-i486}
+JOBS=${JOBS:--j2}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+wget -c $SOURCE
+fi
+
+SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer-themes/$FREEVER/smplayer-themes-$FREEVER.tar.bz2"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/smplayer-themes-$FREEVER.tar.bz2 ]; then
+wget -c $SOURCE
+fi
+
+SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer-themes-nonfree/$NONFVER/smplayer-themes-nonfree-$NONFVER.tar.bz2"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/smplayer-themes-nonfree-$NONFVER.tar.bz2 ]; then
+wget -c $SOURCE
+fi
+
+# Set compiling FLAGS
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+# Decompress the source tarball
+cd $TMP
+tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild SMPlayer |\E[0;0m"
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+cd $PKGNAME-$VERSION
+# Fix DOC_PATH and CONF_PATH
+sed -i "s%share/doc/packages/smplayer%doc/$PKGNAME-$VERSION%" Makefile
+sed -i "s%^CONF_PREFIX%#CONF_PREFIX%" Makefile
+chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
+
+make $JOBS PREFIX=/usr
+make install PREFIX=/usr DESTDIR=$PKG
+
+
+# Strip binaries and shared objects, if present
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+
+# Use CONF_PATH
+mkdir -p $PKG/etc/smplayer
+mv $PKG/usr/share/smplayer/input.conf $PKG/etc/smplayer/input.conf.new
+ln -s /etc/smplayer/input.conf $PKG/usr/share/smplayer/input.conf
+
+# Fix desktop file menu
+sed -i 's|Exec=smplayer %U|Exec=smplayer %F|' $PKG/usr/share/applications/smplayer.desktop
+sed -i 's|Exec=smplayer -add-to-playlist %U|Exec=smplayer -add-to-playlist %F|' \
+        $PKG/usr/share/applications/smplayer_enqueue.desktop
+
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a Changelog *.txt \
+$PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+# Installing extra themes 
+( tar xvf $CWD/smplayer-themes-$FREEVER.tar.bz2
+  cd smplayer-themes-$FREEVER
+  make PREFIX=/usr DESTDIR=$PKG install )
+
+
+# Installing extra themes  nonfree
+( tar xvjf $CWD/smplayer-themes-nonfree-$NONFVER.tar.bz2
+  cd smplayer-themes-nonfree-$NONFVER
+  make PREFIX=/usr DESTDIR=$PKG install )
+
+
+# Compress the man pages if present
+mv $PKG/usr/share/man $PKG/usr
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+requiredbuilder -y -v -b -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
+

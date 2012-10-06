@@ -1,0 +1,181 @@
+#!/bin/bash
+# Slackware repack script for opera-next
+
+# Based on both the SlackBuild.org and slacky.eu Opera slackbuilds, using
+# ideas from vvoody and Andrea Sciucca (Gohanz).
+
+# Copyright 2006  Martin Lefebvre <dadexter@gmail.com>
+# Copyright 2008-2011  Robby Workman, Northport, Alabama, USA
+# Copyright 2012  Ruari OEdegaard, Olso, Norway
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Parse optional command line switches
+while [ 0 ]; do
+
+  # If -a or --auto is specified try to work out the latest version automatically
+  if [ "$1" = "-a" -o "$1" = "--auto" ]; then
+    BUILDINFO=$( wget -qO- http://my.opera.com/desktopteam/blog/ |\
+                 sed -nr 's,.*http://snapshot.opera.com/unix/([a-zA-Z0-9]+_[0-9][0-9]\.[0-9][0-9]-[0-9]+).*,\1,p' |\
+                 head -n 1 )
+
+    if [ -z "$BUILDINFO" ]; then
+      echo "Could not work out the latest version"
+      exit 1
+    fi
+
+    VERSION=$( expr match $BUILDINFO '.*_\([0-9\.]*\)-[0-9]*' )
+    REVISION=${BUILDINFO##*-}
+    RANDOMIZER=${BUILDINFO%%_*}
+    shift 1
+
+  # If -c or --clean is specified cleanup temp directory after packaging
+  elif [ "$1" = "-c" -o "$1" = "--clean" ]; then
+    CLEANUP=YES
+    shift 1
+
+  else
+    break  
+  fi
+
+done
+
+
+# Set variables
+PKGNAME=opera-next
+VERSION=${VERSION:-12.10}
+REVISION=${REVISION:-1615}
+RANDOMIZER=${RANDOMIZER:-smile}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+CWD=$( pwd )
+OUTPUT=${OUTPUT:-$CWD}
+TMP=${TMP:-/tmp/SlackBuilds}
+PKG=$TMP/package-$PKGNAME
+CLEANUP=${CLEANUP:-NO}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i686 ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+  OARCH=$ARCH
+elif [ "$ARCH" = "i686" ]; then
+  LIBDIRSUFFIX=""
+  OARCH=i386
+else
+  printf "\n\n$ARCH is not supported...\n"
+  exit 1
+fi
+
+SOURCE=$PKGNAME-$VERSION-$REVISION.$OARCH.linux.tar.xz
+
+
+# Exit on errors
+set -eu
+
+
+# Download the source tarball if it is not present locally
+if [ ! -e $SOURCE ]; then
+  wget -c http://snapshot.opera.com/unix/${RANDOMIZER}_$VERSION-$REVISION/$SOURCE
+fi
+
+
+# Make sure build and ouput directories exist
+rm -rf $PKG
+mkdir -p $PKG $OUTPUT
+cd $TMP
+
+
+# Extract and setup package contents
+tar xf $CWD/$SOURCE
+$PKGNAME-$VERSION-$REVISION.$OARCH.linux/install --prefix /usr --repackage $PKG/usr
+
+
+# Make sure Library path is correct for all architectures
+cd $PKG
+if [ -n "$LIBDIRSUFFIX" ]; then
+  mv $PKG/usr/lib $PKG/usr/lib$LIBDIRSUFFIX
+  sed -i "s,/lib/,/lib$LIBDIRSUFFIX/," $PKG/usr/bin/$PKGNAME
+fi
+
+
+# Fix man page directory and documentation directory paths
+mv $PKG/usr/share/{man,doc} $PKG/usr
+mv $PKG/usr/doc/$PKGNAME $PKG/usr/doc/$PKGNAME-$VERSION.$REVISION
+
+
+# Reverse symlinks to ensure that license display on first start is not broken
+if [ -f "$PKG/usr/doc/$PKGNAME-$VERSION.$REVISION/LICENSE" ]; then
+  find $PKG/usr/share/$PKGNAME/{defaults,locale/en*} -name license.txt -type l -delete
+  mv $PKG/usr/doc/$PKGNAME-$VERSION.$REVISION/LICENSE $PKG/usr/share/$PKGNAME/defaults/license.txt
+  ( cd $PKG/usr/doc/$PKGNAME-$VERSION.$REVISION/ ; ln -s ../../share/$PKGNAME/defaults/license.txt LICENSE )
+fi
+
+
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION.$REVISION/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION.$REVISION/$PKGNAME.SlackBuild
+
+
+
+# Add doinst.sh to install
+cat <<EOS >> $PKG/install/doinst.sh
+# Update application menu cache, as Opera added new *.desktop files
+if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database -q usr/share/applications
+fi
+
+# Update MIME associations cache, as Opera handles a number of MIME types
+if [ -x /usr/bin/update-mime-database ]; then
+  /usr/bin/update-mime-database usr/share/mime >/dev/null
+fi
+
+# Update application icons cache, as Opera provides new icons
+touch -c usr/share/icons/hicolor
+if [ -e usr/share/icons/hicolor/icon-theme.cache ]; then
+  if [ -x /usr/bin/gtk-update-icon-cache ]; then
+    /usr/bin/gtk-update-icon-cache -tq usr/share/icons/hicolor
+  fi
+fi
+EOS
+
+
+# Ensure package permissions are correct
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+
+# Create Package
+/sbin/makepkg -l y -c n -p $OUTPUT/$PKGNAME-$VERSION.$REVISION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$CLEANUP" = "YES" ]; then
+ rm -rf $PKG $TMP/$PKGNAME-$VERSION-$REVISION.$OARCH.linux
+fi
