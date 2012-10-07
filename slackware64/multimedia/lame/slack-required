@@ -1,0 +1,2 @@
+glibc-solibs >= 2.15-x86_64-7
+ncurses >= 5.9-x86_64-1
