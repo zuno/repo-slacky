@@ -1,0 +1,103 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://wiki.winehq.org/Gecko
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+#
+# Exit on most errors
+set -e
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=wine_gecko
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-1.7}
+ARCH=${ARCH:-i686} # i686 or x86_64
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+
+
+
+# Set compiling FLAGS
+if [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686" GKO_ARCH="x86"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64" GKO_ARCH="x86_64"
+fi
+
+
+SOURCE="http://downloads.sourceforge.net/wine/$PKGNAME-$VERSION-$GKO_ARCH.msi"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME-$VERSION-$GKO_ARCH.msi ]; then
+ wget -c $SOURCE
+fi
+
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+# Building  WINE Gecko package
+cd $TMP
+
+# Print some funny text
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild WINE Gecko |\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+
+
+# Installing WINE Gecko engine http://wiki.winehq.org/Gecko
+install -m 644 -p -D $CWD/$PKGNAME-$VERSION-$GKO_ARCH.msi \
+$PKG/usr/share/wine/gecko/$PKGNAME-$VERSION-$GKO_ARCH.msi
+
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
+
+
+
+
+

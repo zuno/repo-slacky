@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler-----------------------------------------------------|
+kchildlock: KChildlock (KDE4 Children Monitoring)
+kchildlock:
+kchildlock: KChildlock is a tool to monitor  and  restrict  the time a children  
+kchildlock: spends on the computer. The limits can be specified per day  of the
+kchildlock: week, by lower and upper hour limits, maximum daily usage time, and
+kchildlock: maximum  weekly  usage  time. The  same  restriction  limits can be
+kchildlock: applied to applications based on the user login.
+kchildlock:
+kchildlock:
+kchildlock:
+kchildlock:

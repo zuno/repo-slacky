@@ -1,0 +1,2 @@
+glibc-solibs >= 2.15-i486-7
+libelf >= 0.8.13-i486-2

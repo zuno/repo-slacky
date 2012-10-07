@@ -1,3 +1,14 @@
+Sun Oct  7 05:00:58 CEST 2012
+-----------------------------
+	new file:   development/prelink/prelink.SlackBuild
+	new file:   graphic/danbooru-client/danbooru-client.SlackBuild
+	new file:   office/semantik/semantik.SlackBuild
+	new file:   system/kchildlock/kchildlock.SlackBuild
+	new file:   system/webcore-fonts/webcore-fonts.SlackBuild
+	new file:   system/wine/wine.SlackBuild
+	new file:   system/wine_gecko/wine_gecko.SlackBuild
+	new file:   utilities/peazip/peazip.SlackBuild
+
 Sat Oct  6 05:03:17 CEST 2012
 -----------------------------
 	modified:   network/google-chrome/google-chrome.SlackBuild

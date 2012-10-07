@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+          |----------handy-ruler----------------------------------------------------|
+wine_gecko: WINE Gecko (WINE Mozilla's Engine)
+wine_gecko:
+wine_gecko: Wine  implements its  own version  of  Internet  Explorer. The
+wine_gecko: implementation is based on a custom version of Mozilla's Gecko
+wine_gecko: Layout Engine.  Layout Engine. When your application  tries to
+wine_gecko: display a web page, it loads Wine's custom Gecko.
+wine_gecko:
+wine_gecko:
+wine_gecko:
+wine_gecko:
+wine_gecko:

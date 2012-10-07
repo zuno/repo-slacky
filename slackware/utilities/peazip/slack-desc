@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler-----------------------------------------------------|
+peazip: PeaZip (Open Source File and Archive Manager)
+peazip:
+peazip: PeaZip is a cross platform, desktop  neutral archiver  tool for  many
+peazip: compressed or not formats.
+peazip: Full support (read and write): 7Z,  7Z-sfx, ARC/WRC, BZ2/TBZ2, custom
+peazip: GZ/TGZ, PAQ/LPAQ, PEA, QUAD/BALZ, split, TAR, UPX, ZIP.
+peazip: Read only (browse, extract, test; 81 file types supported):
+peazip: ACE, ARJ,  CAB,  CHM, COMPOUND  (MSI, DOC, XLS, PPT), CPIO, ISO, Java
+peazip: (JAR, EAR, WAR),  Linux (DEB, PET/PUP,  RPM, SLP), LHA/LZH, LZMA, Mac
+peazip: (DMG/HFS), NSIS, Open Office files, PAK/PK3/PK4, RAR, SMZIP, U3P, UDF
+peazip: WIM, XAR, XPI, Z/TZ

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+prelink: Prelink (ELF Object File Prelinking Utility)
+prelink:
+prelink: Prelink  is a utility  which modifies ELF shared libraries and
+prelink: executables, so that far fewer relocations need to be resolved
+prelink: at runtime and thus programs come up faster.
+prelink:
+prelink:
+prelink:
+prelink:
+prelink:
+prelink:
