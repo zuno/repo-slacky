@@ -1,5 +1,9 @@
 Mon Oct  8 05:00:49 CEST 2012
 -----------------------------
+	deleted:    development/wxWidgets/wxWidgets.SlackBuild
+
+Mon Oct  8 05:00:49 CEST 2012
+-----------------------------
 	new file:   development/wxWidgets/wxWidgets.SlackBuild
 	new file:   libraries/glibmm/glibmm.SlackBuild
 	new file:   libraries/id3lib/id3lib.SlackBuild

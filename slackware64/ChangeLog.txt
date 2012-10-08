@@ -1,5 +1,9 @@
 Mon Oct  8 05:03:45 CEST 2012
 -----------------------------
+	deleted:    development/wxWidgets/wxWidgets.SlackBuild
+
+Mon Oct  8 05:03:45 CEST 2012
+-----------------------------
 	new file:   desktop/conky/conky.SlackBuild
 	new file:   desktop/icewm/icewm.SlackBuild
 	new file:   desktop/tint2/tint2.SlackBuild
