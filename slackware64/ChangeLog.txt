@@ -1,5 +1,9 @@
 Mon Oct  8 05:03:45 CEST 2012
 -----------------------------
+	deleted:    network/aMule/aMule.SlackBuild
+
+Mon Oct  8 05:03:45 CEST 2012
+-----------------------------
 	new file:   development/wxWidgets/wxWidgets.SlackBuild
 	deleted:    libraries/wxGTK/wxGTK.SlackBuild
 
