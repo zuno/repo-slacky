@@ -1,3 +1,20 @@
+Mon Oct  8 05:00:49 CEST 2012
+-----------------------------
+	new file:   development/wxWidgets/wxWidgets.SlackBuild
+	new file:   libraries/glibmm/glibmm.SlackBuild
+	new file:   libraries/id3lib/id3lib.SlackBuild
+	new file:   libraries/libevent/libevent.SlackBuild
+	new file:   libraries/libiec61883/libiec61883.SlackBuild
+	new file:   libraries/libsigc++/libsigc++.SlackBuild
+	new file:   libraries/mp4v2/mp4v2.SlackBuild
+	new file:   libraries/openjpeg/openjpeg.SlackBuild
+	new file:   libraries/wxPython/wxPython.SlackBuild
+	new file:   multimedia/dirac/dirac.SlackBuild
+	new file:   multimedia/faac/faac.SlackBuild
+	new file:   multimedia/faad2/faad2.SlackBuild
+	new file:   multimedia/speex/speex.SlackBuild
+	new file:   multimedia/xvidcore/xvidcore.SlackBuild
+
 Sun Oct  7 05:00:58 CEST 2012
 -----------------------------
 	new file:   development/prelink/prelink.SlackBuild

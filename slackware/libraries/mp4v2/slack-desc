@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+mp4v2: MP4v2 (MPEG-4 Library)
+mp4v2:
+mp4v2: The MP4v2  library  provides an API to create and modify mp4 files as
+mp4v2: defined by  ISO-IEC:14496-1:2001  MPEG-4 Systems. This file format is
+mp4v2: derived from  Apple's QuickTime file format  that has been used as  a
+mp4v2: multimedia file format in a variety of platforms and applications. It
+mp4v2: is  a  very  powerful  and  extensible  format  that  can  accomodate
+mp4v2: practically any type of media.
+mp4v2:
+mp4v2:
+mp4v2:

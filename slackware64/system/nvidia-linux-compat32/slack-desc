@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+                     |-----handy-ruler------------------------------------------------------|
+nvidia-linux-compat32: nvidia-linux-compat32 (32bit Libraries for Nvidia Interface)
+nvidia-linux-compat32:
+nvidia-linux-compat32: 32bit compatibility NVIDIA Accelerated Linux Graphics Driver
+nvidia-linux-compat32: 
+nvidia-linux-compat32: Require a multilib slackware system
+nvidia-linux-compat32: 
+nvidia-linux-compat32: 
+nvidia-linux-compat32:
+nvidia-linux-compat32:
+nvidia-linux-compat32:
+nvidia-linux-compat32:

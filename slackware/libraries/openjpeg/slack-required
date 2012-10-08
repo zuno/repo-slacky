@@ -1,0 +1,6 @@
+glibc-solibs >= 2.15-i486-7
+lcms2 >= 2.3-i486-1
+libjpeg >= v8a-i486-1
+libpng >= 1.4.12-i486-1
+libtiff >= 3.9.6-i486-1
+zlib >= 1.2.6-i486-1

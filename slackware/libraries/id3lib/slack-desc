@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+id3lib: id3lib (ID3v1 And ID3v2 Library)
+id3lib:
+id3lib: id3lib is an open-source, cross-platform software development library
+id3lib: for reading, writing, and manipulating ID3v1 and ID3v2 tags.
+id3lib: It is an on-going project whose primary goals are full compliance with
+id3lib: the ID3v2 standard, portability across several platforms,
+id3lib: and providing a powerful and feature-rich API with a highly stable and
+id3lib: efficient implementation.
+id3lib: http://id3lib.sourceforge.net/
+id3lib:
+id3lib:

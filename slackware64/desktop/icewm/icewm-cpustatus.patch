@@ -1,0 +1,42 @@
+--- icewm-1.3.7/src/acpustatus.cc	2010-10-31 15:09:36.000000000 +0100
++++ icewm-1.3.7/src/acpustatus.cc.new	2012-10-07 12:13:38.497830061 +0200
+@@ -314,7 +314,38 @@ int CPUStatus::getAcpiTemp(char *tempbuf
+             }
+         }
+         closedir(dir);
+-    } 
++    } else if ((dir = opendir("/sys/class/thermal")) != NULL) {
++        struct dirent *de;
++
++        while ((de = readdir(dir)) != NULL) {
++
++            int fd, seglen;
++
++            if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0)
++                continue;
++
++            sprintf(namebuf, "/sys/class/thermal/%s/temp", de->d_name);
++            fd = open(namebuf, O_RDONLY);
++            if (fd != -1) {
++                int len = read(fd, buf, sizeof(buf) - 1);
++                buf[len - 4] = '\0';
++                seglen = strlen(buf) + 4;
++                if (retbuflen + seglen >= buflen) {
++                    retbuflen = -retbuflen;
++                    close(fd);
++                    closedir(dir);
++                    break;
++                }
++                retbuflen += seglen;
++                strcat(tempbuf, "  ");
++                strncat(tempbuf, buf, seglen);
++                strcat(tempbuf, " C");
++                close(fd);
++            }
++        }
++        closedir(dir);
++    }
++     
+     return retbuflen;
+ }
+ 
