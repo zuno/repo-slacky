@@ -5,15 +5,15 @@
 # make exactly 11 lines for the formatting to be correct. It's also customary
 # to leave one space after the ':'.
 
-         |-----handy-ruler------------------------------------------------------|
-wxWidgets: wxWidgets (wxWidgets application framework)
-wxWidgets:
-wxWidgets: wxWidgets application framework software development, including
-wxWidgets: GUIs, threads, sockets, database, file system access, etc.
-wxWidgets:
-wxWidgets: 
-wxWidgets:
-wxWidgets:
-wxWidgets:
-wxWidgets:
-wxWidgets:
+     |----handy-ruler-----------------------------------------------------|
+wxGTK: wxGTK (wxGTK application framework)
+wxGTK:
+wxGTK: wxGTK application framework software development, including
+wxGTK: GUIs, threads, sockets, database, file system access, etc.
+wxGTK:
+wxGTK: 
+wxGTK:
+wxGTK:
+wxGTK:
+wxGTK:
+wxGTK:

@@ -1,3 +1,9 @@
+Tue Oct  9 18:42:43 CEST 2012
+-----------------------------
+	new file:   libraries/wxGTK/wxGTK.SlackBuild
+	new file:   network/aMule/aMule.SlackBuild
+	deleted:    development/wxWidgets/wxWidgets.SlackBuild
+
 Tue Oct  9 05:01:17 CEST 2012
 -----------------------------
 	new file:   multimedia/celt/celt.SlackBuild

@@ -1,12 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Loris Vincenzi (http://www.slacky.eu)
-# Last build from Loris Vincenzi (http://www.slacky.eu)
-# 
-# Slackware build script for wxPython
-# Official Site: http://wxpython.org/
-#
+# Written by miklos < ardutu at gmail dot com >
+
+# Slackware build script for aMule
+# Official Site: http://www.amule.org
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -24,21 +23,35 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Requires: geoip libupnp wxGTK
+# Build requires: cryptopp
 
 set -e
 
-PKGNAME=wxPython
-VERSION=${VERSION:-2.8.12.1}
+# Basic information.
+PKGNAME=${PKGNAME:-aMule}
+VERSION=${VERSION:-2.3.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
-ARCH=${ARCH:-i486}
-SOURCE="http://heanet.dl.sourceforge.net/project/wxpython/wxPython/$VERSION/$PKGNAME-src-$VERSION.tar.bz2"
-TAR=
-DIR=
-DOCS="README*"
-SLKFILES=""
+ARCH=${ARCH:-x86_64}
+SOURCE=${SOURCE:-http://sourceforge.net/projects/amule/files/$PKGNAME/$VERSION/$PKGNAME-$VERSION.tar.bz2}
+TAR=      # empty = auto
+DIR=      # empty = auto
+DOCS=""
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
+# An EULA for non-free packages
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])":
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
+fi
+
+# Does not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
@@ -67,21 +80,44 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
+### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
  
+# patch -p1 < $CWD/some_patch.diff
+# zcat $CWD/compressed_patch.diff.gz |patch -p1
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-( cd wxPython
-python setup.py build
-python setup.py install --root=$PKG )
-
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
-cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+# Customize as you need
+CFLAGS="$SLKCFLAGS -fpermissive" \
+CXXFLAGS="$SLKCFLAGS -fpermissive" \
+./configure --prefix=/usr \
+    --disable-debug \
+    --enable-optimize \
+    --enable-amule-daemon \
+    --enable-amulecmd \
+    --enable-webserver \
+    --enable-amule-gui \
+    --enable-cas \
+    --enable-geoip \
+    --enable-wxcas \
+    --enable-alc \
+    --enable-alcc \
+    --enable-xas \
+    --enable-fileview \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --mandir=/usr/man \
+    --docdir=/usr/doc/$PKGNAME-$VERSION \
+    --build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
@@ -96,12 +132,15 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
+# Strip binary files
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
+
+# Preparing to packaging
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
@@ -111,10 +150,11 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v -s $CWD $PKG
+  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
+# Packaging
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
  
 if [ "$1" = "--cleanup" ]; then
