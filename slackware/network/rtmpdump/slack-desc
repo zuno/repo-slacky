@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+rtmpdump: RTMPDump (RTMP Streams Toolkit)
+rtmpdump:
+rtmpdump: RTMPDump is a toolkit for RTMP streams. All forms of RTMP are
+rtmpdump: supported,  including  rtmp://, rtmpt://, rtmpe://, rtmpte://
+rtmpdump: and rtmps://.
+rtmpdump:
+rtmpdump:
+rtmpdump:
+rtmpdump:
+rtmpdump:
+rtmpdump:

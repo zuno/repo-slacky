@@ -1,3 +1,23 @@
+Tue Oct  9 05:00:14 CEST 2012
+-----------------------------
+	new file:   development/orc/orc.SlackBuild
+	new file:   libraries/frei0r/frei0r.SlackBuild
+	new file:   libraries/libaacplus/libaacplus.SlackBuild
+	new file:   libraries/libbluray/libbluray.SlackBuild
+	new file:   libraries/libdc1394/libdc1394.SlackBuild
+	modified:   libraries/libgsm/libgsm.SlackBuild
+	new file:   libraries/libnut/libnut.SlackBuild
+	copied:     libraries/libgsm/libgsm.SlackBuild -> libraries/libupnp/libupnp.SlackBuild
+	new file:   libraries/libvdpau/libvdpau.SlackBuild
+	copied:     libraries/libgsm/libgsm.SlackBuild -> libraries/libvpx/libvpx.SlackBuild
+	copied:     libraries/libgsm/libgsm.SlackBuild -> libraries/libxavs/libxavs.SlackBuild
+	new file:   libraries/opencore-amr/opencore-amr.SlackBuild
+	new file:   libraries/schroedinger/schroedinger.SlackBuild
+	new file:   libraries/vo-aacenc/vo-aacenc.SlackBuild
+	new file:   libraries/vo-amrwbenc/vo-amrwbenc.SlackBuild
+	copied:     libraries/libgsm/libgsm.SlackBuild -> network/GeoIP/GeoIP.SlackBuild
+	new file:   network/rtmpdump/rtmpdump.SlackBuild
+
 Mon Oct  8 05:00:49 CEST 2012
 -----------------------------
 	new file:   development/wxWidgets/wxWidgets.SlackBuild

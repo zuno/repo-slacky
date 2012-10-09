@@ -1,6 +1,6 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://www.quut.com/gsm/
+# http://code.entropywave.com/projects/orc/
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
 #
@@ -21,70 +21,72 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+#
 # Exit on most errors
-set -e 
+set -e
+
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=libgsm
+PKGNAME=orc
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.0.13}
-ARCH=${ARCH:-i686}  # i686 or x86_64
-BUILD=${BUILD:-7}
+VERSION=${VERSION:-0.4.16}
+ARCH=${ARCH:-i486}
+JOBS=${JOBS:--j2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
-
-SOURCE="http://www.quut.com/gsm/gsm-$VERSION.tar.gz"
-
 # Download sorce tarball if still not present
-if [ ! -e $CWD/gsm-$VERSION.tar.gz ]; then
-wget -c $SOURCE
-fi
+SOURCE="http://code.entropywave.com/download/orc/$PKGNAME-$VERSION.tar.gz"
 
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+ wget $SOURCE
+fi
 
 # Set compiling FLAGS
-if [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST=i486
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
 elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
-# Create build directory
+# Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvzf $CWD/gsm-$VERSION.tar.gz
-zcat $CWD/libgsm.diff.gz | patch -p0 -E --backup --verbose
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+-------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Libgsm |\E[0;0m"
-echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m+----------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild ORC |\E[0;0m"
+echo -e "\E[0;32m+----------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd gsm-1.0-pl13
-chmod -R u+w,go+r-w,a-s .
+cd $PKGNAME-$VERSION
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-make
-
-# Building Libgsm package
-mkdir -p $PKG/usr/bin
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
-mkdir -p $PKG/usr/include/gsm
-mkdir -p $PKG/usr/man/man3
-mkdir -p $PKG/usr/man/man1
-
-install -m 755 bin/* $PKG/usr/bin
-install -m 755 lib/* $PKG/usr/lib${LIBDIRSUFFIX}
-install -m 444 inc/gsm.h $PKG/usr/include
-install -m 444 inc/gsm.h $PKG/usr/include/gsm
-install -m 444 man/*.1 $PKG/usr/man/man1
-install -m 444 man/*.3 $PKG/usr/man/man3
+# Build ORC package
+LDFLAGS="$SLKLDFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--mandir=/usr/man \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
 
 # Strip binaries and shared objects, if present
@@ -97,23 +99,8 @@ install -m 444 man/*.3 $PKG/usr/man/man3
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a COPYRIGHT ChangeLog INSTALL MACHINES README $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a COPYING README TODO $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
-
-# Fix some symlinks
-(cd $PKG/usr/lib
- rm libgsm.so libgsm.so.1
- ln -sf libgsm.so.1.0.13 libgsm.so
- ln -sf libgsm.so.1.0.13 libgsm.so.1
-)
-
-
-# Replace hardlinks with symlinks
-(  cd $PKG/usr/bin
-  rm untoast tcat
-  ln -s toast untoast
-  ln -s toast tcat )
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -121,16 +108,6 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
-
-
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
 
 
 
@@ -143,9 +120,10 @@ fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
-
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+
 
