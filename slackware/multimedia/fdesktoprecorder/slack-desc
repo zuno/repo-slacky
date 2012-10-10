@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+                |-----handy-ruler-----------------------------------------------------|
+fdesktoprecorder: FDesktopRecorder (KDE4 Desktop Recorder)
+fdesktoprecorder:
+fdesktoprecorder: FDesktopRecorder is a program that can video record a single
+fdesktoprecorder: window or your entire desktop using FFmpeg.
+fdesktoprecorder:
+fdesktoprecorder:
+fdesktoprecorder:
+fdesktoprecorder:
+fdesktoprecorder:
+fdesktoprecorder:
+fdesktoprecorder:

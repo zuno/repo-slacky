@@ -1,3 +1,30 @@
+Wed Oct 10 05:01:38 CEST 2012
+-----------------------------
+	new file:   development/scons/scons.SlackBuild
+	new file:   development/yaz/yaz.SlackBuild
+	new file:   libraries/enca/enca.SlackBuild
+	new file:   libraries/exempi/exempi.SlackBuild
+	new file:   libraries/fdk-aac/fdk-aac.SlackBuild
+	new file:   libraries/ilbc/ilbc.SlackBuild
+	new file:   libraries/libass/libass.SlackBuild
+	new file:   libraries/libffado/libffado.SlackBuild
+	new file:   libraries/libmodplug/libmodplug.SlackBuild
+	new file:   libraries/libva/libva.SlackBuild
+	new file:   libraries/libxml++/libxml++.SlackBuild
+	new file:   libraries/opus/opus.SlackBuild
+	new file:   libraries/qjson/qjson.SlackBuild
+	new file:   libraries/utvideo/utvideo.SlackBuild
+	new file:   multimedia/coquillo/coquillo.SlackBuild
+	new file:   multimedia/eko/eko.SlackBuild
+	new file:   multimedia/fdesktoprecorder/fdesktoprecorder.SlackBuild
+	new file:   multimedia/ffmpeg/ffmpeg.SlackBuild
+	new file:   multimedia/flite/flite.SlackBuild
+	new file:   multimedia/jack-audio-connection-kit/jack-audio-connection-kit.SlackBuild
+	new file:   multimedia/twolame/twolame.SlackBuild
+	new file:   network/rekonq/rekonq.SlackBuild
+	new file:   network/skype/skype.SlackBuild
+	new file:   office/tellico/tellico.SlackBuild
+
 Tue Oct  9 18:28:10 CEST 2012
 -----------------------------
 	deleted:    development/wxWidgets/wxWidgets.SlackBuild

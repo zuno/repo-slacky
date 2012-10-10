@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+rekonq: Rekonq (KDE4 Webkit Browser)
+rekonq:
+rekonq: Rekonq is a KDE browser based on Webkit. Its code is based on Nokia
+rekonq: QtDemoBrowser, just like Arora. Anyway its implementation is  going
+rekonq: to embrace KDE technologies to have a full-featured KDE web browser
+rekonq: This software is the product of  my  playing to be a programmer, so
+rekonq: the higher its quality is, the better I can play.. I've got lots of
+rekonq: ideas to implement in it, so many features that I will like to have
+rekonq: in my perfect browsers  Anyway,   rekonq   is  far from perfect. It
+rekonq: needs a lot of love.
+rekonq:

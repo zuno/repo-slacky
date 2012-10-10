@@ -1,0 +1,8 @@
+bzip2 >= 1.0.6-i486-1
+enca >= 1.14-i486-1sl
+expat >= 2.0.1-i486-2
+fontconfig >= 2.9.0-i486-1
+freetype >= 2.4.10-i486-1
+fribidi >= 0.19.2-i486-3
+glibc-solibs >= 2.15-i486-7
+zlib >= 1.2.6-i486-1

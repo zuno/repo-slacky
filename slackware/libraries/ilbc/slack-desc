@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+ilbc: iLBC (internet Low Bitrate Codec)
+ilbc:
+ilbc: iLBC is a FREE speech codec  suitable  for robust voice communication
+ilbc: over IP. The codec  is designed for narrow band speech and results in
+ilbc: a payload  bit rate of 13.33 kbit/s  with an encoding frame length of
+ilbc: 30 ms and 15.20 kbps with an encoding length of 20 ms. The iLBC codec
+ilbc: enables  graceful  speech  quality  degradation  in  the case of lost
+ilbc: frames, which occurs in connection with lost or delayed IP packets.
+ilbc:
+ilbc:
+ilbc:

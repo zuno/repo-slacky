@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+fdk-aac: FDK AAC (AAC Encoding Library by Fraunhofer)
+fdk-aac:
+fdk-aac: Fraunhofer's FDK AAC code provides a complete, high-quality audio
+fdk-aac: solution  to  Android  users. Fraunhofer does not only contribute 
+fdk-aac: codec  code, but also  the  audio systems  knowledge and profound
+fdk-aac: experience as the primary AAC and MP3 inventor.
+fdk-aac:
+fdk-aac:
+fdk-aac:
+fdk-aac:
+fdk-aac:
