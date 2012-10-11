@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler--------------------------------------------------------|
+xchm: xCHM (WxGtk Chmlib GUI)
+xchm:
+xchm: xCHM is a cross-platform GUI front-end  to  chmlib, with borrowed  bits
+xchm: from Pabs' chmdeco project.
+xchm: Originally  written  for  UNIX systems (Linux, *BSD, Solaris), xCHM has
+xchm: been since ported to Mac OS X and Windows.
+xchm: xCHM can show the content tree if one is available, print pages, change
+xchm: font  face  and  size,  remember  bookmarks, display a searchable index
+xchm: and search for words in the current page and the whole book.
+xchm:
+xchm:

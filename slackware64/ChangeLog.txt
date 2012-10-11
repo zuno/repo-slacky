@@ -1,3 +1,16 @@
+Thu Oct 11 05:04:30 CEST 2012
+-----------------------------
+	new file:   games/assaultcube/assaultcube.SlackBuild
+	new file:   libraries/openal-soft/openal-soft.SlackBuild
+	new file:   libraries/pyxdg/pyxdg.SlackBuild
+	new file:   libraries/wxPython/wxPython.SlackBuild
+	new file:   multimedia/lsdvd/lsdvd.SlackBuild
+	new file:   multimedia/vobcopy/vobcopy.SlackBuild
+	new file:   network/filezilla/filezilla.SlackBuild
+	modified:   system/nvidia-linux-compat32/nvidia-linux-compat32.SlackBuild
+	modified:   system/nvidia-linux/nvidia-linux.SlackBuild
+	new file:   utilities/xchm/xchm.SlackBuild
+
 Tue Oct  9 18:42:43 CEST 2012
 -----------------------------
 	new file:   libraries/wxGTK/wxGTK.SlackBuild

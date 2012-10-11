@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+         |----handy-ruler-----------------------------------------------------|
+filezilla: Filezilla (WxGtk FTP Client)
+filezilla:
+filezilla: FileZilla is a powerful FTP-client. It has been designed for ease
+filezilla: of use and with support  for  as many features as possible, while
+filezilla: still being fast and still being fast and reliable.
+filezilla:
+filezilla:
+filezilla:
+filezilla:
+filezilla:
+filezilla:

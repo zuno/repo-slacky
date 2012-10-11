@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=xCHM
+GenericName=CHM file viewer
+Comment=GUI front-end to chmlib
+Exec=xchm
+Type=Application
+Icon=xchm
+StartupNotify=true
+Terminal=false
+Categories=Application;Utility;
