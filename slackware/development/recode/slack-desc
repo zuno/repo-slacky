@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+recode: Recode (Character Filter Converter)
+recode:
+recode: It recognises or produces more than 300 different character  sets and
+recode: transliterates   files    between   almost   any  pair.   When  exact
+recode: transliteration are not possible, it gets rid of offending characters
+recode: or falls back on  approximations.   The  `recode'  program is a handy
+recode: front-end to the library.
+recode:
+recode:
+recode:
+recode:

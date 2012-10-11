@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+djbfft: Djbfft (Fast Fourier Transformation Library)
+djbfft:
+djbfft: Djbfft provides power-of-2 complex FFTs, real FFTs at  twice the speed
+djbfft: and fast multiplication of complex arrays. Single precision and double
+djbfft: precision are equally supported.
+djbfft:
+djbfft:
+djbfft:
+djbfft:
+djbfft:
+djbfft:

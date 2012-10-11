@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+dcaenc: Dcaenc (DTS Audio Encoder)
+dcaenc:
+dcaenc: Dcaenc is  a  Free  Software (LGPL-licensed) encoder  for  the DTS
+dcaenc: Coherent Acoustics audio format. It  may  be useful if you want to
+dcaenc: create a DTS CD or a DTS soundtrack for a DVD from a 6-channel PCM
+dcaenc: wav  file  using linux. Another  use  case is related to real-time
+dcaenc: encoding of multichannel  PCM  audio  output  from arbitrary linux
+dcaenc: applications for transmission over SPDIF.
+dcaenc:
+dcaenc:
+dcaenc:
