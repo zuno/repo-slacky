@@ -1,0 +1,38 @@
+#!/bin/sh
+# Start/stop/restart TiMidity++ Server Midi.
+# By Andrea Sciucca (gohanz at infinito.it)
+
+
+# Start TiMidity++:
+timidity_start() {
+  if [ -x /usr/bin/timidity ]; then
+    echo -e "\E[0;32mStarting TyMidity++ server\E[0;0m"
+    /usr/bin/timidity -iAD -B3,9 -Os -EFresamp=l 
+  fi
+}
+
+# Stop TiMidity++:
+timidity_stop() {
+  killall timidity
+}
+
+# Restart TiMidity++:
+timidity_restart() {
+  timidity_stop
+  sleep 1
+  timidity_start
+}
+
+case "$1" in
+'start')
+  timidity_start
+  ;;
+'stop')
+  timidity_stop
+  ;;
+'restart')
+  timidity_restart
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

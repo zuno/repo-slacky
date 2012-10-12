@@ -1,0 +1,11 @@
+alsa-lib >= 1.0.26-i486-1
+flac >= 1.2.1-i486-3
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+jack-audio-connection-kit >= 0.121.3-i486-3sl
+ladspa_sdk >= 1.13-i486-9sl
+libogg >= 1.3.0-i486-1
+libsndfile >= 1.0.24-i486-1
+libvorbis >= 1.3.3-i486-1
+ncurses >= 5.9-i486-1
+readline >= 5.2-i486-4

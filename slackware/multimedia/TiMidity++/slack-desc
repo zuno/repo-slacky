@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------|
+TiMidity++: TiMidity++ (Software MIDI Synthesizer)
+TiMidity++:
+TiMidity++: TiMidity++ is a software  synthesizer. It  can play MIDI files
+TiMidity++: by converting them into PCM waveform data; give it a MIDI data
+TiMidity++: along  with digital instrument data files, then it synthesizes
+TiMidity++: them in real-time, and  plays. It  can  not  only  play sounds
+TiMidity++: but  also  can  save  the generated  waveforms into hard disks
+TiMidity++: as various audio file formats.
+TiMidity++:
+TiMidity++:
+TiMidity++:

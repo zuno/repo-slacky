@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+libmatroska: Matroska (Audio/Video Container Library)
+libmatroska:
+libmatroska: Matroska is  usually  found as .mkv  files (matroska video) and .mka
+libmatroska: files (matroska audio). Matroska  aims  to  become  THE  standard of
+libmatroska: multimedia  container formats. It was  derived from a project called
+libmatroska: MCF, but differentiates from it significantly because it is based on
+libmatroska: EBML (Extensible Binary Meta Language), a binary derivative of XML.
+libmatroska:
+libmatroska:
+libmatroska:
+libmatroska:

@@ -1,0 +1,17 @@
+centerim-5.0.0beta1.15 >= 2f92-x86_64-1sl
+cxxlibs >= 6.0.17-x86_64-1 | gcc-g++ >= 4.7.1-x86_64-1
+dbus >= 1.4.20-x86_64-3
+dbus-glib >= 0.98-x86_64-1
+gcc >= 4.7.1-x86_64-1
+glib2 >= 2.32.4-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+gst-plugins-base >= 0.10.36-x86_64-2
+gstreamer >= 0.10.36-x86_64-1
+libffi >= 3.0.11-x86_64-1
+libidn >= 1.25-x86_64-2
+libsigc++ >= 2.2.11-x86_64-1sl
+libxml2 >= 2.8.0-x86_64-1
+ncurses >= 5.9-x86_64-1
+pidgin >= 2.10.6-x86_64-1
+xz >= 5.0.4-x86_64-1
+zlib >= 1.2.6-x86_64-1

@@ -1,0 +1,4 @@
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+gcc >= 4.7.1-i486-1
+glibc-solibs >= 2.15-i486-7
+libebml >= 1.2.2-i486-1sl

@@ -1,3 +1,8 @@
+Fri Oct 12 05:03:07 CEST 2012
+-----------------------------
+	new file:   libraries/libsigc++/libsigc++.SlackBuild
+	new file:   network/centerim/centerim.SlackBuild
+
 Thu Oct 11 05:04:30 CEST 2012
 -----------------------------
 	new file:   games/assaultcube/assaultcube.SlackBuild
