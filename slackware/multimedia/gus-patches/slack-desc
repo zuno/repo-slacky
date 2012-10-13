@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+gus-patches: GUS-patches (TiMidity++ GUS Patches)
+gus-patches:
+gus-patches: A GUS patch set consists of around 180 .pat instrument files, plus
+gus-patches: a default.cfg  index file listing  which patch goes with each MIDI
+gus-patches: program number.
+gus-patches:
+gus-patches:
+gus-patches:
+gus-patches:
+gus-patches:
+gus-patches:
