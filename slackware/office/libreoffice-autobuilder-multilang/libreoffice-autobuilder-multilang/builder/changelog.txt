@@ -1,0 +1,36 @@
+BUILDER VERSIONS:
+-----------------
+
+v1: initial release
+v2: added mirror choice, remove rpm2tgz dep, more speed, building required less space on hd, fix bug with language pt-BR
+v3: added check for free space on hd, connection check on proxy, remove "set -e" because seems create problems, source rpm and tgz package saved on /tmp/tgz, added slack-required, many other bit things
+v4-v9: "top secret" :D... none important change
+v10: added and actived "pdfimport" extension, fix activation of dictionary, fix test with ping on connection check, added link unopkg on /usr/bin, other things
+v11: fixed mime type and bit things
+v12: fixed old problem with mime type?, added "pagination" extension, fixed space required on hd for building package, small changes
+v13: many improvements, activation of extensions improved, remove warning (dangling symlink) with chmod on slack 12.2 or upper
+v14: fixed small error on doinst.sh of build package (for run /etc/profile.d/openoffice.sh, changes for slackbuild head, automatic SUPPORT FOR NEW FORMAT TXZ on slack current
+v15: reorder of download procedure code with functions, SUPPORT TO NEW SLACKWARE64 (x86_64) for the future slackware 13.0 (thanks archlinux), automatic check for arch (x86_64 or i586), fixed old bug on "if" structure for connection check on proxy, rewrite check for free space on hd, other things that i do not remember :(
+v16: reduced size of generated package tgz for x86_64, fixed loop infinite when file not exist on mirror, download tarballs for x86_64 more efficient (before try download language and after openoffice), fixed error to download and build the package x86_64 in english language, other 
+v17: jump for superstition O_o
+v18: added file of license (GPL3), update head of builder for license, added changelog (this file), added exit if the extract process is failed, added two mirror (japan and kenia)
+v19: fix /usr/lib64 directory on x86_64 for mozilla-plugin
+v20: fix clean tmp and special fix for zh-CN/zh-TW isocode languages
+v21: update pdfimport and pagination, improved extensions download and build process, fix pdfimport on x86_64 arch, add note to slack-desc
+v22: BrOOo prefix fix (from OO 3.1.1), BIG FIX download and extract langpack LinuxX86-64 for slackware64, download and extract the tarball with jre for slackware64 (from OO 3.1.1), remove DejaVu and Liberation fonts that are included in other packages
+v23: remove procedure of slackware-menus (from 3.2.0 not exist), add --continue to wget command, update mirrors
+v24: uniform procedure of rpm's download to get en-US tarball and language pack for all arch (x86 and x86_86), from 3.3.0 i don't use tarball with jre and after remove from a package but already use tarball without jre, connection check not exit if this is not found 
+v25: fix 64bit rpm's download to get tarball with jre and remove this after 
+v26: mod builder for libreoffice
+v27: small changes to reorder tree and desktop files for 3.4.0 version, disable extension pdfimport because is already inside, enable java more explicit. 
+v28: add info on about's window
+v29: reorder part is more simple from libreoffice 3.5.0, disable auto-check update, disabled desktop integration 
+
+know bug
+--------
+
+1) slapt-get/swaret not show output of autobuilder (language choice, mirror, ecc...)
+2) if use upgradepkg tool for upgrade autobuilder package this run builder two times beacause there is a compatibility problem inside internal code.
+3) my english is bad! :P
+
+END

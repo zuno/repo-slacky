@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler---------------------------------------------|
+libreoffice: LibreOffice.org (Free Office Suite)
+libreoffice:
+libreoffice: LibreOffice.org is both a multi-platform and multi-lingual
+libreoffice: office suite and an open-source project. Compatible with all
+libreoffice: other major office suites, the product is free to download,
+libreoffice: use, and distribute.
+libreoffice: This is a repackaging of the official binary distributed by
+libreoffice: libreoffice.org.
+libreoffice: 
+libreoffice: build with libreoffice-multilang.SlackBuild
+libreoffice: by Massimo Cavalleri (submax)

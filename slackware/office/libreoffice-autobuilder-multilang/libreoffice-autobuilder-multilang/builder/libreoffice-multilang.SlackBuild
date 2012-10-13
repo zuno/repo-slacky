@@ -1,0 +1,646 @@
+#!/bin/bash
+##########################################################################################
+#
+# Copyright (C) 2007,2008,2009,2010,2011, Massimo Cavalleri
+#
+# This file is part of libreoffice-multilang.SlackBuild.
+# Heavily based on the Slackware 14.0 SlackBuild
+# Last build from Loris Vincenzi (http://www.slacky.eu)
+# 
+# libreoffice-multilang.SlackBuild is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# libreoffice-multilang.SlackBuild is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with libreoffice-multilang.SlackBuild.  If not, see <http://www.gnu.org/licenses/>.
+#
+##########################################################################################
+#
+# [ SLACKBUILD v23 FOR MAKE LIBREOFFICE PACKAGE FROM OFFICIAL RPM ]
+# This script builds a Slackware package from the official binary (RPM's) 
+# distributed by libreoffice.org.  Everything needed by the application should 
+# be built statically into it, so there aren't any dependencies not satisfied 
+# by a normal installation.  A java runtime environment (jre) is suggested by 
+# libreoffice.org, but it is not required (note that jre is part of a standard
+# installation of Slackware). 
+# Tested for defined version or upper if not change major version
+#
+# web site project: www.libreoffice.org
+# web site builder: http://submax.altervista.org/index.php?\
+#                   link=slackware/libreoffice-autobuilder-multilang.php
+#
+# Packager: Vincenzi Loris - slacky@slacky.it & Massimo Cavalleri (submax)
+# 
+# thanks to: Robby Workman  (http://rlworkman.net)
+#            Terry Laundos for pt-BR patch
+#            Régis Rouet for help
+#            ZeroUno (slacky.eu) for proxy patch and check for space hd
+#            Andreas Radke of Arch Linux for reorder directory tree steps, 
+#                          mozilla plugin, OOO_FORCE_DESKTOP profile and
+#                          x86_64 localized with langpack
+#            Trotto@81 for find a bug with upgradepkg and old version of 
+#                      autobuilder installed
+#            JohnnyMnemonic for testing version 3.0
+#            Blizzard for testing x86_64
+#
+# *** SUPPORT FOR SLACKWARE AND SLACKWARE64! ***
+#
+##########################################################################################
+
+#### VARIABLES ####
+
+NAME=libreoffice
+VERSION=3.6.2
+SHORT_VERSION=$(echo $VERSION | cut -c -3)
+DEV="auto" # auto, disable or enable
+ARCH="auto" # auto, x86 or x86_64
+BUILD=1sl
+EXTENSION="auto" # auto (tgz or txz), tgz, txz, tlz, tbz, tar.gz, tar.xz, tar.lzma, tar.bz2
+MIRROR="" #lock mirror
+ISOCODE="" #lock language with isocode
+
+# NOT modify!!!
+TMP=/tmp/tgz #final char is NOT "/"!!!
+PKG=$TMP/package-$NAME
+CWD="$(pwd)"
+
+# If you want to disable java support by removing executable permissions
+# form OOo's java loader (this will not affect other apps), set this
+# variable to "YES"   Default is "NO"
+# According to Fred Emmott, this is *highly* desirable on 64 bit systems
+DISABLE_JAVA=${DISABLE_JAVA:-NO}
+# space required for build package
+# there are (for example) on $TMP:
+# OOo_3.0.1_LinuxIntel_install_it.tar.gz
+# Pagination-1.3.5.oxt
+# libreoffice-it-3.0.1
+# libreoffice-it-3.0.1-i586-12sl.tgz
+# libreoffice-it-3.0.1-i586-12sl.tgz.md5
+# libreoffice-it-3.0.1-i586-12sl.txt
+# package-libreoffice
+# pdfimport
+# pdfimport.oxt
+# pdfimport_no_license.oxt
+SPACE_REQUIRED=1200 # MByte!!!
+
+#### FUNCTIONS ####
+
+check_space_on_hd()
+{
+     if [ ! -d $TMP ]; then
+        mkdir -p $TMP
+     fi
+     SPACE=$(df -P -m $TMP 2> /dev/null | tr -s ' ' | cut -f4 -d' ' | tail -1)
+     if [ -z "$SPACE" ]; then
+       echo 2 #error
+     elif [ $(expr $SPACE - $SPACE_REQUIRED) -gt 0 ]; then
+       echo 1
+     else
+       echo 0
+     fi
+}
+
+auto_arch()
+{
+ ARCH=x86 # subarch for x86_32 official rpm packages
+ if [ "$(uname -m)" = "x86_64" ]; then
+    ARCH=x86_64
+ fi
+}
+
+auto_dev_version()
+{
+ DEV=disable # enable only for automatic download with unstable versions
+ if [ ! -z "$(echo $VERSION | egrep "rc|beta|alpha")" ]; then 
+    DEV=enable
+ fi
+}
+
+connection_check() 
+{
+ msg="[ERROR] internet connection is not present. Restart script next time..."
+ 
+ if [ -z "$http_proxy" ]; then
+    ping -c 2 www.libreoffice.org > /dev/null 2>&1
+ else
+    wget -q -T 30 -O - http://www.libreoffice.org | grep -q LibreOffice.org > /dev/null 2>&1
+ fi
+ 
+ if [ $? != 0 ]; then
+    echo $msg
+    #exit 1
+ fi
+}
+
+lang_choice()
+{
+ # choice language of libreoffice
+ if [ "$ISOCODE" = "" ]; then 
+    lang_all_num=$(cat "$CWD"/languages | sed '/^[ ]*$/d' | grep -v "#" | wc -l)
+    echo "choice your language ($lang_all_num available)..."
+    # delete comments; delete blank lines; number for every line of file languages 
+    cat "$CWD"/languages | sed "s/#.*//g" | sed '/^[ ]*$/d' | sed '=' | sed 'N;s/\n/\. /' | column
+    while true; do 
+          read -p "choice n.: " lang_user_num
+          if [ -z "$(echo $lang_user_num | egrep "^[0-9]+")" ]; then 
+             continue #next while loop
+          fi
+          if [ $lang_user_num -le $lang_all_num ] && [ $lang_user_num -ge 1 ]; then
+             break #exit while loop
+          fi
+    done
+    lang_user=$(cat "$CWD"/languages | sed "s/#.*//g" | sed '/^[ ]*$/d' | sed "${lang_user_num}q;d" )
+    ISOCODE=$(cat "$CWD"/isocodes | sed "s/#.*//g" | sed '/^[ ]*$/d' | sed "${lang_user_num}q;d" )
+ fi
+}
+
+mirror_choice()
+{
+ # choice mirror for download files
+ if [ "$MIRROR" = "" ]; then 
+    mirrors_all_num=$(cat "$CWD"/mirrors | sed "s/#.*//g" | sed '/^[ ]*$/d' | wc -l)
+    echo "choice mirror ($mirrors_all_num available)..."
+    # delete comments; delete blank lines; number for every line of file mirrors 
+    cat "$CWD"/mirrors | sed "s/#.*//g" | sed '/^[ ]*$/d' | sed '=' | sed 'N;s/\n/\. /'
+    while true; do 
+          read -p "choice n.: " mirror_user_num
+          if [ -z "$(echo $mirror_user_num | egrep "^[0-9]+")" ]; then 
+             continue #next while loop
+          fi
+          if [ $mirror_user_num -le $mirrors_all_num ] && [ $mirror_user_num -ge 1 ]; then
+             break #exit while loop
+          fi
+    done
+    MIRROR=$(cat "$CWD"/mirrors | sed "s/#.*//g" | sed '/^[ ]*$/d' | sed "${mirror_user_num}q;d") 
+ fi
+}
+
+download()
+{ # $1 link to download on tmp directory
+ if [ ! -e "$TMP"/$(basename $1) ]; then
+    wget --continue --tries=3 --progress=bar $1 --directory-prefix="$TMP"
+    exitcode_wget=$?
+ fi
+ return $exitcode_wget
+}
+
+#addInfoOnAbout(){
+#	if [ -e /usr/bin/convert ]; then
+#		cp -a $PKG/opt/libreoffice/program/about.png $PKG/opt/libreoffice/program/about.orig.png
+#		convert $PKG/opt/libreoffice/program/about.orig.png -font Courier -size 10 -fill black -stroke black -strokewidth 0.1 \
+#		-gravity "South" -draw "text 0,0 'packaged for slackware by Massimo Cavalleri'" $PKG/opt/libreoffice/program/about.png
+#	else
+#		echo "add info fail. imagemagick package required."
+#	fi
+#}
+
+
+#### MAIN ####
+
+#SIGNALS
+# remove all $TMP/* files when Control-C pressed and files downloading (not work).
+#trap "if [ "$TMP" != '/' ] && [ ! -z "$(ps aux | grep [w]get)" ]; then rm -rf $TMP/*; fi; exit 1" 2
+
+echo "[WARNING] you'll need about ${SPACE_REQUIRED}MByte in $TMP to build this package [WARNING]"
+
+# check_space_on_hd is not perfect ;(
+echo -n "Start check... "
+CHECK=$(check_space_on_hd)
+if [ $CHECK = 0 -o $CHECK = 2 ]; then
+  echo "FAIL. There is NOT enough space."
+else
+  echo "DONE. check is OK."
+fi
+
+sleep 3
+
+if [ "$DEV" = "auto" ]; then
+   auto_dev_version
+fi
+
+if [ "$ARCH" = "auto" ]; then
+   auto_arch
+fi
+
+# choice language and download procedure
+lang_user=""
+
+while true; do
+      # user choice language
+      lang_choice
+      
+      MDIR=stable/${VERSION}/rpm/$ARCH
+      if [ "$DEV" = "enable" ]; then
+	MDIR=testing/${VERSION}/rpm/$ARCH
+      fi
+      
+      MARCH=$(echo $ARCH | sed 's/_/-/')
+
+      TARBALL_LANG=LibO_${VERSION}_Linux_${MARCH}_langpack-rpm_${ISOCODE}.tar.gz
+      TARBALL_HELP=LibO_${VERSION}_Linux_${MARCH}_helppack-rpm_${ISOCODE}.tar.gz
+      TARBALL=LibO_${VERSION}_Linux_${MARCH}_install-rpm_en-US.tar.gz
+      
+      DOWNLOAD_FLAG=0
+      if [ ! -e "$TMP"/$TARBALL ]; then
+	DOWNLOAD_FLAG=1
+      fi
+      if [ ! -e "$TMP"/$TARBALL_HELP ]; then
+	DOWNLOAD_FLAG=1
+      fi
+      if [ ! -e "$TMP"/$TARBALL_LANG ] && [ $ISOCODE != en-US ]; then
+	DOWNLOAD_FLAG=1
+      fi
+
+      if [ "$DOWNLOAD_FLAG" = "1" ]; then
+         # connection check
+         connection_check
+
+         echo "Downloading files from libreoffice.org...:"
+         # user choice mirror
+         mirror_choice
+
+         # download files
+         ret=0
+         ret_lang=0
+	 ret_help=0
+         
+	 if [ $ISOCODE != en-US ]; then
+	 
+		download ${MIRROR}/${MDIR}/${TARBALL_LANG}
+		ret_lang=$?
+	    
+		if [ $ret_lang -eq 0 ]; then
+	       
+			download ${MIRROR}/${MDIR}/${TARBALL_HELP}
+			ret_help=$?
+		  
+			if [ $ret_help -eq 0 ]; then
+				download ${MIRROR}/${MDIR}/${TARBALL}
+				ret=$?
+			fi
+		  
+		fi
+	       
+	 else
+	 
+		download ${MIRROR}/${MDIR}/${TARBALL_HELP}
+		ret_help=$?
+		  
+		if [ $ret_help -eq 0 ]; then
+			download ${MIRROR}/${MDIR}/${TARBALL}
+			ret=$?
+		fi
+	       
+	 fi
+
+         # check download of files is ok
+         
+            if [ $ret -ne 0 ] || [ $ret_lang -ne 0 ] || [ $ret_help -ne 0 ]; then
+               #error
+               echo "download fail."
+               echo "[WARNING] libreoffice $VERSION NOT actually exist in $lang_user language on this mirror"
+               ISOCODE=""
+               MIRROR=""
+               continue
+            elif [ $ret -eq 0 ] && [ $ret_lang -eq 0 ] && [ $ret_help -ne 0 ]; then
+               #success
+               echo "download done."
+               break
+            fi
+        
+      fi
+
+      break
+done
+
+echo "Start building...:"
+
+echo "- clean necessary after old run"
+rm -rf $PKG
+rm -rf $TMP/$NAME-$ISOCODE-$VERSION
+rm -rf $TMP/pdfimport/
+rm -rf $TMP/pdfimport_no_license.oxt
+
+mkdir -p $TMP/$NAME-$ISOCODE-$VERSION
+mkdir -p $PKG
+
+if [ ! -e /var/log/packages/rpm-* ]; then
+   echo "[ERROR] rpm package is not installed."
+   exit 1
+fi
+
+echo "- extract tarball of libreoffice, wait..."
+cd $TMP/$NAME-$ISOCODE-$VERSION
+tar xzf "$TMP"/$TARBALL &> /dev/null
+SOURCEDIR=$(tar -tzf "$TMP"/$TARBALL 2> /dev/null | head -1 | tr -d \/)
+# if [ "$ARCH" = "x86_64" ]; then
+#    # remove jre included on x86_64 package; from 3.1.1 the package without jre not exist for 64bit, exist only package with jre
+#    echo "- remove jre included"
+#    rm -rf $TMP/$NAME-$ISOCODE-$VERSION/$SOURCEDIR/{JavaSetup.jar,installdata,setup}
+#    rm -rf $TMP/$NAME-$ISOCODE-$VERSION/$SOURCEDIR/RPMS/{userland,jre-*-linux-i586.rpm}
+# fi
+echo "- extract tarball's rpms of libreoffice, wait..."
+cd $SOURCEDIR/RPMS/
+MENUPACKAGE=$(ls -t desktop-integration/ | grep -E "libreoffice$SHORT_VERSION-freedesktop-menus-.+\.noarch\.rpm" | head -n 1)
+cp desktop-integration/$MENUPACKAGE .
+for FILE in *.rpm
+do 
+  ( rpm2cpio < $FILE | cpio -imdv ) &> /dev/null || exit 1
+done
+
+# not "cp -a opt usr $PKG" is very expensive for hd
+mv opt usr $PKG
+
+# from 3.2.0 not exist!
+# MENUPACKAGE_SLACK=$(ls -t desktop-integration/ | grep -E "libreoffice\.org$SHORT_VERSION-slackware-menus-.*\.tgz" | head -n 1)
+# cp desktop-integration/$MENUPACKAGE_SLACK .
+# (mkdir slackware-menus; cd slackware-menus; tar -xzf ../$MENUPACKAGE_SLACK)
+# mkdir $PKG/usr/share/mimelnk
+# cp -a slackware-menus/opt/kde/share/mimelnk/* $PKG/usr/share/mimelnk/
+
+# IMP!, remove old SOURCEDIR of libreoffice
+cd $TMP/$NAME-$ISOCODE-$VERSION
+rm -rf $SOURCEDIR
+
+# help pack
+echo "- extract tarball of help pack, wait..."
+cd $TMP/$NAME-$ISOCODE-$VERSION
+tar xzf "$TMP"/$TARBALL_HELP &> /dev/null
+SOURCEDIR=$(tar -tzf "$TMP"/$TARBALL_HELP 2> /dev/null | head -1 | tr -d \/)
+echo "- extract tarball's rpms of help, wait..."
+cd $SOURCEDIR/RPMS/
+for FILE in *.rpm
+do 
+  ( rpm2cpio < $FILE | cpio -imdv ) &> /dev/null || exit 1
+done
+# autoinstall libreoffice language files
+echo "- integrating $lang_user help pack files"
+cp -a opt $PKG # overwrite
+rm -rf $SOURCEDIR # not necessay but clean
+
+# language pack != en-US
+if [ $ISOCODE != en-US ]; then
+
+   # remove english language files
+   echo "- remove english language pack files"
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/help/en
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/presets/config/*_en-US.so*
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/program/resource/*en-US.res
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/share/autotext/en-US
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/share/registry/modules/org/libreoffice/Setup/Langpack-en-US.xcu
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/share/registry/res/en-US
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/share/samples/en-US
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/share/template/en-US
+   rm -rf $PKG/opt/libreoffice/basis$SHORT_VERSION/share/wordbook/en-US
+   rm -rf $PKG/opt/libreoffice/program/resource/oooen-US.res
+   rm -rf $PKG/opt/libreoffice/readmes/README_en*
+
+   echo "- extract tarball of language pack, wait..."
+   cd $TMP/$NAME-$ISOCODE-$VERSION
+   tar xzf "$TMP"/$TARBALL_LANG &> /dev/null
+   SOURCEDIR=$(tar -tzf "$TMP"/$TARBALL_LANG 2> /dev/null | head -1 | tr -d \/)
+   echo "- extract tarball's rpms of language, wait..."
+   cd $SOURCEDIR/RPMS/
+   for FILE in *.rpm
+   do 
+     ( rpm2cpio < $FILE | cpio -imdv ) &> /dev/null || exit 1
+   done
+   # autoinstall libreoffice language files
+   echo "- integrating $lang_user language pack files"
+   cp -a opt $PKG # overwrite
+   rm -rf $SOURCEDIR # not necessay but clean
+fi
+
+echo "- reorder libreoffice's directory tree"
+# reorder directory tree
+#comment many parts from libreoffice 3.5.0
+# Step 1 
+(cd $PKG/opt/libreoffice$SHORT_VERSION/
+#mv ure/ basis$SHORT_VERSION/
+#cd basis$SHORT_VERSION
+rm ure-link && mv ure ure-link
+# Step 2
+#cd $PKG/opt/libreoffice$SHORT_VERSION/
+#rm basis-link && mv basis$SHORT_VERSION basis-link
+#mkdir -p $PKG/opt/libreoffice$SHORT_VERSION/basis-link/share/dict/ooo
+#touch $PKG/opt/libreoffice$SHORT_VERSION/basis-link/share/dict/ooo/.directory 
+#touch $PKG/opt/libreoffice$SHORT_VERSION/basis-link/presets/template/.directory
+#mkdir -p $PKG/opt/libreoffice$SHORT_VERSION/share/extension/install 
+#touch $PKG/opt/libreoffice$SHORT_VERSION/share/extension/install/.directory
+# Step 3
+mv $PKG/opt/libreoffice$SHORT_VERSION/ $PKG/opt/libreoffice/
+) | exit 1
+
+# Remove DejaVu and Liberation fonts - these are included in other packages
+rm -f $PKG/opt/libreoffice/basis-link/share/fonts/truetype/[DL]*.ttf
+
+echo "- link the mozilla-plugin"
+if [ "$ARCH" = "x86_64" ]; then
+   LIBDIR=lib64
+else
+   LIBDIR=lib
+fi
+mkdir -p $PKG/usr/$LIBDIR/mozilla/plugins/
+cd $PKG/usr/$LIBDIR/mozilla/plugins/
+ln -sf /opt/libreoffice/program/libnpsoplugin.so libnpsoplugin.so
+
+echo "- add menu entry"
+sed -i -e "s|Exec=libreoffice$SHORT_VERSION-printeradmin|Exec=spadmin|g" $PKG/opt/libreoffice/share/xdg/printeradmin.desktop
+sed -i -e "s|Exec=libreoffice$SHORT_VERSION|Exec=soffice|g" $PKG/opt/libreoffice/share/xdg/*.desktop
+# if you launch writer it does not open a blank odt document to start writing in, you have to first click on the "new document" button on the toolbar.
+# *** fix ***
+# I found a workaround: in /usr/share/applications, if you remove the "%U" from the end of the exec line in each Openoffice desktop file 
+# (for example change "libreoffice3.4 --writer %U" into "libreoffice3.4 --writer"), the default documents get opened all right when you click the menu entry.
+# This is a known shortcoming of the Xce menu implementation.
+( cd $PKG/opt/libreoffice/share/xdg/
+  for i in $(ls *.desktop)
+  do
+    sed -i "s/\%U//g" $i
+  done
+)
+rm -rf $PKG/usr/share/applications/*
+cp -a $PKG/opt/libreoffice/share/xdg/*.desktop $PKG/usr/share/applications
+# remove quickstarter, on official rpm there is disabled
+rm -f $PKG/usr/share/applications/qstart.desktop
+# Kill a broken symlink
+rm -f $PKG/usr/share/applications/startcenter.desktop
+
+echo "- manage run file"
+cd $PKG/usr/bin
+# Create symlinks in /usr/bin to actual binaries
+for FILE in sbase scalc sdraw simpress smath soffice spadmin swriter unopkg
+do
+   ln -sf /opt/libreoffice/program/$FILE $FILE
+done
+# remove redundant and unnecessary file on /usr/bin 
+rm -f $PKG/usr/bin/libreoffice
+rm -f $PKG/usr/bin/libreoffice*-printeradmin
+
+echo "- force disabled desktop integration"
+# http://wiki.services.openoffice.org/wiki/Environment_Variables
+# SAL_USE_VCLPLUGIN for widget desktop integration, possible values: "kde" (KDE) or "gtk" (Gnome) or "gen" (generic X11)
+# OOO_FORCE_DESKTOP for icons desktop integration, possible values: "kde" (KDE), "kde4" (KDE 4.x), "gnome" (Gnome), "none" (other) 
+# i prefer this for total desktop-free aspect and more small widget size
+mkdir -p $PKG/etc/profile.d/
+cat << EOF > $PKG/etc/profile.d/libreoffice.sh
+#!/bin/sh
+export SAL_USE_VCLPLUGIN=gen
+export OOO_FORCE_DESKTOP=none
+EOF
+chmod 755 $PKG/etc/profile.d/libreoffice.sh
+
+cat << EOF2 > $PKG/etc/profile.d/libreoffice.csh
+#!/bin/csh
+setenv SAL_USE_VCLPLUGIN gen
+setenv OOO_FORCE_DESKTOP none
+EOF2
+chmod 755 $PKG/etc/profile.d/libreoffice.csh
+
+echo "- disable auto-check update"
+# http://lists.freedesktop.org/archives/libreoffice/2011-June/013895.html
+# /opt/libreoffice/share/registry/onlineupdate.xcd
+# <prop oor:name="AutoCheckEnabled" oor:type="xs:boolean" oor:op="replace"><value>true</value></prop> to false
+sed -i 's|<prop oor\:name\=\"AutoCheckEnabled\" oor\:type\=\"xs\:boolean\" oor\:op\=\"replace\"><value>true</value></prop>|<prop oor\:name\=\"AutoCheckEnabled\" oor\:type\=\"xs\:boolean\" oor\:op\=\"replace\"><value>false</value></prop>|' $PKG/opt/libreoffice/share/registry/onlineupdate.xcd
+
+echo "- add documentation"
+cd $PKG/opt/libreoffice
+mkdir -p $PKG/usr/doc/$NAME-$ISOCODE-$VERSION
+cp -a LICENSE* readmes/README* THIRDPARTYLICENSEREADME.html CREDITS* $PKG/usr/doc/$NAME-$ISOCODE-$VERSION
+
+echo "- insert slack install files"
+mkdir -p $PKG/install
+zcat "$CWD"/doinst.sh.gz > $PKG/install/doinst.sh
+cat "$CWD"/slack-desc > $PKG/install/slack-desc
+sed -i "s/^libreoffice:/libreoffice-$ISOCODE:/g" $PKG/install/slack-desc
+chars=$( echo -n "libreoffice-$ISOCODE" | wc --chars)
+white_space=""
+for ((c=1; c <= $chars ; c++)) 
+do
+  white_space="$white_space "
+done
+sed -i 's/^[ \t]*//' $PKG/install/slack-desc
+sed -i "/^|/c\\$white_space|----handy-ruler----------------------------------------------|" $PKG/install/slack-desc
+
+# Disable Java support if desired (see above)
+if [ "$DISABLE_JAVA" = "YES" ]; then
+  echo "- disable java support"
+  chmod ugo-x $PKG/opt/libreoffice/ure-link/bin/javaldx
+else
+  chmod ugo+x $PKG/opt/libreoffice/ure-link/bin/javaldx
+fi
+
+# this is already inside libreoffice
+# echo "- add pdfimport extension"
+# PDFIMPORT_URL="http://extensions.services.openoffice.org/e-files/874/29/oracle-pdfimport.oxt"
+# if [ "$ARCH" = "x86_64" ]; then
+#    PDFIMPORT_URL="http://extensions.services.openoffice.org/e-files/874/30/oracle-pdfimport.oxt"
+# fi
+# if [ ! -e "$TMP/$(basename $PDFIMPORT_URL)" ]; then
+#   wget --tries=3 $PDFIMPORT_URL --directory-prefix="$TMP" &> /dev/null
+# fi
+# if [ -e "$TMP/$(basename $PDFIMPORT_URL)" ]; then
+#   # force accept license when use unopkg
+#   ( cd "$TMP"
+#     rm -rf pdfimport_no_license.oxt pdfimport_no_license pdfimport
+#     unzip $(basename $PDFIMPORT_URL) -d pdfimport &> /dev/null
+#     sed -i '/<registration>/,/<\/registration>/d' pdfimport/description.xml
+#     cd pdfimport
+#     zip -r pdfimport_no_license * &> /dev/null
+#     mv pdfimport_no_license.zip ../pdfimport_no_license.oxt
+#   )
+#   cp "$TMP"/pdfimport_no_license.oxt $PKG/opt/libreoffice/share/extension/install/
+# fi
+
+echo "- add pagination extension"
+PAGINATION_URL="http://extensions.services.openoffice.org/e-files/374/17/Pagination-1.3.10.oxt"
+if [ ! -e "$TMP/$(basename $PAGINATION_URL)" ]; then
+  wget --tries=3 $PAGINATION_URL --directory-prefix="$TMP" &> /dev/null
+fi
+if [ -e "$TMP/$(basename $PAGINATION_URL)" ]; then
+  cp "$TMP/$(basename $PAGINATION_URL)" $PKG/opt/libreoffice/share/extensions/
+fi
+
+# make sure everything is gone, active installed extensions for all users using unopkg
+# es.: fix problem that not active dictionary
+UNOPKG_BIN=$PKG/opt/libreoffice/program/unopkg
+if [ -x $UNOPKG_BIN ]; then
+  echo "- active all extensions (before close all process of libreoffice and remove .libreoffice on root)"
+  if [ -d /root/.libreoffice ]; then
+    (cd /root; tar -cvzf .libreoffice.tar.gz .libreoffice) &> /dev/null
+    rm -rf /root/.libreoffice
+  fi
+  ( cd $PKG/opt/libreoffice/share/extensions/
+    for oxt_file in $(ls *.oxt)
+    do
+      $UNOPKG_BIN add --shared $oxt_file &> /dev/null
+    done
+  )
+fi
+
+echo "- add info on about window"
+addInfoOnAbout
+
+echo "- build package, wait..."
+cd $PKG
+# strip
+find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+# permission
+find . -type d -exec chmod 755 {} \;
+find . \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) -type f -exec chmod 755 {} \;
+find . \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) -type f -exec chmod 644 {} \;
+# owner
+chown -R root:root .
+# building
+if [ "$EXTENSION" = "auto" ]; then
+   if [ ! -z "$(makepkg --help | grep txz)" ]; then
+      EXTENSION="txz"
+   else
+      EXTENSION="tgz"
+   fi
+fi
+makepkg -p -l y -c n "$TMP"/$NAME-$ISOCODE-$VERSION-$ARCH-$BUILD.$EXTENSION &> /dev/null
+
+if [ ! -e "$TMP"/$NAME-$ISOCODE-$VERSION-$ARCH-$BUILD.$EXTENSION ]; then
+   echo "[ERROR] makepkg failed."
+   exit 1
+fi
+
+echo "- your package is saved on $TMP"
+
+echo "- make files checksum and desc"
+(cd $TMP
+ md5sum $NAME-$ISOCODE-$VERSION-$ARCH-$BUILD.$EXTENSION > $NAME-$ISOCODE-$VERSION-$ARCH-$BUILD.$EXTENSION.md5
+cat $PKG/install/slack-desc | grep "^$NAME-$ISOCODE" > $NAME-$ISOCODE-$VERSION-$ARCH-$BUILD.txt )
+
+echo "build done."
+
+# optional clean
+if [ "$1" = "--cleanup" ]; then
+   echo "Cleaning...:"
+   if [ "$TMP" != "/" ]; then
+      rm -rf "$TMP"/package-$NAME
+      rm -rf "$TMP"/$NAME-$ISOCODE-$VERSION
+      if [ "$2" = "all" ]; then
+         rm -rf "$TMP"/$TARBALL
+         if [ -e "$TMP"/$TARBALL_LANG ]; then
+            rm -rf "$TMP"/$TARBALL_LANG
+         fi
+	 if [ -e "$TMP"/$TARBALL_HELP ]; then
+            rm -rf "$TMP"/$TARBALL_HELP
+         fi
+      fi
+   fi
+   echo "clean done."
+fi
+
+echo "all done. bye ;)"
+
+exit 0
+

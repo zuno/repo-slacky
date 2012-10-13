@@ -1,5 +1,9 @@
 Sat Oct 13 05:00:38 CEST 2012
 -----------------------------
+	new file:   office/libreoffice-autobuilder-multilang/libreoffice-autobuilder-multilang/builder/libreoffice-multilang.SlackBuild
+
+Sat Oct 13 05:00:38 CEST 2012
+-----------------------------
 	new file:   libraries/live555/live555.SlackBuild
 	new file:   multimedia/gus-patches/gus-patches.SlackBuild
 
