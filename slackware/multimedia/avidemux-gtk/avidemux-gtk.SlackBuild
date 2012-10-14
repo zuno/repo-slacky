@@ -23,8 +23,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: aften, dcaenc, faac, faad2, jack-audio-connection-kit, lame, libdca, libva
-# Required: libvdpau, libvpx, opencore-amr, twolame,  x264, xvidcore
+# Required: aften, faac, faad2, jack-audio-connection-kit, lame, libva, libvpx, opencore-amr, x264, xvidcore
 #
 # Exit on most errors
 set -e
@@ -36,10 +35,10 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=avidemux
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-2.6.0}
+VERSION=${VERSION:-2.5.6}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j1}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
 SOURCE=http://garr.dl.sourceforge.net/sourceforge/avidemux/$PKGNAME'_'$VERSION.tar.gz
@@ -76,16 +75,72 @@ cd $PKGNAME'_'$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# Compiling Avidemux 2.5.x
+# The main difference is that the build is split in two parts 
+# The avidemux main application(s)
+# The plugins
+
 # Building Avidemux GTK  package
-bash ./bootStrap.bash --with-core --with-gtk --without-cli --without-qt4 --with-plugins
-( cd install
-cp -R * $PKG )
+( mkdir -p build \
+   &&  cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON 
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS \
+&& make install \
+&& make install DESTDIR=$PKG ) 
+
+
+# Building Avidemux Plugins
+( mkdir -p plugins/build \
+     &&  cd plugins/build \
+        &&   cmake .. \
+            -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+            -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+            -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+            -DAVIDEMUX_INSTALL_PREFIX=/usr \
+            -DAVIDEMUX_LIB_DIR=/usr/lib \
+            -DAVIDEMUX_SOURCE_DIR=${TMP}/avidemux'_'${VERSION} \
+            -DAVIDEMUX_CORECONFIG_DIR=${TMP}/avidemux'_'${VERSION}/build/config \
+            -DMAN_INSTALL_DIR=/usr/man \
+            -DCMAKE_BUILD_TYPE=Release 
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS \
+&& make install DESTDIR=$PKG )
 
 
 # Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-gtk-$VERSION/SlackBuild
-cp -a AUTHORS  COPYING  README *.txt $PKG/usr/doc/$PKGNAME-gtk-$VERSION
+cp -a AUTHORS  COPYING  README TODO $PKG/usr/doc/$PKGNAME-gtk-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-gtk-$VERSION/*
+
+
+# Removing CLI and QT4 parts
+rm -r $PKG/usr/share/avidemux
+rm    $PKG/usr/bin/avidemux2_cli
+rm    $PKG/usr/bin/avidemux2_qt4
+
+
+( cd $PKG
+find -iname '*qt4*'               -exec rm -f {} \;
+find -iname '*QT4*'               -exec rm -f {} \;
+find -iname '*cli*'               -exec rm -f {} \;
+find -iname '*Cli*'               -exec rm -f {} \;
+find -iname '*Qt*'                -exec rm -f {} \;
+)
 
 
 
@@ -105,16 +160,16 @@ cat avidemux_icon.png > $PKG/usr/share/pixmaps/avidemux.png
 
 cat << EOF > $PKG/usr/share/applications/avidemux2-gtk.desktop
 [Desktop Entry]
-Name=Avidemux3-Gtk
+Name=Avidemux2-Gtk
 GenericName=Video Editor GTK+
 GenericName[ca]=Editor de vídeo GTK+
 GenericName[it]=Video editor GTK+
 Comment=GTK+ multi-format, cross-platform video editor
 Comment[ca]=Per editar els vostres vídeos
 Comment[it]=Tool grafico GTK+  per la modifica dei video in sistemi GNU/Linux
-Exec=avidemux3_gtk
+Exec=avidemux2_gtk
 Icon=avidemux
-MimeType=video/mpeg;video/quicktime;video/x-msvideo;video/x-anim;audio/x-mp3;audio/x-mp2;
+MimeType=application/x-shockwave-flash;video/flv;video/mpeg;video/x-mpeg
 Terminal=0
 Type=Application
 Encoding=UTF-8

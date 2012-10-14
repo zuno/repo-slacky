@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+libkate: LibKate (Ogg Karaoke And Text Codec)
+libkate:
+libkate: Kate is a codec for karaoke and text encapsulation for Ogg. Most of
+libkate: the  time, this would  be  multiplexed  with  audio/video  to carry
+libkate: subtitles, song  lyrics (with  or  without karaoke data), etc,  but
+libkate: doesn't have to be.
+libkate:
+libkate:
+libkate:
+libkate:
+libkate:

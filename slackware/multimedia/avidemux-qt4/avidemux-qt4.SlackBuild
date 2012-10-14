@@ -23,8 +23,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: aften, dcaenc, faac, faad2, jack-audio-connection-kit, lame, libdca, libva
-# Required: libvdpau, libvpx, opencore-amr, twolame,  x264, xvidcore
+# Required: aften, faac, faad2, jack-audio-connection-kit, lame, libva, libvpx, opencore-amr, x264, xvidcore
 #
 # Exit on most errors
 set -e
@@ -37,7 +36,7 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=avidemux
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-2.6.0}
+VERSION=${VERSION:-2.5.6}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j1}
 BUILD=${BUILD:-3}
@@ -76,41 +75,72 @@ cd $PKGNAME'_'$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+
+# Compiling Avidemux 2.5.x
+# The main difference is that the build is split in two parts 
+# The avidemux main application(s)
+# The plugins
+
 # Building Avidemux QT4  package
-bash ./bootStrap.bash --with-core --without-gtk --without-cli --with-qt4 --with-plugins
-( cd install
-cp -R * $PKG )
+( mkdir -p build \
+   &&  cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DNO_GTK:BOOL=NO \
+    -DBUILD_SHARED_LIBS:BOOL=ON 
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS \
+&& make install \
+&& make install DESTDIR=$PKG ) 
+
+
+# Building Avidemux Plugins
+
+( mkdir -p plugins/build \
+     &&  cd plugins/build \
+        &&   cmake .. \
+            -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+            -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+            -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+            -DAVIDEMUX_INSTALL_PREFIX=/usr \
+            -DAVIDEMUX_LIB_DIR=/usr/lib \
+            -DAVIDEMUX_SOURCE_DIR=${TMP}/avidemux'_'${VERSION} \
+            -DAVIDEMUX_CORECONFIG_DIR=${TMP}/avidemux'_'${VERSION}/build/config \
+            -DMAN_INSTALL_DIR=/usr/man \
+            -DCMAKE_BUILD_TYPE=Release 
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS \
+&& make install DESTDIR=$PKG )
+
 
 # Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-qt4-$VERSION/SlackBuild
-cp -a AUTHORS  COPYING  README *.txt  $PKG/usr/doc/$PKGNAME-qt4-$VERSION
+cp -a AUTHORS  COPYING  README TODO $PKG/usr/doc/$PKGNAME-qt4-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-qt4-$VERSION/*
 
+# Removing CLI and GTK2+ parts
+rm    $PKG/usr/bin/avidemux2_cli
+rm    $PKG/usr/bin/avidemux2_gtk
+rm -r $PKG/usr/share/locale
 
-# Installing manpage
-install -m 644 -p -D man/avidemux.1  $PKG/usr/man/man1/avidemux.1
-
-# Installing desktop file menu and icons
-mkdir -p $PKG/usr/share/{applications,pixmaps}
-cat avidemux_icon.png > $PKG/usr/share/pixmaps/avidemux.png
-
-cat << EOF > $PKG/usr/share/applications/avidemux2-qt4.desktop
-[Desktop Entry]
-Name=Avidemux3-Qt4
-GenericName=Video Editor Qt4
-GenericName[ca]=Editor de vÃ­deo Qt4
-GenericName[it]=Video editor Qt4
-Comment=Qt4 multi-format, cross-platform video editor
-Comment[ca]=Per editar els vostres vÃ­deos
-Comment[it]=Tool grafico Qt4  per la modifica dei video in sistemi GNU/Linux
-Exec=avidemux3_qt4
-Icon=avidemux
-MimeType=video/mpeg;video/quicktime;video/x-msvideo;video/x-anim;audio/x-mp3;audio/x-mp2;
-Terminal=0
-Type=Application
-Encoding=UTF-8
-Categories=Application;AudioVideo;
-EOF
+( cd $PKG
+find -iname '*gtk*'               -exec rm -f {} \;
+find -iname '*Gtk*'               -exec rm -f {} \;
+find -iname '*cli*'               -exec rm -f {} \;
+find -iname '*Cli*'               -exec rm -f {} \;
+)
 
 
 
@@ -122,8 +152,30 @@ EOF
 )
 
 
+# Installing manpage
+install -m 644 -p -D man/avidemux.1  $PKG/usr/man/man1/avidemux.1
 
+# Installing desktop file menu and icons
+mkdir -p $PKG/usr/share/{applications,pixmaps}
+cat avidemux_icon.png > $PKG/usr/share/pixmaps/avidemux.png
 
+cat << EOF > $PKG/usr/share/applications/avidemux2-qt4.desktop
+[Desktop Entry]
+Name=Avidemux2-Qt4
+GenericName=Video Editor Qt4
+GenericName[ca]=Editor de vídeo Qt4
+GenericName[it]=Video editor Qt4
+Comment=Qt4 multi-format, cross-platform video editor
+Comment[ca]=Per editar els vostres vídeos
+Comment[it]=Tool grafico Qt4  per la modifica dei video in sistemi GNU/Linux
+Exec=avidemux2_qt4
+Icon=avidemux
+MimeType=application/x-shockwave-flash;video/flv;video/mpeg;video/x-mpeg
+Terminal=0
+Type=Application
+Encoding=UTF-8
+Categories=Application;AudioVideo;
+EOF
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -132,15 +184,6 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-qt4-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME-qt4.SlackBuild > $PKG/usr/doc/$PKGNAME-qt4-$VERSION/SlackBuild/$PKGNAME-qt4.SlackBuild
 
-
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
 
 
 # Building some post-install execution script 	

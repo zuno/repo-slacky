@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+ftgl: FTGL (OpenGL Font Libraries)
+ftgl:
+ftgl: Unlike other  OpenGL  font  libraries  FTGL  uses  standard font file
+ftgl: formats  so  doesn't  need  a  preprocessing step to convert the high
+ftgl: quality font data into a lesser quality, proprietary format.FTGL uses
+ftgl: the Freetype2 font library to open and 'decode' the fonts.
+ftgl:
+ftgl:
+ftgl:
+ftgl:
+ftgl:

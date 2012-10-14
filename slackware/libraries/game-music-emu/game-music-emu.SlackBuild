@@ -1,10 +1,9 @@
 #!/bin/sh
-# Copyright 2008 Loris Vincenzi (http://www.slacky.eu)
-# All rights reserved.
-#
 # Heavily based on the Slackware 14.0 SlackBuild
+# http://code.google.com/p/game-music-emu/
+# Packager Andrea Sciucca ( gohanz at infinito.it)
+# http://www.slacky.eu
 #
-# http://fixounet.free.fr/avidemux/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,30 +22,34 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: aften, faac, faad2, jack-audio-connection-kit, lame, libva, libvpx, opencore-amr, x264, xvidcore
 #
 # Exit on most errors
 set -e
 
 
+
+
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=avidemux
+PKGNAME=game-music-emu
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-2.5.6}
+VERSION=${VERSION:-0.5.5}
 ARCH=${ARCH:-i486}
-JOBS=${JOBS:--j1}
-BUILD=${BUILD:-3}
+JOBS=${JOBS:--j2}
+BUILD=${BUILD:-5}
 TAG=${TAG:-sl}
 
-SOURCE=http://garr.dl.sourceforge.net/sourceforge/avidemux/$PKGNAME'_'$VERSION.tar.gz
+
+SOURCE="http://game-music-emu.googlecode.com/files/$PKGNAME-$VERSION.tbz2"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME'_'$VERSION.tar.gz ]; then
+if [ ! -e $CWD/$PKGNAME-$VERSION.tbz2 ]; then
 wget -c $SOURCE
 fi
+
+
 
 
 # Set compiling FLAGS
@@ -64,26 +67,21 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvzf $CWD/$PKGNAME'_'$VERSION.tar.gz
+tar xvjf $CWD/$PKGNAME-$VERSION.tbz2
 
-echo -e "\E[0;32m+-------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Avidemux CLI |\E[0;0m"
-echo -e "\E[0;32m+-------------------------------+\E[0;0m"
+echo -e "\E[0;32m+---------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Game Music Emu |\E[0;0m"
+echo -e "\E[0;32m+---------------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd $PKGNAME'_'$VERSION
-chown -R root:root .
+cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
-# Compiling Avidemux 2.5.x
-# The main difference is that the build is split in two parts 
-# The avidemux main application(s)
-# The plugins
-
-# Building Avidemux CLI  package
+# Building Game Music Emu Package 
 ( mkdir -p build \
-   &&  cd build \
-      && cmake .. \
+  && cd build \
+     &&  cmake .. \
     -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
     -DCMAKE_BUILD_TYPE=Release \
@@ -93,54 +91,11 @@ chmod -R u+w,go+r-w,a-s .
     -DINCLUDE_INSTALL_DIR=/usr/include \
     -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
     -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DBUILD_SHARED_LIBS:BOOL=ON 
-echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
-read
-make $JOBS \
-&& make install \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make $JOBS  \
 && make install DESTDIR=$PKG ) 
 
 
-# Building Avidemux Plugins
-( mkdir -p plugins/build \
-     &&  cd plugins/build \
-        &&   cmake .. \
-            -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-            -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-            -DCMAKE_INSTALL_PREFIX=/usr \
-            -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-            -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-            -DAVIDEMUX_INSTALL_PREFIX=/usr \
-            -DAVIDEMUX_LIB_DIR=/usr/lib \
-            -DAVIDEMUX_SOURCE_DIR=${TMP}/avidemux'_'${VERSION} \
-            -DAVIDEMUX_CORECONFIG_DIR=${TMP}/avidemux'_'${VERSION}/build/config \
-            -DMAN_INSTALL_DIR=/usr/man \
-            -DCMAKE_BUILD_TYPE=Release 
-echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
-read
-make $JOBS \
-&& make install DESTDIR=$PKG )
-
-
-
-
-# Add documentation files: readme, changelog and so on
-mkdir -p $PKG/usr/doc/$PKGNAME-cli-$VERSION/SlackBuild
-cp -a AUTHORS  COPYING  README TODO $PKG/usr/doc/$PKGNAME-cli-$VERSION
-chmod 644 $PKG/usr/doc/$PKGNAME-cli-$VERSION/*
-
-# Removing Qt4 and GTK2+ parts
-rm -r $PKG/usr/share/avidemux
-rm    $PKG/usr/bin/avidemux2_gtk
-rm    $PKG/usr/bin/avidemux2_qt4
-
-( cd $PKG
-find -iname '*gtk*'            -exec rm -f {} \;
-find -iname '*qt4*'               -exec rm -f {} \;
-find -iname '*Gtk*'            -exec rm -f {} \;
-find -iname '*QT4*'               -exec rm -f {} \;
-find -iname '*Qt*'               -exec rm -f {} \;
-)
 
 
 # Strip binaries and shared objects, if present
@@ -150,16 +105,21 @@ find -iname '*Qt*'               -exec rm -f {} \;
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-# Installing manpage
-install -m 644 -p -D man/avidemux.1  $PKG/usr/man/man1/avidemux.1
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a *.txt $PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
 
 # Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-cli-$VERSION/SlackBuild/slack-desc
-cat $CWD/$PKGNAME-cli.SlackBuild > $PKG/usr/doc/$PKGNAME-cli-$VERSION/SlackBuild/$PKGNAME-cli.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
 
 
 # Compress the man pages if present
@@ -171,6 +131,9 @@ if [ -d $PKG/usr/man ]; then
 fi
 
 
+
+
+
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
@@ -178,11 +141,11 @@ if [ -x /usr/bin/requiredbuilder ];then
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-cli-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
 
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
-
 

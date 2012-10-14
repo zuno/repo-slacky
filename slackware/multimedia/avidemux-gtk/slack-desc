@@ -6,7 +6,7 @@
 # customary to leave one space after the ':'.
 
             |-----handy-ruler-----------------------------------------------------|
-avidemux-gtk: Avidemux (Free Video Editor GTK3+ GUI)
+avidemux-gtk: Avidemux (Free Video Editor GTK2+ GUI)
 avidemux-gtk: 
 avidemux-gtk: Avidemux  is  a free  video  editor designed  for  simple cutting
 avidemux-gtk: filtering and encoding tasks.It support many file types including

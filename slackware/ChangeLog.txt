@@ -1,3 +1,22 @@
+Sun Oct 14 05:01:09 CEST 2012
+-----------------------------
+	new file:   games/pingus/pingus.SlackBuild
+	new file:   libraries/ftgl/ftgl.SlackBuild
+	new file:   libraries/game-music-emu/game-music-emu.SlackBuild
+	new file:   libraries/libavc1394/libavc1394.SlackBuild
+	new file:   libraries/libkate/libkate.SlackBuild
+	new file:   libraries/libmpcdec/libmpcdec.SlackBuild
+	new file:   libraries/libmpeg2/libmpeg2.SlackBuild
+	new file:   libraries/libshout/libshout.SlackBuild
+	new file:   libraries/libtar/libtar.SlackBuild
+	new file:   libraries/libtiger/libtiger.SlackBuild
+	new file:   libraries/projectm/projectm.SlackBuild
+	new file:   libraries/sidplay2-libs/sidplay2-libs.SlackBuild
+	modified:   multimedia/avidemux-cli/avidemux-cli.SlackBuild
+	modified:   multimedia/avidemux-gtk/avidemux-gtk.SlackBuild
+	modified:   multimedia/avidemux-qt4/avidemux-qt4.SlackBuild
+	new file:   multimedia/vcdimager/vcdimager.SlackBuild
+
 Sat Oct 13 05:00:38 CEST 2012
 -----------------------------
 	new file:   office/libreoffice-autobuilder-multilang/libreoffice-autobuilder-multilang/builder/libreoffice-multilang.SlackBuild
