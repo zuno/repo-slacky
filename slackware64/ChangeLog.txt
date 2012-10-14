@@ -1,3 +1,12 @@
+Sun Oct 14 05:03:18 CEST 2012
+-----------------------------
+	new file:   graphic/dia/dia.SlackBuild
+	new file:   multimedia/gst-python/gst-python.SlackBuild
+	new file:   system/cnijfilter-mp495series/cnijfilter-mp495series.SlackBuild
+	new file:   utilities/bar/bar.SlackBuild
+	new file:   utilities/cabextract/cabextract.SlackBuild
+	new file:   utilities/portecle/portecle.SlackBuild
+
 Fri Oct 12 05:03:07 CEST 2012
 -----------------------------
 	new file:   libraries/libsigc++/libsigc++.SlackBuild
