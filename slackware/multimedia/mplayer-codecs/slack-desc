@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler--------------------------------------------|
+mplayer-codecs: Mplayer Codecs (Multimedia Codecs Pack)
+mplayer-codecs:
+mplayer-codecs: MPlayer does not need any codec. Indeed it will not use any
+mplayer-codecs: codecs installed. However  it  can  play  a great number of
+mplayer-codecs: formats. If you find that a certain movie is unsupported by
+mplayer-codecs: mplayer, than you should try to install this codec pack.
+mplayer-codecs:
+mplayer-codecs:
+mplayer-codecs:
+mplayer-codecs:
+mplayer-codecs:

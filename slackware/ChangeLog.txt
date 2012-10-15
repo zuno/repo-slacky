@@ -1,3 +1,23 @@
+Mon Oct 15 05:01:22 CEST 2012
+-----------------------------
+	new file:   development/lua/lua.SlackBuild
+	new file:   development/setuptools/setuptools.SlackBuild
+	new file:   graphic/exif/exif.SlackBuild
+	new file:   libraries/SDL_gfx/SDL_gfx.SlackBuild
+	new file:   libraries/gavl/gavl.SlackBuild
+	new file:   libraries/libquicktime/libquicktime.SlackBuild
+	new file:   libraries/libsexy/libsexy.SlackBuild
+	new file:   libraries/numpy/numpy.SlackBuild
+	new file:   libraries/protobuf/protobuf.SlackBuild
+	new file:   libraries/sexy-python/sexy-python.SlackBuild
+	new file:   multimedia/dvdauthor/dvdauthor.SlackBuild
+	new file:   multimedia/ffmpeg2theora/ffmpeg2theora.SlackBuild
+	new file:   multimedia/ffmpegthumbnailer/ffmpegthumbnailer.SlackBuild
+	new file:   multimedia/gst-ffmpeg/gst-ffmpeg.SlackBuild
+	new file:   multimedia/mjpegtools/mjpegtools.SlackBuild
+	new file:   multimedia/mplayer-codecs/mplayer-codecs.SlackBuild
+	new file:   multimedia/vlc/vlc.SlackBuild
+
 Sun Oct 14 05:01:09 CEST 2012
 -----------------------------
 	new file:   games/pingus/pingus.SlackBuild

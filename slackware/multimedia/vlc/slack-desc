@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+vlc: VLC (VideoLAN Client Multimedia Player)
+vlc:
+vlc: For various audio and video  formats (MPEG-1, MPEG-2, MPEG-4, DivX
+vlc: mp3, ogg, ...)  as  well  as  DVDs,  VCDs,  and  various streaming
+vlc: protocols. It can also be used as a server to stream in unicast or
+vlc: multicast in IPv4 or IPv6 on a high-bandwidth network.
+vlc:
+vlc:
+vlc:
+vlc:
+vlc:

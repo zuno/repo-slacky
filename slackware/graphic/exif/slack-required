@@ -1,0 +1,3 @@
+glibc-solibs >= 2.15-i486-7
+libexif >= 0.6.21-i486-1
+popt >= 1.7-i486-3
