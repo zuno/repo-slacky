@@ -2,11 +2,11 @@
 
 # Heavily based on the Slackware 14.0 SlackBuild
 
-# Written by Matteo Rossini ( zerouno @ slacky.it )
-# Last Build from Matteo Rossini ( zerouno @ slacky.it )
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from Matteo Rossini ( zerouno @ slacky.it )
 
-# Slackware build script for 'centerim'
-# Official Site: http://www.centerim.org/
+# Slackware build script for libnice
+# Official Site: http://nice.freedesktop.org
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -25,22 +25,19 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# require: libsigc++-2.0
-
 set -e
 
 
-
 # Basic information. 
-PKGNAME=centerim
-#VERSION=${VERSION:-5b2} # auto. see below
-BUILD=${BUILD:-2}
+PKGNAME=libnice
+VERSION=${VERSION:-0.1.3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="git+ssh://mob@repo.or.cz/srv/git/centerim5.git"
+SOURCE="http://nice.freedesktop.org/releases/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
-DIR=centerim5      # empty = auto
-DOCS="ABOUT-NLS ChangeLog INSTALL NEWS TODO AUTHORS COPYING HACKING README"
+DIR=      # empty = auto
+DOCS="AUTHORS COPYING COPYING.LGPL COPYING.MPL ChangeLog INSTALL NEWS README TODO"
 SLKFILES=""
 
 # If EULA
@@ -63,6 +60,10 @@ OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
 DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -83,16 +84,15 @@ fi
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-git clone -b mob $SOURCE
+tar xvf $CWD/$TAR
 cd $DIR
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
 # Customize as you need
-./bootstrap
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-VERSION=$(./configure -V|head -1|grep -o " 5.*"|sed -e 's/-/./g' -e 's/ //g')
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib$LIBDIRSUFFIX \
@@ -101,10 +101,8 @@ VERSION=$(./configure -V|head -1|grep -o " 5.*"|sed -e 's/-/./g' -e 's/ //g')
   --localstatedir=/var \
   --mandir=/usr/man \
   --build=$CHOST-slackware-linux
-make
+make $JOBS
 make install DESTDIR=$PKG
-
-## Do special operations
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

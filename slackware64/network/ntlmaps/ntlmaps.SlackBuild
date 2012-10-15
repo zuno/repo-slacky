@@ -3,10 +3,11 @@
 # Heavily based on the Slackware 14.0 SlackBuild
 
 # Written by Matteo Rossini ( zerouno @ slacky.it )
-# Last Build from Matteo Rossini ( zerouno @ slacky.it )
+# Last build from Matteo Rossini ( zerouno @ slacky.it )
 
-# Slackware build script for 'centerim'
-# Official Site: http://www.centerim.org/
+# Slackware build script for 'ntlmaps'
+# Official Site: http://ntlmaps.sourceforge.net/
+
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -25,23 +26,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# require: libsigc++-2.0
-
 set -e
 
 
-
 # Basic information. 
-PKGNAME=centerim
-#VERSION=${VERSION:-5b2} # auto. see below
-BUILD=${BUILD:-2}
+PKGNAME=ntlmaps
+VERSION=${VERSION:-1.0}
+BUILD=${BUILD:-4}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="git+ssh://mob@repo.or.cz/srv/git/centerim5.git"
-TAR=      # empty = auto
-DIR=centerim5      # empty = auto
-DOCS="ABOUT-NLS ChangeLog INSTALL NEWS TODO AUTHORS COPYING HACKING README"
-SLKFILES=""
+SOURCE=http://ntlmaps.svn.sourceforge.net/viewvc/ntlmaps/trunk.tar.gz
+TAR=${PKGNAME}-$VERSION.tar.gz      # empty = auto
+DIR=trunk      # empty = auto
+DOCS="COPYING doc/"
+SLKFILES="config.diff logdir.diff rc.ntlmaps"
+
 
 # If EULA
 if [ -e EULA.TXT ];then
@@ -61,7 +60,11 @@ TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
 
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
@@ -83,28 +86,25 @@ fi
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-git clone -b mob $SOURCE
+tar xvf $CWD/$TAR
 cd $DIR
+
+patch -p0 < $CWD/config.diff
+patch -p0 < $CWD/logdir.diff
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
 # Customize as you need
-./bootstrap
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-VERSION=$(./configure -V|head -1|grep -o " 5.*"|sed -e 's/-/./g' -e 's/ //g')
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX \
-  --sysconfdir=/etc \
-  --docdir=/usr/doc/$PKGNAME-$VERSION \
-  --localstatedir=/var \
-  --mandir=/usr/man \
-  --build=$CHOST-slackware-linux
-make
-make install DESTDIR=$PKG
+python packaging/setup.py build
+python packaging/setup.py install -O1 --skip-build --root $PKG
 
 ## Do special operations
+mkdir -p $PKG/var/log/ntlmaps/debug
+cat $CWD/rc.ntlmaps > $PKG/etc/rc.d/rc.ntlmaps.new
+mv $PKG/etc/ntlmaps/server.cfg $PKG/etc/ntlmaps/server.cfg.new
+rm -r $PKG/etc/rc.d/init.d/
+
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

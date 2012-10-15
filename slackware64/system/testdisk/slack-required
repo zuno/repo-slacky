@@ -1,0 +1,8 @@
+e2fsprogs >= 1.42.6-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+libewf >= 20120813-x86_64-1sl
+libjpeg >= v8a-x86_64-1
+ncurses >= 5.9-x86_64-1
+ntfs-3g >= 2012.1.15-x86_64-2
+util-linux >= 2.21.2-x86_64-5
+zlib >= 1.2.6-x86_64-1

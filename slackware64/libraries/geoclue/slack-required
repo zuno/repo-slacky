@@ -1,0 +1,17 @@
+NetworkManager >= 0.9.4.0-x86_64-2
+dbus >= 1.4.20-x86_64-3
+dbus-glib >= 0.98-x86_64-1
+glib2 >= 2.32.4-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+libffi >= 3.0.11-x86_64-1
+libgcrypt >= 1.5.0-x86_64-1
+libgnome-keyring >= 3.4.1-x86_64-1
+libgpg-error >= 1.10-x86_64-1
+libsoup >= 2.38.1-x86_64-2
+libxml2 >= 2.8.0-x86_64-1
+mozilla-nss >= 3.13.5-x86_64-3
+sqlite >= 3.7.13-x86_64-1
+udev >= 182-x86_64-5
+util-linux >= 2.21.2-x86_64-5
+xz >= 5.0.4-x86_64-1
+zlib >= 1.2.6-x86_64-1

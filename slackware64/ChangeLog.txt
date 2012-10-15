@@ -1,3 +1,27 @@
+Mon Oct 15 05:04:46 CEST 2012
+-----------------------------
+	new file:   development/vala/vala.SlackBuild
+	new file:   libraries/farsight2/farsight2.SlackBuild
+	new file:   libraries/geoclue/geoclue.SlackBuild
+	new file:   libraries/gssdp/gssdp.SlackBuild
+	new file:   libraries/gupnp-igd/gupnp-igd.SlackBuild
+	new file:   libraries/gupnp/gupnp.SlackBuild
+	new file:   libraries/libevent/libevent.SlackBuild
+	new file:   libraries/libewf/libewf.SlackBuild
+	new file:   libraries/libnice/libnice.SlackBuild
+	new file:   libraries/tls/tls.SlackBuild
+	new file:   network/amsn/amsn.SlackBuild
+	modified:   network/centerim/centerim.SlackBuild
+	new file:   network/corkscrew/corkscrew.SlackBuild
+	new file:   network/ntlmaps/ntlmaps.SlackBuild
+	new file:   network/qupzilla/qupzilla.SlackBuild
+	new file:   network/socat/socat.SlackBuild
+	new file:   network/ssldump/ssldump.SlackBuild
+	new file:   office/moos-project-viewer/moos-project-viewer.SlackBuild
+	new file:   system/sshfs-fuse/sshfs-fuse.SlackBuild
+	new file:   system/testdisk/testdisk.SlackBuild
+	new file:   utilities/xclip/xclip.SlackBuild
+
 Sun Oct 14 05:03:18 CEST 2012
 -----------------------------
 	new file:   graphic/dia/dia.SlackBuild

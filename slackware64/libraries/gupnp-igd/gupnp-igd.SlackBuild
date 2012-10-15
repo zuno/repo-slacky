@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# Heavily based on the Slackware 14.0 SlackBuild
+# Heavily based on the Slackware 14.0 SlackBuild (v1)
 
-# Written by Matteo Rossini ( zerouno @ slacky.it )
-# Last Build from Matteo Rossini ( zerouno @ slacky.it )
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from Matteo Rossini ( zerouno @ slacky.it )
 
-# Slackware build script for 'centerim'
-# Official Site: http://www.centerim.org/
+# Slackware build script for gupnp-igd
+# Official Site: http://www.gupnp.org
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -25,22 +25,20 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# require: libsigc++-2.0
-
 set -e
 
 
-
 # Basic information. 
-PKGNAME=centerim
-#VERSION=${VERSION:-5b2} # auto. see below
-BUILD=${BUILD:-2}
+PKGNAME=gupnp-igd
+VERSION=${VERSION:-0.2.1}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="git+ssh://mob@repo.or.cz/srv/git/centerim5.git"
-TAR=      # empty = auto
-DIR=centerim5      # empty = auto
-DOCS="ABOUT-NLS ChangeLog INSTALL NEWS TODO AUTHORS COPYING HACKING README"
+#SOURCE="http://www.gupnp.org/sites/all/files/sources/$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://repository.timesys.com/buildsources/g/$PKGNAME/$PKGNAME-$VERSION/$PKGNAME-$VERSION.tar.gz"
+TAR=                       # empty = auto
+DIR=                       # empty = auto
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO"
 SLKFILES=""
 
 # If EULA
@@ -63,6 +61,10 @@ OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
 DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -83,16 +85,18 @@ fi
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-git clone -b mob $SOURCE
+tar xvf $CWD/$TAR
 cd $DIR
+
+# patch -p1 < $CWD/some_patch.diff
+# zcat $CWD/compressed_patch.diff.gz |patch -p1
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
 # Customize as you need
-./bootstrap
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-VERSION=$(./configure -V|head -1|grep -o " 5.*"|sed -e 's/-/./g' -e 's/ //g')
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib$LIBDIRSUFFIX \
@@ -101,12 +105,10 @@ VERSION=$(./configure -V|head -1|grep -o " 5.*"|sed -e 's/-/./g' -e 's/ //g')
   --localstatedir=/var \
   --mandir=/usr/man \
   --build=$CHOST-slackware-linux
-make
+make $JOBS || make
 make install DESTDIR=$PKG
 
-## Do special operations
-
-# Documentations
+## Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
@@ -115,6 +117,7 @@ cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
+
 
 if [ -d $PKG/usr/man ]; then
     ( cd $PKG/usr/man
