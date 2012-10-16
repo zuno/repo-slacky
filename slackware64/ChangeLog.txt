@@ -1,3 +1,9 @@
+Tue Oct 16 05:03:37 CEST 2012
+-----------------------------
+	new file:   libraries/a52dec/a52dec.SlackBuild
+	new file:   libraries/webkitgtk/webkitgtk.SlackBuild
+	new file:   network/sylpheed/sylpheed.SlackBuild
+
 Mon Oct 15 05:04:46 CEST 2012
 -----------------------------
 	new file:   development/vala/vala.SlackBuild
