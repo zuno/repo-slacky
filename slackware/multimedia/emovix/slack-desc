@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+emovix: eMoviX (Tiny Live Distro)
+emovix:
+emovix: eMoviX is a tiny Linux CD distribution containing all  the  software to
+emovix: boot from a CD and play automatically every video file localized in the
+emovix: CD root. Supported formats are  all formats supported  by MPlayer, most
+emovix: noticeably DivX & XviD  but  more in general most AVI,  MPEG, QuickTime
+emovix: WMV, ASF, FLI and a few others.
+emovix:
+emovix:
+emovix:
+emovix:

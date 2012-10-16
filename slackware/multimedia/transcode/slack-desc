@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler----------------------------------------------------|
+transcode: Transcode (GNU/Linux Video Stream Processing)
+transcode:
+transcode: Transcode  is  a  linux  text-console   utility  for  video  stream
+transcode: processing,running on a platform that supports shared libraries and
+transcode: threads. Decoding and encoding is done by loading  modules that are
+transcode: responsible  for  feeding  transcode  with  raw video/audio streams
+transcode: (import modules) and encoding the frames (export modules).
+transcode:
+transcode:
+transcode:
+transcode:

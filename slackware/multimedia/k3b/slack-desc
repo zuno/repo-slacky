@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler--------------------------------------------------------|
+k3b: K3b (KDE4 CD/DVD/Blu-Ray Creator)
+k3b:
+k3b: K3b is a full-featured CD/DVD/Blu-Ray burning and ripping application
+k3b: It supports a variety of project  types as well as copying of optical
+k3b: media, burning if different types  of  images, and ripping  Audio CDs
+k3b: Video CDs, and Video DVDs. Its convenient user interface is targetted
+k3b: at all audiences, trying to be as simple as possible for novice users
+k3b: while also providing all features and advanced user might need.
+k3b:
+k3b:
+k3b:

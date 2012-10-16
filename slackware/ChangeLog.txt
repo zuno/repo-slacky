@@ -1,3 +1,23 @@
+Tue Oct 16 05:01:15 CEST 2012
+-----------------------------
+	new file:   graphic/dia/dia.SlackBuild
+	new file:   libraries/compface/compface.SlackBuild
+	new file:   libraries/libEMF/libEMF.SlackBuild
+	new file:   libraries/libetpan/libetpan.SlackBuild
+	new file:   libraries/libgdata/libgdata.SlackBuild
+	new file:   libraries/liboauth/liboauth.SlackBuild
+	new file:   libraries/vlc-qt/vlc-qt.SlackBuild
+	new file:   multimedia/emovix/emovix.SlackBuild
+	new file:   multimedia/k3b/k3b.SlackBuild
+	new file:   multimedia/tano/tano.SlackBuild
+	new file:   multimedia/transcode/transcode.SlackBuild
+	new file:   multimedia/vlc-append/vlc-append.SlackBuild
+	new file:   network/claws-mail-themes/claws-mail-themes.SlackBuild
+	new file:   network/claws-mail/claws-mail.SlackBuild
+	new file:   office/kbibtex/kbibtex.SlackBuild
+	new file:   system/p7zip/p7zip.SlackBuild
+	new file:   system/unrar/unrar.SlackBuild
+
 Mon Oct 15 05:01:22 CEST 2012
 -----------------------------
 	new file:   development/lua/lua.SlackBuild

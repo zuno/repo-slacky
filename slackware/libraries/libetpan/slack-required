@@ -1,0 +1,11 @@
+curl >= 7.27.0-i486-2
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+cyrus-sasl >= 2.1.23-i486-4
+db48 >= 4.8.30-i486-2
+expat >= 2.0.1-i486-2
+gcc >= 4.7.1-i486-1
+glibc-solibs >= 2.15-i486-7
+libidn >= 1.25-i486-2
+openldap-client >= 2.4.31-i486-2
+openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+zlib >= 1.2.6-i486-1

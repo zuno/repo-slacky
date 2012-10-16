@@ -1,0 +1,156 @@
+#!/bin/sh
+ 
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Loris Vincenzi (http://www.slacky.eu)
+# Last build from Loris Vincenzi (http://www.slacky.eu)
+# 
+# Slackware build script for p7zip
+# Official Site: http://p7zip.sourceforge.net
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Require:
+
+set -e
+
+PKGNAME=p7zip
+VERSION=${VERSION:-9.20.1}
+BUILD=${BUILD:-2}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+SOURCE="http://downloads.sourceforge.net/project/p7zip/$PKGNAME/$VERSION/${PKGNAME}_${VERSION}_src_all.tar.bz2"
+TAR=
+DIR=${PKGNAME}_${VERSION}
+DOCS="ChangeLog DOCS/* README TODO"
+SLKFILES=""
+
+JOBS=${JOBS:--j2}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+ 
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
+fi
+
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+tar xvf $CWD/$TAR
+cd $DIR
+ 
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+case $CHOST in
+    x86_64)
+    cp -f makefile.linux_amd64 makefile.machine
+    ;;
+    
+    s390)
+    cp -f makefile.linux_s390x makefile.machine
+    ;;
+
+    i?86)
+    cp -f makefile.linux_x86_asm_gcc_4.X makefile.machine
+    ;;
+esac
+
+sed -i "s|^OPTFLAGS=.*|OPTFLAGS=$SLKCFLAGS |g" makefile.machine
+
+make all3
+
+sed -i "s|DEST_HOME=.*|DEST_HOME=$PKG/usr|g" install.sh
+
+./install.sh
+
+mkdir -p $PKG/usr/lib/p7zip/
+cp bin/7z.so $PKG/usr/lib/p7zip/
+chmod 555 $PKG/usr/lib/p7zip/7z.so
+mkdir -p $PKG/usr/share/mc/extfs/
+cp contrib/VirtualFileSystemForMidnightCommander/u7z $PKG/usr/share/mc/extfs/
+chmod 644 $PKG/usr/share/mc/extfs/u7z
+
+sed -i "s|$PKG/usr|/usr|g" $PKG/usr/bin/7z
+sed -i "s|$PKG/usr|/usr|g" $PKG/usr/bin/7za
+sed -i "s|$PKG/usr|/usr|g" $PKG/usr/bin/7zr
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+rm -rf $PKG/usr/share/doc/
+
+sed -i "s|$PKG/usr/share/doc/p7zip/DOCS|/usr/doc/$NAME-$VERSION|g" $PKG/usr/man/man1/7z.1
+sed -i "s|$PKG/usr/share/doc/p7zip/DOCS|/usr/doc/$NAME-$VERSION|g" $PKG/usr/man/man1/7za.1
+sed -i "s|$PKG/usr/share/doc/p7zip/DOCS|/usr/doc/$NAME-$VERSION|g" $PKG/usr/man/man1/7zr.1
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+chown -R root:root $PKG
+ 
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+fi
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+ 
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP
+fi

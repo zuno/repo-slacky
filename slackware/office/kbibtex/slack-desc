@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+kbibtex: KBibTeX (KDE4 BibTeX Editor)
+kbibtex:
+kbibtex: KBibTeX is  a BibTeX editor for KDE to  edit  bibliographies used with
+kbibtex: LaTeX. Features include  comfortable input masks, starting web queries
+kbibtex: (e. g. Google  Scholar or BibSonomy) and  exporting to PDF, PostScript
+kbibtex: RTF and XML/HTML. As KBibTeX is using KDE's KParts technology, KBibTeX
+kbibtex: can be embedded into Kile or Konqueror. 
+kbibtex:
+kbibtex:
+kbibtex:
+kbibtex:
