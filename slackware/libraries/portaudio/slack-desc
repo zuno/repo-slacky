@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler----------------------------------------------------|
+portaudio: PortAudio (Cross Platform Audio I/O Library)
+portaudio:
+portaudio: PortAudio provides a very simple API for recording and/or playing
+portaudio: sound  using a  simple  callback  function.  Example programs are
+portaudio: included that synthesize sine waves and pink noise, perform  fuzz
+portaudio: distortion on a guitar, list available audio devices, etc.
+portaudio:
+portaudio:
+portaudio:
+portaudio:
+portaudio:

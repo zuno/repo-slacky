@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+           |-----handy-ruler--------------------------------------------------|
+komparator4: Komparator4 (KDE4 Directories Synchronizer)
+komparator4:
+komparator4: Komparator is an application that searches and synchronizes  two
+komparator4: directories. It discovers duplicate, newer or  missing files and
+komparator4: empty folders. It works on local and network / kioslave protocol
+komparator4: folders (like smb:/, ftp://, media:/)
+komparator4:
+komparator4:
+komparator4:
+komparator4:
+komparator4:

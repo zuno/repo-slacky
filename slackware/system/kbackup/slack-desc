@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler-------------------------------------------------------|
+kbackup: KBackup (KDE4 Backup Utility)
+kbackup:
+kbackup: KBackup is a program that  lets  you  back up any directories or files
+kbackup: whereby it  uses an easy to use directory tree to select the things to
+kbackup: back up. The program was designed to be very simple in its use so that
+kbackup: it can be used by non-computer experts. The storage format is the well
+kbackup: known  TAR format, whereby  the  data  is  still  stored in compressed
+kbackup: format (bzip2 or gzip).
+kbackup:
+kbackup:
+kbackup:

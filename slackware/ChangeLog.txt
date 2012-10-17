@@ -1,3 +1,19 @@
+Wed Oct 17 05:00:35 CEST 2012
+-----------------------------
+	new file:   database/postgresql/postgresql.SlackBuild
+	new file:   libraries/geoclue/geoclue.SlackBuild
+	new file:   libraries/libmusicbrainz2/libmusicbrainz2.SlackBuild
+	new file:   libraries/libmusicbrainz3/libmusicbrainz3.SlackBuild
+	new file:   libraries/onig/onig.SlackBuild
+	new file:   libraries/portaudio/portaudio.SlackBuild
+	new file:   libraries/pyxdg/pyxdg.SlackBuild
+	new file:   multimedia/espeak/espeak.SlackBuild
+	new file:   multimedia/gespeaker/gespeaker.SlackBuild
+	new file:   multimedia/mbrola/mbrola.SlackBuild
+	new file:   network/sylpheed/sylpheed.SlackBuild
+	new file:   system/kbackup/kbackup.SlackBuild
+	new file:   utilities/komparator4/komparator4.SlackBuild
+
 Tue Oct 16 05:01:15 CEST 2012
 -----------------------------
 	new file:   graphic/dia/dia.SlackBuild

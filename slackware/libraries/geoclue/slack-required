@@ -1,0 +1,16 @@
+NetworkManager >= 0.9.4.0-i486-2
+dbus >= 1.4.20-i486-3
+dbus-glib >= 0.98-i486-1
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+libffi >= 3.0.11-i486-1
+libgcrypt >= 1.5.0-i486-1
+libgnome-keyring >= 3.4.1-i486-1
+libgpg-error >= 1.10-i486-1
+libsoup >= 2.38.1-i486-2
+libxml2 >= 2.8.0-i486-1
+sqlite >= 3.7.13-i486-1
+udev >= 182-i486-5
+util-linux >= 2.21.2-i486-5
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1
