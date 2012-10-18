@@ -1,3 +1,15 @@
+Thu Oct 18 05:00:38 CEST 2012
+-----------------------------
+	new file:   development/vala/vala.SlackBuild
+	new file:   libraries/gnome-mime-data/gnome-mime-data.SlackBuild
+	new file:   libraries/gsl/gsl.SlackBuild
+	new file:   libraries/imlib2/imlib2.SlackBuild
+	new file:   multimedia/RealPlayer/RealPlayer.SlackBuild
+	new file:   multimedia/recordmydesktop/recordmydesktop.SlackBuild
+	new file:   network/krb5/krb5.SlackBuild
+	new file:   network/webkitgtk/webkitgtk.SlackBuild
+	new file:   utilities/cabextract/cabextract.SlackBuild
+
 Wed Oct 17 05:00:35 CEST 2012
 -----------------------------
 	new file:   database/postgresql/postgresql.SlackBuild

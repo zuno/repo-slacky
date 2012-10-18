@@ -1,0 +1,5 @@
+cyrus-sasl >= 2.1.23-i486-4
+glibc-solibs >= 2.15-i486-7
+keyutils >= 1.5.5-i486-1
+openldap-client >= 2.4.31-i486-2
+openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3

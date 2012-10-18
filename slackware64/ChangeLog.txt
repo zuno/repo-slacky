@@ -1,3 +1,13 @@
+Thu Oct 18 05:02:14 CEST 2012
+-----------------------------
+	new file:   libraries/id3lib/id3lib.SlackBuild
+	new file:   libraries/libunique/libunique.SlackBuild
+	new file:   libraries/mp4v2/mp4v2.SlackBuild
+	new file:   multimedia/dirac/dirac.SlackBuild
+	new file:   multimedia/faac/faac.SlackBuild
+	new file:   multimedia/faad2/faad2.SlackBuild
+	new file:   network/midori/midori.SlackBuild
+
 Tue Oct 16 05:03:37 CEST 2012
 -----------------------------
 	new file:   libraries/a52dec/a52dec.SlackBuild

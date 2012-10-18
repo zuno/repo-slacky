@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+dirac: Dirac (General Purpose Video Codec)
+dirac:
+dirac: Dirac is a general-purpose video codec aimed at resolutions from QCIF
+dirac: (176x144)  t o  HDTV (1920x1080) progressive  or interlaced. It  uses
+dirac: wavelets, motion  compensation  and arithmetic  coding and aims to be
+dirac: competitive with other state of the art codecs.
+dirac:
+dirac:
+dirac:
+dirac:
+dirac:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler----------------------------------------------------|
+krb5: Kerberos (Network Authentication Protocol)
+krb5:
+krb5: Kerberos was created  by MIT as a solution to these network security
+krb5: problems. The Kerberos  protocol  uses strong cryptography so that a
+krb5: client can prove its identity to a server (and vice versa) across an
+krb5: insecure  network connection. After  a  client  and server  has used
+krb5: Kerberos to prove their identity, they can also encrypt all of their
+krb5: communications to assure privacy and data integrity.
+krb5: 
+krb5:
+krb5:
