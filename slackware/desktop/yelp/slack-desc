@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler----------------------------------------------------|
+yelp: Yelp (GNOME Help Browser)
+yelp:
+yelp: Yelp is the help viewer in Gnome. It's what happens when you hit F1
+yelp: Together with gnome-doc-utils, Yelp  serves  as a DocBook viewer, a
+yelp: man page viewer, and an info  page  viewer. This  page  serves as a
+yelp: development workspace for Yelp and gnome-doc-utils. For the content
+yelp: that goes into Yelp, see the GNOME DocumentationProject.
+yelp:
+yelp:
+yelp:
+yelp:

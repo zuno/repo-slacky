@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+            |-----handy-ruler--------------------------------------------------|
+quadkonsole4: QuadKonsole4 (KDE4 Grid Layout Konsole)
+quadkonsole4:
+quadkonsole4: QuadKonsole is a program which embeds 4 Konsoles (other numbers
+quadkonsole4: can be specified   on  the  command-line). This  way  you  save
+quadkonsole4: screen  real estate, you don't  have  to  worry  about  careful
+quadkonsole4: placement and the startup time is faster than starting up 4
+quadkonsole4: separate Konsoles.
+quadkonsole4:
+quadkonsole4:
+quadkonsole4:
+quadkonsole4:

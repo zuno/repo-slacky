@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Exec=celestia
+Icon=celestia
+Terminal=false
+Name=Celestia
+GenericName=Space Simulator
+GenericName[it]=Simulatore Spaziale
+Comment=The free space 3D interactive simulation 
+Comment[it]=Il simulatore spaziale 3D interattivo
+StartupNotify=true
+Categories=Qt;KDE;Education;Science;Astronomy;

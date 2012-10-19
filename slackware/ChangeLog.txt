@@ -1,5 +1,27 @@
 Thu Oct 18 05:00:38 CEST 2012
 -----------------------------
+	new file:   desktop/yelp/yelp.SlackBuild
+	new file:   libraries/gtkglext/gtkglext.SlackBuild
+	new file:   libraries/libsidplay/libsidplay.SlackBuild
+	new file:   libraries/libunique/libunique.SlackBuild
+	new file:   libraries/pygtksourceview/pygtksourceview.SlackBuild
+	new file:   libraries/pywebkitgtk/pywebkitgtk.SlackBuild
+	new file:   libraries/rarian/rarian.SlackBuild
+	new file:   multimedia/bangarang/bangarang.SlackBuild
+	new file:   multimedia/gst-plugins-ugly/gst-plugins-ugly.SlackBuild
+	new file:   multimedia/gst-python/gst-python.SlackBuild
+	new file:   multimedia/soundkonverter/soundkonverter.SlackBuild
+	new file:   multimedia/xnoise/xnoise.SlackBuild
+	new file:   network/midori/midori.SlackBuild
+	new file:   scientific/celestia/celestia.SlackBuild
+	new file:   system/gparted/gparted.SlackBuild
+	new file:   system/quadkonsole4/quadkonsole4.SlackBuild
+	modified:   system/wine/wine.SlackBuild
+	modified:   system/wine_gecko/wine_gecko.SlackBuild
+	new file:   utilities/cherrytree/cherrytree.SlackBuild
+
+Thu Oct 18 05:00:38 CEST 2012
+-----------------------------
 	new file:   development/vala/vala.SlackBuild
 	new file:   libraries/gnome-mime-data/gnome-mime-data.SlackBuild
 	new file:   libraries/gsl/gsl.SlackBuild
