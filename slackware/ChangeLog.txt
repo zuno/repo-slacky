@@ -1,3 +1,12 @@
+Sat Oct 20 05:00:51 CEST 2012
+-----------------------------
+	new file:   libraries/gdome2/gdome2.SlackBuild
+	new file:   libraries/gmetadom/gmetadom.SlackBuild
+	new file:   libraries/gtksourceview2/gtksourceview2.SlackBuild
+	new file:   network/webkitgtk3/webkitgtk3.SlackBuild
+	new file:   office/aiksaurus/aiksaurus.SlackBuild
+	new file:   office/goffice8/goffice8.SlackBuild
+
 Thu Oct 18 05:00:38 CEST 2012
 -----------------------------
 	new file:   desktop/yelp/yelp.SlackBuild

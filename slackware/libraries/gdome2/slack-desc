@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+gdome2: Gdome2 (GNOME DOM Engine)
+gdome2:
+gdome2: Gdome2, aka libgdome, is the DOM C library  developed for  the Gnome
+gdome2: project (it can also be used stand-alone). The Document Object Model
+gdome2: is a platform and  language-neutral interface that lets programs and
+gdome2: scripts dynamically  access and update  the  content, structure  and
+gdome2: style of documents.
+gdome2:
+gdome2:
+gdome2:
+gdome2:

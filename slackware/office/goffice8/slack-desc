@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler----------------------------------------------------|
+goffice8: Goffice (GNOME Document-Centric Objects)
+goffice8:
+goffice8: GOffice is a library of document-centric objects and utilities
+goffice8: building on top of GLib  and Gtk+ and used by software such as
+goffice8: Gnumeric.
+goffice8:
+goffice8:
+goffice8:
+goffice8:
+goffice8:
+goffice8:
