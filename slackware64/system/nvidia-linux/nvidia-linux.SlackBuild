@@ -25,16 +25,17 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Require: libvdpau >= 0.5 | nvidia-vdpau >= 304.*
+
 set -e
 
 
 # Basic information. 
 PKGNAME=nvidia-linux
-VERSION=${VERSION:-304.51}
+VERSION=${VERSION:-304.60}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-COMPAT32=${COMPAT32:-no} # no / yes
 MODPREBUILD=${MODPREBUILD:-yes} # no / yes
 NARCH=x86
 if [ $ARCH == "x86_64" ];then NARCH=x86_64;fi 
@@ -42,7 +43,7 @@ SOURCE="http://it.download.nvidia.com/XFree86/Linux-$ARCH/$VERSION/NVIDIA-Linux-
 TAR=NVIDIA-Linux-$NARCH-$VERSION.run      # empty = auto
 DIR=NVIDIA-Linux-$NARCH-$VERSION      # empty = auto
 DOCS="html README.txt LICENSE NVIDIA_Changelog"
-SLKFILES="mms.cfg nvidia-xorg.conf NVIDIA.Slackware makekernelmodule.sh nvidia-modprobe.conf"
+SLKFILES="nvidia-xorg.conf NVIDIA.Slackware makekernelmodule.sh nvidia-modprobe.conf"
 
 # If EULA
 if [ -e EULA.TXT ];then
@@ -102,20 +103,41 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 # Base
 
-mkdir -p $PKG/etc/OpenCL/vendors $PKG/etc/modprobe.d $PKG/etc/X11/xorg.conf.d $PKG/usr/bin $PKG/usr/share/$PKGNAME $PKG/usr/share/applications $PKG/etc/adobe
+mkdir -p $PKG/etc/OpenCL/vendors $PKG/etc/modprobe.d $PKG/etc/X11/xorg.conf.d $PKG/usr/bin $PKG/usr/share/$PKGNAME $PKG/usr/share/applications
 install -m 644 nvidia.icd $PKG/etc/OpenCL/vendors
 install -m 644 $CWD/nvidia-modprobe.conf $PKG/etc/modprobe.d/nvidia.conf.new
 install -m 644 $CWD/nvidia-xorg.conf $PKG/etc/X11/xorg.conf.d/nvidia.conf.new
 install -m 755 nvidia-settings nvidia-smi nvidia-xconfig nvidia-debugdump $PKG/usr/bin
 install -m 755 $CWD/makekernelmodule.sh $PKG/usr/share/$PKGNAME/makekernelmodule.sh
 install -m 644 nvidia-settings.png $PKG/usr/share/$PKGNAME
-install -m 644 $CWD/mms.cfg $PKG/etc/adobe/mms.cfg-nvidia
 cp -a kernel $PKG/usr/share/$PKGNAME
 cat nvidia-settings.desktop |sed -e 's,__UTILS_PATH__,/usr/bin,' -e "s,__PIXMAP_PATH__,/usr/share/$PKGNAME," > $PKG/usr/share/applications/nvidia-settings.desktop
 
 # Install Libraries
 
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/{vdpau,tls}
+# NVIDIA libvdpau DISABLED
+# INSTALL AN EXTERNAL VERSION INSTEAD (PREFERIBLE >= 0.5)
+#mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
+#
+#install -m 755 \
+#    libvdpau.so.$VERSION \
+#  $PKG/usr/lib${LIBDIRSUFFIX}
+#  cd $PKG/usr/lib${LIBDIRSUFFIX}
+#    ln -sf libvdpau.so.$VERSION libvdpau.so.1
+#    ln -sf libvdpau.so.1 libvdpau.so
+#    ln -sf vdpau/libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so
+#    ln -sf vdpau/libvdpau_trace.so.$VERSION libvdpau_trace.so
+#  cd -
+#install -m 755 \
+#    libvdpau_nvidia.so.$VERSION \
+#    libvdpau_trace.so.$VERSION \
+#  $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
+#  cd $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
+#    ln -sf libvdpau_nvidia.so.1 libvdpau_nvidia.so
+#    ln -sf libvdpau_trace.so.1 libvdpau_trace.so
+#  cd -
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/tls
 
 install -m 755 \
     libGL.so.$VERSION \
@@ -129,8 +151,8 @@ install -m 755 \
     libnvidia-glcore.so.$VERSION \
     libnvidia-ml.so.$VERSION \
     libnvidia-tls.so.$VERSION \
-    libvdpau.so.$VERSION \
   $PKG/usr/lib${LIBDIRSUFFIX}
+
   cd $PKG/usr/lib${LIBDIRSUFFIX}
     ln -sf libGL.so.$VERSION libGL.so.1
     ln -sf libGL.so.1 libGL.so
@@ -147,21 +169,9 @@ install -m 755 \
     ln -sf libnvidia-cfg.so.1 libnvidia-cfg.so
     ln -sf libnvidia-ml.so.$VERSION libnvidia-ml.so.1
     ln -sf libnvidia-ml.so.1 libnvidia-ml.so
-    ln -sf libvdpau.so.$VERSION libvdpau.so.1
-    ln -sf libvdpau.so.1 libvdpau.so
-    ln -sf vdpau/libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so
-    ln -sf vdpau/libvdpau_trace.so.$VERSION libvdpau_trace.so
   cd -
 
 
-install -m 755 \
-    libvdpau_nvidia.so.$VERSION \
-    libvdpau_trace.so.$VERSION \
-  $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
-  cd $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
-    ln -sf libvdpau_nvidia.so.1 libvdpau_nvidia.so
-    ln -sf libvdpau_trace.so.1 libvdpau_trace.so
-  cd -
 
 install -m 755 tls/libnvidia-tls.so.$VERSION $PKG/usr/lib${LIBDIRSUFFIX}/tls
 
@@ -176,50 +186,6 @@ ln -sf libnvidia-wfb.so.$VERSION $PKG/usr/lib${LIBDIRSUFFIX}/xorg/modules/libnvi
 install -D -m 644 libGL.la $PKG/usr/lib${LIBDIRSUFFIX}/
 sed -i "s,__LIBGL_PATH__,/usr/lib${LIBDIRSUFFIX}," $PKG/usr/lib${LIBDIRSUFFIX}/libGL.la
 sed -i "s,/usr/X11R6/lib,/usr/X11R6/lib${LIBDIRSUFFIX}," $PKG/usr/lib${LIBDIRSUFFIX}/libGL.la
-
-if [ "$COMPAT32" = "yes" -a "$ARCH" = "x86_64" ]; then
-  C32="_c32"
-  mkdir -p $PKG/usr/lib/vdpau
-  install -m 755 \
-      32/libGL.so.$VERSION \
-      32/libOpenCL.so.1.0.0 \
-      32/libcuda.so.$VERSION \
-      32/libnvidia-compiler.so.$VERSION \
-      32/libnvidia-glcore.so.$VERSION \
-      32/libnvidia-ml.so.$VERSION \
-      32/libnvidia-tls.so.$VERSION \
-      32/libvdpau.so.$VERSION \
-    $PKG/usr/lib
-    cd $PKG/usr/lib
-      ln -sf libGL.so.$VERSION libGL.so.1
-      ln -sf libGL.so.1 libGL.so
-      ln -sf libOpenCL.so.1.0.0 libOpenCL.so.1.0
-      ln -sf libOpenCL.so.1.0 libOpenCL.so.1
-      ln -sf libOpenCL.so.1 libOpenCL.so
-      ln -sf libcuda.so.$VERSION libcuda.so.1
-      ln -sf libcuda.so.1 libcuda.so
-      ln -sf libnvidia-ml.so.$VERSION libnvidia-ml.so.1
-      ln -sf libnvidia-ml.so.1 libnvidia-ml.so
-      ln -sf libvdpau.so.$VERSION libvdpau.so.1
-      ln -sf libvdpau.so.1 libvdpau.so
-      ln -sf vdpau/libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so
-      ln -sf vdpau/libvdpau_trace.so.$VERSION libvdpau_trace.so 
-    cd -
-
-  install -m 755 \
-      32/libvdpau_nvidia.so.$VERSION \
-      32/libvdpau_trace.so.$VERSION \
-    $PKG/usr/lib/vdpau
-    cd $PKG/usr/lib/vdpau
-      ln -sf libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so.1
-      ln -sf libvdpau_trace.so.$VERSION libvdpau_trace.so.1
-    cd -
-
-  install -D -m 644 32/libGL.la $PKG/usr/lib
-  sed -i "s,__LIBGL_PATH__,/usr/lib," $PKG/usr/lib/libGL.la
-
-fi
-
 
 mkdir -p $PKG/usr/man/man1
 cp -a nvidia-settings.1.gz nvidia-smi.1.gz nvidia-xconfig.1.gz $PKG/usr/man/man1/
@@ -259,6 +225,7 @@ cd $PKG
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  ADD="libvdpau >= 0.5 | nvidia-vdpau >= $VERSION" \
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
