@@ -1,3 +1,7 @@
+Sun Oct 21 05:00:17 CEST 2012
+-----------------------------
+	new file:   system/dconf/dconf.SlackBuild
+
 Sat Oct 20 05:00:51 CEST 2012
 -----------------------------
 	new file:   libraries/gdome2/gdome2.SlackBuild

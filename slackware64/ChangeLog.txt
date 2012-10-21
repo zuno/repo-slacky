@@ -1,5 +1,9 @@
 Sat Oct 20 05:02:45 CEST 2012
 -----------------------------
+	new file:   libraries/libvdpau/libvdpau.SlackBuild
+
+Sat Oct 20 05:02:45 CEST 2012
+-----------------------------
 	new file:   libraries/libgnomecanvas/libgnomecanvas.SlackBuild
 	modified:   network/midori/midori.SlackBuild
 	new file:   system/dconf/dconf.SlackBuild
