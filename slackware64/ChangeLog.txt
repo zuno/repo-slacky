@@ -1,3 +1,10 @@
+Mon Oct 22 05:06:19 CEST 2012
+-----------------------------
+	new file:   libraries/libebml/libebml.SlackBuild
+	new file:   libraries/libmatroska/libmatroska.SlackBuild
+	new file:   multimedia/mkvtoolnix-gtk/mkvtoolnix-gtk.SlackBuild
+	new file:   network/chromium/chromium.SlackBuild
+
 Sun Oct 21 05:03:35 CEST 2012
 -----------------------------
 	modified:   system/nvidia-linux-compat32/nvidia-linux-compat32.SlackBuild

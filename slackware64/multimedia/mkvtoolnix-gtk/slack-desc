@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler----------------------------------------------------|
+mkvtoolnix-gtk: mkvtoolnix-gtk (GNU/Linux Matroska Files Tool)
+mkvtoolnix-gtk:
+mkvtoolnix-gtk: mkvtoolnix is a set of tools to create, alter and inspect Matroska
+mkvtoolnix-gtk: files under Linux, other  Unices and Windows. They do for Matroska
+mkvtoolnix-gtk: what the OGMtools do for the OGM format and then some.
+mkvtoolnix-gtk:
+mkvtoolnix-gtk: this is the wxGTK version
+mkvtoolnix-gtk:
+mkvtoolnix-gtk:
+mkvtoolnix-gtk:
+mkvtoolnix-gtk:
