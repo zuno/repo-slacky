@@ -1,8 +1,9 @@
 #!/bin/sh
+# Copyright Loris Vincenzi (http://www.slacky.eu)
+# All rights reserved.
+#
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://kde-apps.org/content/show.php/FDesktopRecorder?content=147844
-# Packager Andrea Sciucca ( gohanz at infinito.it)
-# http://www.slacky.eu
+# http://www.abisource.com/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -21,23 +22,35 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: ffmpeg
+# Required: aiksaurus, evince, goffice8
+# Required: libwpg, libwps, ots, psiconv, wv
+#
 #
 # Exit on most errors
 set -e
 
 
+
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=fdesktoprecorder
+PKGNAME=abiword
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-`date +%Y%m%d`}
+VERSION=${VERSION:-2.8.6}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-9}
 TAG=${TAG:-sl}
+
+SOURCE="http://www.abisource.com/downloads/abiword/$VERSION/source/$PKGNAME-$VERSION.tar.gz"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+wget -c $SOURCE
+fi
+
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -52,38 +65,56 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
 # Decompress the source tarball
 cd $TMP
-git clone https://github.com/froksen/FDesktopRecorder.git
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+-----------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild FDesktopRecorder |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------------+\E[0;0m"
+echo -e "\E[0;32m+--------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Abiword |\E[0;0m"
+echo -e "\E[0;32m+--------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd FDesktopRecorder
+cd $PKGNAME-$VERSION
+# This should make the help stuff work properly
+# Thanks to Martin Lefebvre <dadexter@sekurity.com>
+patch -p1 < $CWD/url_show.patch 
+
+# This should make the build use Slackware's Boost Asio
+patch -p1 < $CWD/boost_asio.patch
+
+# This fixes building with gcc-4.7
+sed -i "s|--no-undefined||" src/Makefile.{am,in}
+
+# This fixes building with glib >= 2.31 (thanks to gentoo)
+patch -p0 < $CWD/abiword-2.8.6-glib-2.31.patch
+
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Building FDesktopRecorder Package
-( mkdir -p build \
-  && cd build \
-     &&  cmake .. \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DINCLUDE_INSTALL_DIR=/usr/include \
-    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DBUILD_SHARED_LIBS:BOOL=ON
+# Building Abiword package
+LDFLAGS="$SLKLDFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--mandir=/usr/man \
+		--docdir=/usr/doc/$PKGNAME-$VERSION \
+		--enable-plugins \
+		--enable-shared \
+		--enable-clipart \
+		--enable-templates \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
-make $JOBS  \
-&& make install DESTDIR=$PKG )
+make  $JOBS
+make install DESTDIR=$PKG
+
 
 
 # Strip binaries and shared objects, if present
@@ -96,8 +127,12 @@ make $JOBS  \
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a *.txt *.TXT AUTHORS COPYING ChangeLog INSTALL NEWS README \
+  $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
+
+mv $PKG/usr/share/icons $PKG/usr/share/pixmaps
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -125,12 +160,23 @@ fi" >> $PKG/install/doinst.sh
 
 
 
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(evince\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -b -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
@@ -140,4 +186,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
 

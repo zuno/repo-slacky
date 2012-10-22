@@ -1,8 +1,10 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://kde-apps.org/content/show.php/FDesktopRecorder?content=147844
+# http://www.gnome.org
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
+# Thanks to Andrew Brouwers <abrouwers@gmail.com> Michiel van Wessem, Manchester, United Kingdom.
+#
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -21,23 +23,34 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: ffmpeg
+# Required: dconf, yelp
 #
 # Exit on most errors
 set -e
 
 
+
+
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=fdesktoprecorder
+PKGNAME=evince
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-`date +%Y%m%d`}
+VERSION=${VERSION:-2.32.0}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
+NLS=${NLS:-YES}
+
+SOURCE="ftp://ftp.gnome.org/pub/gnome/sources/evince/2.32/$PKGNAME-$VERSION.tar.bz2"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+wget -c $SOURCE
+fi
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -52,38 +65,68 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
 # Decompress the source tarball
 cd $TMP
-git clone https://github.com/froksen/FDesktopRecorder.git
+tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+-----------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild FDesktopRecorder |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Evince |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd FDesktopRecorder
-chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
+cd $PKGNAME-$VERSION
+#  http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-text/evince/files/
+patch -p1 < $CWD/evince-0.7.1-display-menu.patch
+patch -p1 < $CWD/evince-2.32.0-libdocument-segfault.patch
+patch -p1 < $CWD/evince-2.32.0-stop-spinner.patch
+patch -p1 < $CWD/evince-2.32.0-dvi-CVEs.patch 
+patch -p1 < $CWD/evince-2.32.0-libview-crash.patch
+patch -p1 < $CWD/evince-2.32.0-update-poppler.patch
+patch -p1 < $CWD/evince-2.32.0-dvi-security.patch
+patch -p1 < $CWD/evince-2.32.0-pk-fonts.patch 
+patch -p1 < $CWD/evince-2.32.0-use-popup.patch
 
-# Building FDesktopRecorder Package
-( mkdir -p build \
-  && cd build \
-     &&  cmake .. \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DINCLUDE_INSTALL_DIR=/usr/include \
-    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DBUILD_SHARED_LIBS:BOOL=ON
+
+autoreconf # we need to do this after the poppler api update patch
+
+chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
+
+
+# Building Evince package
+CFLAGS="$SLKCFLAGS -L/usr/share/texmf/lib $SLKLDFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CPPFLAGS="-I/usr/share/texmf/include" \
+LDFLAGS="-L/usr/share/texmf/lib $SLKLDFLAGS" \
+./configure  --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/man \
+	--docdir=/usr/doc/$PKGNAME-$VERSION \
+	--without-keyring \
+	--without-gconf \
+	--enable-gtk-doc \
+	--enable-pdf \
+	--enable-tiff \
+	--enable-djvu \
+	--enable-dvi \
+	--enable-t1lib \
+	--enable-pixbuf \
+	--enable-comics \
+	--enable-impress \
+	--disable-static \
+	--disable-scrollkeeper \
+	--disable-nautilus \
+	--disable-introspection \
+	--disable-maintainer-mode \
+	--program-prefix= \
+	--program-suffix= \
+	--build=$CHOST-slackware-linux
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
-make $JOBS  \
-&& make install DESTDIR=$PKG )
+make $JOBS
+make install DESTDIR=$PKG
+
 
 
 # Strip binaries and shared objects, if present
@@ -96,6 +139,7 @@ make $JOBS  \
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a AUTHORS COPYING ChangeLog  INSTALL MAINTAINERS NEWS README TODO $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -109,6 +153,9 @@ cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAM
 
 
 # Building some post-install execution script 	
+	echo "if [ -x /usr/bin/glib-compile-schemas ]; then
+  glib-compile-schemas /usr/share/glib-2.0/schemas &> /dev/null
+fi" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/update-mime-database ]; then
   /usr/bin/update-mime-database /usr/share/mime &> /dev/null
 fi" >> $PKG/install/doinst.sh
@@ -124,12 +171,22 @@ fi" >> $PKG/install/doinst.sh
 
 
 
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(dconf\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(yelp\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+            |-----------------handy-ruler-------------------------------------|
+abiword-docs: Abiword Docs (Abiword Documentation Package)
+abiword-docs:
+abiword-docs: AbiWord  Personal  is  a  lean  and fast  full-featured   word
+abiword-docs: processor.   It can import many  formats including Word97/2000
+abiword-docs: and RTF, Palm,  Psion,  DocBook  and XHTML  documents, and can
+abiword-docs: export to RTF, Palm,  Psion, XHTML, Text,  and   LaTeX formats
+abiword-docs: Linux Journal calls it "An elegant, open source word processor
+abiword-docs: that delivers the Word functionality most people use."
+abiword-docs:
+abiword-docs:
+abiword-docs:

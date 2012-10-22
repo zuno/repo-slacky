@@ -1,3 +1,21 @@
+Mon Oct 22 05:01:51 CEST 2012
+-----------------------------
+	modified:   graphic/danbooru-client/danbooru-client.SlackBuild
+	new file:   graphic/evince/evince.SlackBuild
+	new file:   libraries/libwpg/libwpg.SlackBuild
+	new file:   libraries/libwps/libwps.SlackBuild
+	new file:   libraries/ots/ots.SlackBuild
+	new file:   libraries/pxlib/pxlib.SlackBuild
+	new file:   libraries/wv/wv.SlackBuild
+	new file:   multimedia/MP3Diags/MP3Diags.SlackBuild
+	modified:   multimedia/fdesktoprecorder/fdesktoprecorder.SlackBuild
+	new file:   network/chromium/chromium.SlackBuild
+	new file:   office/abiword-docs/abiword-docs.SlackBuild
+	new file:   office/abiword/abiword.SlackBuild
+	new file:   office/gnumeric/gnumeric.SlackBuild
+	new file:   office/psiconv/psiconv.SlackBuild
+	new file:   utilities/yakuake/yakuake.SlackBuild
+
 Sun Oct 21 05:00:17 CEST 2012
 -----------------------------
 	new file:   system/dconf/dconf.SlackBuild

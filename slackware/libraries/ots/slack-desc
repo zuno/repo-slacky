@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |----------------------handy-ruler--------------------------------------------------------|
+ots: OTS (Open Text Summarizer)
+ots:
+ots: The Open Text Summarizer is an open source tool for summarizing texts. The
+ots: program reads a text  and  decides which sentences are important and which
+ots: are not. OTS  is both a library  and a command line  tool. Word processors
+ots: such as AbiWord and KWord can link to the library  and summarize documents
+ots: while the command line tool lets you summarize text on the console.
+ots: 
+ots: 
+ots:
+ots:

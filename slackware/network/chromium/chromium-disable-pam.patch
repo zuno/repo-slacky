@@ -1,0 +1,12 @@
+diff -Nru chromium-12.0.711.0/build/common.gypi chromium-12.0.711.0.new/build/common.gypi
+--- chromium-12.0.711.0/build/common.gypi	2011-03-23 10:00:21.000000000 +0100
++++ chromium-12.0.711.0.new/build/common.gypi	2011-03-24 08:30:07.084285926 +0100
+@@ -129,7 +129,7 @@
+       'use_third_party_translations%': 0,
+ 
+       # Remoting compilation is enabled by default. Set to 0 to disable.
+-      'remoting%': 1,
++      'remoting%': 0,
+
+
+

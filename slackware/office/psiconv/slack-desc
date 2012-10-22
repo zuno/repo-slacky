@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |----------------------handy-ruler-------------------------------------|
+psiconv: Psiconv (Psion5 MX  Library)
+psiconv:
+psiconv: Psiconv is a file conversion utility that converts between Psion 5(MX)
+psiconv: files and more commonly-used Linux file formats. It can read and write
+psiconv: Psion  Word, TextEd,  Sketch, MBM, and Clipart files, and outputs HTML
+psiconv: 3.2, HTML 4, ASCII, and almost any graphical format.
+psiconv:
+psiconv:
+psiconv:
+psiconv:
+psiconv:

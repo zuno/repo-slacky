@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+libwps: Libwps (Microsoft Works Library)
+libwps:
+libwps: Libwps is a Microsoft Works file format import filter based  on top of
+libwps: the libwpd (which is already used in three word processors). Currently
+libwps: libwps is a new project, but it imports all Works formats since  about
+libwps: 1995 with some success.
+libwps:
+libwps:
+libwps:
+libwps:
+libwps:

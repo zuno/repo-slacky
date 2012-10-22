@@ -1,8 +1,9 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://kde-apps.org/content/show.php/FDesktopRecorder?content=147844
-# Packager Andrea Sciucca ( gohanz at infinito.it)
+# http://mp3diags.sourceforge.net
+# Packager Andrea Sciucca Gohanz ( gohanz at infinito.it)
 # http://www.slacky.eu
+#
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -21,7 +22,6 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: ffmpeg
 #
 # Exit on most errors
 set -e
@@ -30,14 +30,23 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=fdesktoprecorder
+PKGNAME=MP3Diags
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-`date +%Y%m%d`}
+VERSION=${VERSION:-1.0.12.079}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
+
+
+SOURCE="http://downloads.sourceforge.net/project/mp3diags/mp3diags-src/$PKGNAME.tar.gz"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME.tar.gz ]; then
+wget -c $SOURCE
+fi
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -48,6 +57,7 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
+
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -55,49 +65,69 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-git clone https://github.com/froksen/FDesktopRecorder.git
+tar xvzf $CWD/$PKGNAME.tar.gz
 
-echo -e "\E[0;32m+-----------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild FDesktopRecorder |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------------+\E[0;0m"
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild MP3Diags |\E[0;0m"
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd FDesktopRecorder
-chown -R root:root .
+cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
-# Building FDesktopRecorder Package
-( mkdir -p build \
-  && cd build \
-     &&  cmake .. \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DINCLUDE_INSTALL_DIR=/usr/include \
-    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DBUILD_SHARED_LIBS:BOOL=ON
-echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
-read
-make $JOBS  \
-&& make install DESTDIR=$PKG )
+# Fix boost linker error 
+( cd src
+sed -i s/"-lboost_serialization-mt"/"-lboost_serialization"/ src.pro )
 
 
-# Strip binaries and shared objects, if present
-( cd $PKG
-  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-)
+
+
+# Configure:
+qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile mp3diags.pro
+
+
+# Build and install:
+LDFLAGS="$SLKLDFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+make $JOBS
+
+install -m 755 -p -D   bin/MP3Diags $PKG/usr/bin/MP3Diags
+
+
+# Installing icons directory
+cd desktop
+for res in 16 22 24 32 36 40 48  ;do
+  dir=${PKG}/usr/share/icons/hicolor/${res}x${res}/apps
+  mkdir -p ${dir}
+  install -m0644 MP3Diags${res}.png \
+                 ${dir}/${PKGNAME}.png
+done
+cd ..
+
+# Installing desktop file menu
+mkdir -p $PKG/usr/share/applications
+cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=MP3 Diags
+GenericName=MP3 file editor
+Comment=MP3 file diagnosis and repair tool
+Comment[it]=Applicazione per la diagnosi e la riparazione dei file MP3
+Icon=MP3Diags
+Exec=MP3Diags
+Terminal=false
+StartupNotify=true
+Categories=Qt;Audio;AudioVideo;AudioVideoEditing;
+EOF
 
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a COPYING README.TXT *.txt $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -105,7 +135,6 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
-
 
 
 # Building some post-install execution script 	
@@ -117,11 +146,10 @@ fi" >> $PKG/install/doinst.sh
   /usr/bin/update-desktop-database &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
 
+
+# Strip binary
+strip --strip-unneeded $PKG/usr/bin/*
 
 
 
@@ -134,7 +162,6 @@ requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
 
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then

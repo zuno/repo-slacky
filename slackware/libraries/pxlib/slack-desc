@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler-------------------------------------------------------|
+pxlib: PxLib (Paradox Database Library)
+pxlib:
+pxlib: PxLib is a simply and still small C library to  read and write Paradox
+pxlib: DB files. It supports all versions starting from 3.0. It currently has
+pxlib: a very  limited set  of  functions  like  to  open a DB file, read its
+pxlib: header and read every single  record. It can  read andwrite blob data.
+pxlib: The write support is still a bit experimental.
+pxlib:
+pxlib:
+pxlib:
+pxlib:
