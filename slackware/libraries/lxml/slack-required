@@ -1,0 +1,8 @@
+glibc-solibs >= 2.15-i486-7
+libgcrypt >= 1.5.0-i486-1
+libgpg-error >= 1.10-i486-1
+libxml2 >= 2.8.0-i486-1
+libxslt >= 1.1.26-i486-2
+python >= 2.7.3-i486-2
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1

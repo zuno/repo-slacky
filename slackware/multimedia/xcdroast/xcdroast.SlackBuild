@@ -1,8 +1,9 @@
 #!/bin/sh
-# Heavily based on the Slackware 14.0 SlackBuild
-# http://code.google.com/p/semantik/
-# http://www.slacky.eu
+# Copyright Loris Vincenzi (http://www.slacky.eu)
+# All rights reserved.
 #
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://www.xcdroast.org/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -24,26 +25,25 @@
 #
 #
 # Exit on most errors
-set -e
-
+set -e 
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=semantik
+PKGNAME=xcdroast
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.8.3}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-0.98alpha16}
+ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-9}
 TAG=${TAG:-sl}
 
-SOURCE="http://semantik.googlecode.com/files/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/xcdroast/$PKGNAME-$VERSION.tar.gz"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+if [ ! -e $PKGNAME-$VERSION.tar.gz ]; then
 wget -c $SOURCE
 fi
 
@@ -64,24 +64,52 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Semantik |\E[0;0m"
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m+--------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild X-CD-Roast |\E[0;0m"
+echo -e "\E[0;32m+--------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-# Fix build after Ocaml update
-sed -i -e "s/-lstr/-lcamlstr/" wscript
+
+# Apply some official patches!
+cat $CWD/io_compile.patch | patch -p0 -E --backup --verbose
+cat $CWD/parse_version.patch | patch -p0 -E --backup --verbose
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# Building X-CD-Roast package
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
-./waf configure --prefix=/usr
-./waf build $JOBS
-./waf install --destdir=$PKG
+CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--enable-gtk2 \
+		--mandir=/usr/man \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
+
+make XCDRLIB_PREFIX=/usr/lib${LIBDIRSUFFIX}/$PKGNAME
+make XCDRLIB_PREFIX=/usr/lib${LIBDIRSUFFIX}/$PKGNAME install DESTDIR=$PKG
+
+# Workaround for Invalid cdda2wav version error
+mv $PKG/usr/bin/xcdroast $PKG/usr/bin/xcdroast.bin
+
+
+# Building X-CD-Roast bin script wrapper
+cat << EOF > $PKG/usr/bin/xcdroast
+#!/bin/bash
+cd /usr/bin
+exec /usr/bin/xcdroast.bin -n
+EOF
+
+chmod 755 $PKG/usr/bin/*
 
 
 # Strip binaries and shared objects, if present
@@ -92,11 +120,32 @@ CFLAGS="$SLKCFLAGS" \
 )
 
 
-#Add documentation files: readme, changelog and so on
+# Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a \
-  ChangeLog README TODO $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a  COPYING ChangeLog INSTALL README AUTHORS $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+#  Installing desktop file menu and icons
+install -m 0644 -p -D  $CWD/xcdroast.png  $PKG/usr/share/pixmaps/xcdroast.png 
+
+mkdir -p  $PKG/usr/share/applications
+
+cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=X-CD-Roast
+Exec=xcdroast
+GenericName=CD Burning Tool
+GenericName[it]=Masterizzatore CD
+Icon=xcdroast
+Comment=Cdrtools Graphical Frontend
+Comment[it]=Interfaccia grafica per i cdrtools
+Terminal=0
+Categories=Application;AudioVideo;
+EOF
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -107,18 +156,24 @@ cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAM
 
 
 # Building some post-install execution script 	
-echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
-echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
   /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+
+
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
 
 
 
@@ -136,3 +191,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+

@@ -1,168 +1,28 @@
-Mon Oct 22 05:01:51 CEST 2012
+Tue Oct 23 05:02:23 CEST 2012
 -----------------------------
-	modified:   graphic/danbooru-client/danbooru-client.SlackBuild
-	new file:   graphic/evince/evince.SlackBuild
-	new file:   libraries/libwpg/libwpg.SlackBuild
-	new file:   libraries/libwps/libwps.SlackBuild
-	new file:   libraries/ots/ots.SlackBuild
-	new file:   libraries/pxlib/pxlib.SlackBuild
-	new file:   libraries/wv/wv.SlackBuild
-	new file:   multimedia/MP3Diags/MP3Diags.SlackBuild
-	modified:   multimedia/fdesktoprecorder/fdesktoprecorder.SlackBuild
-	new file:   network/chromium/chromium.SlackBuild
-	new file:   office/abiword-docs/abiword-docs.SlackBuild
-	new file:   office/abiword/abiword.SlackBuild
-	new file:   office/gnumeric/gnumeric.SlackBuild
-	new file:   office/psiconv/psiconv.SlackBuild
-	new file:   utilities/yakuake/yakuake.SlackBuild
-
-Sun Oct 21 05:00:17 CEST 2012
------------------------------
-	new file:   system/dconf/dconf.SlackBuild
-
-Sat Oct 20 05:00:51 CEST 2012
------------------------------
-	new file:   libraries/gdome2/gdome2.SlackBuild
-	new file:   libraries/gmetadom/gmetadom.SlackBuild
-	new file:   libraries/gtksourceview2/gtksourceview2.SlackBuild
-	new file:   network/webkitgtk3/webkitgtk3.SlackBuild
-	new file:   office/aiksaurus/aiksaurus.SlackBuild
-	new file:   office/goffice8/goffice8.SlackBuild
-
-Thu Oct 18 05:00:38 CEST 2012
------------------------------
-	new file:   desktop/yelp/yelp.SlackBuild
-	new file:   libraries/gtkglext/gtkglext.SlackBuild
-	new file:   libraries/libsidplay/libsidplay.SlackBuild
-	new file:   libraries/libunique/libunique.SlackBuild
-	new file:   libraries/pygtksourceview/pygtksourceview.SlackBuild
-	new file:   libraries/pywebkitgtk/pywebkitgtk.SlackBuild
-	new file:   libraries/rarian/rarian.SlackBuild
-	new file:   multimedia/bangarang/bangarang.SlackBuild
-	new file:   multimedia/gst-plugins-ugly/gst-plugins-ugly.SlackBuild
-	new file:   multimedia/gst-python/gst-python.SlackBuild
-	new file:   multimedia/soundkonverter/soundkonverter.SlackBuild
-	new file:   multimedia/xnoise/xnoise.SlackBuild
-	new file:   network/midori/midori.SlackBuild
-	new file:   scientific/celestia/celestia.SlackBuild
-	new file:   system/gparted/gparted.SlackBuild
-	new file:   system/quadkonsole4/quadkonsole4.SlackBuild
-	modified:   system/wine/wine.SlackBuild
-	modified:   system/wine_gecko/wine_gecko.SlackBuild
-	new file:   utilities/cherrytree/cherrytree.SlackBuild
-
-Thu Oct 18 05:00:38 CEST 2012
------------------------------
-	new file:   development/vala/vala.SlackBuild
-	new file:   libraries/gnome-mime-data/gnome-mime-data.SlackBuild
-	new file:   libraries/gsl/gsl.SlackBuild
-	new file:   libraries/imlib2/imlib2.SlackBuild
-	new file:   multimedia/RealPlayer/RealPlayer.SlackBuild
-	new file:   multimedia/recordmydesktop/recordmydesktop.SlackBuild
-	new file:   network/krb5/krb5.SlackBuild
-	new file:   network/webkitgtk/webkitgtk.SlackBuild
-	new file:   utilities/cabextract/cabextract.SlackBuild
-
-Wed Oct 17 05:00:35 CEST 2012
------------------------------
-	new file:   database/postgresql/postgresql.SlackBuild
-	new file:   libraries/geoclue/geoclue.SlackBuild
-	new file:   libraries/libmusicbrainz2/libmusicbrainz2.SlackBuild
-	new file:   libraries/libmusicbrainz3/libmusicbrainz3.SlackBuild
-	new file:   libraries/onig/onig.SlackBuild
-	new file:   libraries/portaudio/portaudio.SlackBuild
-	new file:   libraries/pyxdg/pyxdg.SlackBuild
-	new file:   multimedia/espeak/espeak.SlackBuild
-	new file:   multimedia/gespeaker/gespeaker.SlackBuild
-	new file:   multimedia/mbrola/mbrola.SlackBuild
-	new file:   network/sylpheed/sylpheed.SlackBuild
-	new file:   system/kbackup/kbackup.SlackBuild
-	new file:   utilities/komparator4/komparator4.SlackBuild
-
-Tue Oct 16 05:01:15 CEST 2012
------------------------------
-	new file:   graphic/dia/dia.SlackBuild
-	new file:   libraries/compface/compface.SlackBuild
-	new file:   libraries/libEMF/libEMF.SlackBuild
-	new file:   libraries/libetpan/libetpan.SlackBuild
-	new file:   libraries/libgdata/libgdata.SlackBuild
-	new file:   libraries/liboauth/liboauth.SlackBuild
-	new file:   libraries/vlc-qt/vlc-qt.SlackBuild
-	new file:   multimedia/emovix/emovix.SlackBuild
-	new file:   multimedia/k3b/k3b.SlackBuild
-	new file:   multimedia/tano/tano.SlackBuild
-	new file:   multimedia/transcode/transcode.SlackBuild
-	new file:   multimedia/vlc-append/vlc-append.SlackBuild
-	new file:   network/claws-mail-themes/claws-mail-themes.SlackBuild
-	new file:   network/claws-mail/claws-mail.SlackBuild
-	new file:   office/kbibtex/kbibtex.SlackBuild
-	new file:   system/p7zip/p7zip.SlackBuild
-	new file:   system/unrar/unrar.SlackBuild
-
-Mon Oct 15 05:01:22 CEST 2012
------------------------------
-	new file:   development/lua/lua.SlackBuild
-	new file:   development/setuptools/setuptools.SlackBuild
-	new file:   graphic/exif/exif.SlackBuild
-	new file:   libraries/SDL_gfx/SDL_gfx.SlackBuild
-	new file:   libraries/gavl/gavl.SlackBuild
-	new file:   libraries/libquicktime/libquicktime.SlackBuild
-	new file:   libraries/libsexy/libsexy.SlackBuild
-	new file:   libraries/numpy/numpy.SlackBuild
-	new file:   libraries/protobuf/protobuf.SlackBuild
-	new file:   libraries/sexy-python/sexy-python.SlackBuild
-	new file:   multimedia/dvdauthor/dvdauthor.SlackBuild
-	new file:   multimedia/ffmpeg2theora/ffmpeg2theora.SlackBuild
-	new file:   multimedia/ffmpegthumbnailer/ffmpegthumbnailer.SlackBuild
-	new file:   multimedia/gst-ffmpeg/gst-ffmpeg.SlackBuild
-	new file:   multimedia/mjpegtools/mjpegtools.SlackBuild
-	new file:   multimedia/mplayer-codecs/mplayer-codecs.SlackBuild
-	new file:   multimedia/vlc/vlc.SlackBuild
-
-Sun Oct 14 05:01:09 CEST 2012
------------------------------
-	new file:   games/pingus/pingus.SlackBuild
-	new file:   libraries/ftgl/ftgl.SlackBuild
-	new file:   libraries/game-music-emu/game-music-emu.SlackBuild
-	new file:   libraries/libavc1394/libavc1394.SlackBuild
-	new file:   libraries/libkate/libkate.SlackBuild
-	new file:   libraries/libmpcdec/libmpcdec.SlackBuild
-	new file:   libraries/libmpeg2/libmpeg2.SlackBuild
-	new file:   libraries/libshout/libshout.SlackBuild
-	new file:   libraries/libtar/libtar.SlackBuild
-	new file:   libraries/libtiger/libtiger.SlackBuild
-	new file:   libraries/projectm/projectm.SlackBuild
-	new file:   libraries/sidplay2-libs/sidplay2-libs.SlackBuild
-	modified:   multimedia/avidemux-cli/avidemux-cli.SlackBuild
-	modified:   multimedia/avidemux-gtk/avidemux-gtk.SlackBuild
-	modified:   multimedia/avidemux-qt4/avidemux-qt4.SlackBuild
-	new file:   multimedia/vcdimager/vcdimager.SlackBuild
-
-Sat Oct 13 05:00:38 CEST 2012
------------------------------
-	new file:   office/libreoffice-autobuilder-multilang/libreoffice-autobuilder-multilang/builder/libreoffice-multilang.SlackBuild
-
-Sat Oct 13 05:00:38 CEST 2012
------------------------------
-	new file:   libraries/live555/live555.SlackBuild
-	new file:   multimedia/gus-patches/gus-patches.SlackBuild
-
-Fri Oct 12 05:01:24 CEST 2012
------------------------------
-	new file:   development/mm-common/mm-common.SlackBuild
-	new file:   libraries/atkmm/atkmm.SlackBuild
-	new file:   libraries/cairomm/cairomm.SlackBuild
-	new file:   libraries/gtkmm/gtkmm.SlackBuild
-	new file:   libraries/libebml/libebml.SlackBuild
-	new file:   libraries/libmatroska/libmatroska.SlackBuild
-	new file:   libraries/pangomm/pangomm.SlackBuild
-	new file:   multimedia/TiMidity++/TiMidity++.SlackBuild
-	new file:   multimedia/avidemux-cli/avidemux-cli.SlackBuild
-	new file:   multimedia/avidemux-gtk/avidemux-gtk.SlackBuild
-	new file:   multimedia/avidemux-qt4/avidemux-qt4.SlackBuild
-	new file:   multimedia/fluidsynth/fluidsynth.SlackBuild
-	new file:   multimedia/goom/goom.SlackBuild
-	new file:   multimedia/kamerka/kamerka.SlackBuild
-	new file:   multimedia/ladspa_sdk/ladspa_sdk.SlackBuild
-	new file:   utilities/xosd/xosd.SlackBuild
+	new file:   development/Twisted/Twisted.SlackBuild
+	new file:   development/gc/gc.SlackBuild
+	new file:   graphic/inkscape/inkscape.SlackBuild
+	new file:   libraries/barcode/barcode.SlackBuild
+	new file:   libraries/iec16022/iec16022.SlackBuild
+	new file:   libraries/libofx/libofx.SlackBuild
+	new file:   libraries/lxml/lxml.SlackBuild
+	new file:   libraries/qrencode/qrencode.SlackBuild
+	new file:   libraries/zint/zint.SlackBuild
+	new file:   multimedia/googleearth/googleearth.SlackBuild
+	modified:   multimedia/vlc/vlc.SlackBuild
+	new file:   multimedia/xcdroast/xcdroast.SlackBuild
+	new file:   network/grsync/grsync.SlackBuild
+	new file:   office/glabels/glabels.SlackBuild
+	new file:   office/homebank/homebank.SlackBuild
+	modified:   office/semantik/semantik.SlackBuild
+	new file:   office/skrooge/skrooge.SlackBuild
+	new file:   system/cdrkit/cdrkit.SlackBuild
+	new file:   system/usbmuxd/usbmuxd.SlackBuild
+	new file:   system/zope.interface/zope.interface.SlackBuild
+	new file:   utilities/freshmemory/freshmemory.SlackBuild
+	new file:   utilities/gedit-plugins/gedit-plugins.SlackBuild
+	new file:   utilities/gedit/gedit.SlackBuild
+	new file:   utilities/slackyd/slackyd.SlackBuild
+	new file:   utilities/znotes/znotes.SlackBuild
 

@@ -1,6 +1,7 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://code.google.com/p/semantik/
+# http://fukuchi.org/works/qrencode/index.en.html
+# Packagers Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
 #
 #
@@ -22,29 +23,29 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-#
 # Exit on most errors
 set -e
+
 
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=semantik
+PKGNAME=qrencode
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.8.3}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-3.4.1}
+ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://semantik.googlecode.com/files/$PKGNAME-$VERSION.tar.bz2"
-
 # Download sorce tarball if still not present
+SOURCE="http://fukuchi.org/works/qrencode/$PKGNAME-$VERSION.tar.bz2"
+
 if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
-wget -c $SOURCE
+ wget $SOURCE
 fi
 
 
@@ -62,26 +63,36 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
 
+
 # Decompress the source tarball
 cd $TMP
 tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
 
 echo -e "\E[0;32m+---------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Semantik |\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild QRencode |\E[0;0m"
 echo -e "\E[0;32m+---------------------------+\E[0;0m"
+
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-# Fix build after Ocaml update
-sed -i -e "s/-lstr/-lcamlstr/" wscript
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# Building QRencode  package
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
-./waf configure --prefix=/usr
-./waf build $JOBS
-./waf install --destdir=$PKG
+CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--mandir=/usr/man \
+                --disable-static \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
 
 # Strip binaries and shared objects, if present
@@ -92,11 +103,12 @@ CFLAGS="$SLKCFLAGS" \
 )
 
 
-#Add documentation files: readme, changelog and so on
+# Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a \
-  ChangeLog README TODO $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a COPYING  ChangeLog NEWS README TODO  \
+$PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -106,20 +118,15 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-# Building some post-install execution script 	
-echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
 
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
 
 
 # Find and print dependencies into slack-required file
@@ -136,3 +143,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+

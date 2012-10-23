@@ -1,6 +1,7 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://code.google.com/p/semantik/
+# http://freshmemory.sourceforge.net/
+# Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
 #
 #
@@ -22,31 +23,30 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-#
 # Exit on most errors
-set -e
+#set -e
+
 
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=semantik
+PKGNAME=freshmemory
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.8.3}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-1.1.1}
+ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://semantik.googlecode.com/files/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/freshmemory/freshmemory/$VERSION/$PKGNAME-$VERSION.tar.bz2"
 
 # Download sorce tarball if still not present
 if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
 wget -c $SOURCE
 fi
-
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -61,27 +61,57 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
-# Decompress the source tarball
+# Decompress source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xvf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Semantik |\E[0;0m"
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m+--------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild  Fresh Memory |\E[0;0m"
+echo -e "\E[0;32m+--------------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-# Fix build after Ocaml update
-sed -i -e "s/-lstr/-lcamlstr/" wscript
-chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
+
+# Building Fresh Memory package
+# Configure:
+
+
+# Configure:
+qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile freshmemory.pro
+
+# Build and install:
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
-./waf configure --prefix=/usr
-./waf build $JOBS
-./waf install --destdir=$PKG
+CXXFLAGS="$SLKCFLAGS" \
+
+make release $JOBS
+lrelease freshmemory.pro
+make release-install INSTALL_ROOT=$PKG
+
+
+# Installing desktop menu file and icons
+
+install -m 644 -p -D  $CWD/freshmemory.png  $PKG/usr/share/pixmaps/freshmemory.png 
+
+mkdir -p $PKG/usr/share/applications
+cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name= Fresh Memory
+GenericName=Learning Tool
+GenericName[it]=Programma di Apprendimento
+Comment=Qt4 software that helps to learn large amounts of any materia
+Comment[it]=Software Qt4 per l'apprendimento di molte materie  
+Icon=/usr/share/pixmaps/freshmemory.png
+Exec=freshmemory
+Terminal=false
+StartupNotify=true
+Categories=Application;Qt;Education;Languages;
+EOF
 
 
 # Strip binaries and shared objects, if present
@@ -92,10 +122,10 @@ CFLAGS="$SLKCFLAGS" \
 )
 
 
+
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a \
-  ChangeLog README TODO $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS COPYING ChangeLog README  $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -107,18 +137,14 @@ cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAM
 
 
 # Building some post-install execution script 	
-echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
-echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
   /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
 
 
 
@@ -126,7 +152,7 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+requiredbuilder -y -v -c -b -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
@@ -136,3 +162,4 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+

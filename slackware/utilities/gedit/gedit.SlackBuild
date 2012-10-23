@@ -1,6 +1,7 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://code.google.com/p/semantik/
+# http://www.gnome.org
+# Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
 #
 #
@@ -22,30 +23,37 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
+# Required: gtksourceview2, pygtksourceview, rarian (Only compilation), yelp.
 #
 # Exit on most errors
 set -e
 
 
 
+
+
+
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=semantik
+PKGNAME=gedit
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.8.3}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-2.30.4}
+ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
-SOURCE="http://semantik.googlecode.com/files/$PKGNAME-$VERSION.tar.bz2"
+
+SOURCE="http://ftp.gnome.org/pub/GNOME/sources/gedit/2.30/$PKGNAME-$VERSION.tar.bz2"
 
 # Download sorce tarball if still not present
 if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
 wget -c $SOURCE
 fi
+
+
 
 
 # Set compiling FLAGS
@@ -61,27 +69,37 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
 # Decompress the source tarball
 cd $TMP
 tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Semantik |\E[0;0m"
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Gedit |\E[0;0m"
+echo -e "\E[0;32m+------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-# Fix build after Ocaml update
-sed -i -e "s/-lstr/-lcamlstr/" wscript
-chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
+# Building Gedit package
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
-./waf configure --prefix=/usr
-./waf build $JOBS
-./waf install --destdir=$PKG
+CXXFLAGS="$SLKCFLAGS" \
+./configure	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--mandir=/usr/man \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS
+make install DESTDIR=$PKG
+
 
 
 # Strip binaries and shared objects, if present
@@ -94,9 +112,9 @@ CFLAGS="$SLKCFLAGS" \
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a \
-  ChangeLog README TODO $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS COPYING ChangeLog INSTALL NEWS README $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -106,19 +124,33 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-# Building some post-install execution script 	
-echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
+# Add schemas install to the doinst.sh if schemas are found.
+[ -d $PKG/etc/gconf/schemas ] && {
+# Make sure we have gconftool installed
+echo "if [ -x usr/bin/gconftool-2 ]; then" >> $PKG/install/doinst.sh
+( cd $PKG/etc/gconf/schemas
+for schema in *.schemas; do
+ # Install schemas
+ echo "GCONF_CONFIG_SOURCE=\"xml::etc/gconf/gconf.xml.defaults\" \
+   usr/bin/gconftool-2 --makefile-install-rule \
+   etc/gconf/schemas/${schema} >/dev/null 2>&1" \
+   >> $PKG/install/doinst.sh
+done;
+)
+# Finish off gconf block
+echo "fi" >> $PKG/install/doinst.sh
+}
+
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
 
 
 
@@ -126,6 +158,8 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(pygtksourceview\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(yelp\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
@@ -136,3 +170,6 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+
+

@@ -1,3 +1,8 @@
+Tue Oct 23 05:08:02 CEST 2012
+-----------------------------
+	new file:   libraries/perl-archive-zip/perl-archive-zip.SlackBuild
+	modified:   network/chromium/chromium.SlackBuild
+
 Mon Oct 22 05:06:19 CEST 2012
 -----------------------------
 	new file:   libraries/libebml/libebml.SlackBuild

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler----------------------------------------------------|
+homebank: Homebank (GTK2+ Personal Accounts Manager)
+homebank:
+homebank: The main concept is to be light, simple  and very easy to use. It
+homebank: brings you many features that allows you to analyze your finances
+homebank: in a detailed way instantly and dynamically with powerfull report
+homebank: tools based on filtering and graphical charts.
+homebank:
+homebank:
+homebank:
+homebank:
+homebank:

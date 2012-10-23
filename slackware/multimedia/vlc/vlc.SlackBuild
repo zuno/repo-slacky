@@ -42,10 +42,10 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=vlc
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-2.0.3}
+VERSION=${VERSION:-2.0.4}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 SOURCE="http://download.videolan.org/pub/videolan/vlc/$VERSION/$PKGNAME-$VERSION.tar.xz"
@@ -79,6 +79,8 @@ echo -e "\E[0;32m+----------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
+# Fix compilation of 32-bit vlc-2.0.4:
+patch -p1 < $CWD/vlc-2.0.4_dmo.patch
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 

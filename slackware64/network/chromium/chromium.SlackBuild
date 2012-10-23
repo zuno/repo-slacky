@@ -34,7 +34,7 @@ set -e
 PKGNAME=chromium
 #VERSION=${VERSION:-SNAPSHOT} # Set to SNAPSHOT to install the latest release.
 #VERSION=${VERSION:-21.0.1180.13} # or set an exact realese
-VERSION=${VERSION:-22} # or set your prefered major version
+VERSION=${VERSION:-24} # or set your prefered major version
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
@@ -47,7 +47,7 @@ SOURCE=$SOURCE/chromium-$VERSION.tar.bz2
 TAR=      # empty = auto
 DIR=      # empty = auto
 DOCS="AUTHORS  Android.mk  DEPS  LICENSE  OWNERS  PRESUBMIT.py  WATCHLISTS"
-SLKFILES=""
+SLKFILES="chromium.Desktop"
 
 
 
@@ -125,17 +125,17 @@ if [ "$CONFIGURE" == "1" ];then
     -Drelease_extra_cflags="$SLKCFLAGS ${CFLAGS}" \
     -Dffmpeg_branding=Chrome \
     -Dproprietary_codecs=1 \
-    -Duse_system_libjpeg=1 \
-    -Duse_system_libxslt=1 \
-    -Duse_system_libxml=1 \
+    -Duse_system_libjpeg=0 \
+    -Duse_system_libxslt=0 \
+    -Duse_system_libxml=0 \
     -Duse_system_speex=0 \
     -Duse_system_flac=0 \
     -Duse_system_libwebp=0 \
-    -Duse_system_bzip2=1 \
-    -Duse_system_zlib=1 \
-    -Duse_system_libpng=1 \
+    -Duse_system_bzip2=0 \
+    -Duse_system_zlib=0 \
+    -Duse_system_libpng=0 \
     -Duse_system_ffmpeg=0 \
-    -Duse_system_yasm=1 \
+    -Duse_system_yasm=0 \
     -Duse_system_libevent=0 \
     -Dremove_webcore_debug_symbols=1 \
     -Duse_system_ssl=0 \
@@ -143,7 +143,11 @@ if [ "$CONFIGURE" == "1" ];then
     -Dlinux_link_gnome_keyring=0 \
     -Ddisable_nacl=1 \
     -Duse_kerberos=0 \
-    -Duse_gcond=0 \
+    -Duse_gconf=0 \
+    -Dlinux_fpic=1 \
+    -Dbuild_ffmpegsumo=1 \
+    -Duse_openssl=0 \
+    -Djavascript_engine=v8 \
     $([ "${ARCH}" == 'i686' ] && echo '-Ddisable_sse2=1')
 fi
 
@@ -160,12 +164,11 @@ install -m 0755 -o root -g root -D out/Release/chromedriver $PKG/usr/lib${LIBDIR
 
 # Installing Chrome data, resources and libraries
 mkdir -p  $PKG/usr/lib${LIBDIRSUFFIX}/$PKGNAME/themes
-cp -a \
+cp -r \
   out/Release/chrome.pak \
   out/Release/resources.pak \
   out/Release/content_resources.pak \
-  out/Release/theme_resources_100_percent.pak \
-  out/Release/ui_resources_100_percent.pak \
+  out/Release/chrome_100_percent.pak \
   out/Release/libffmpegsumo.so \
   out/Release/locales \
   out/Release/resources \

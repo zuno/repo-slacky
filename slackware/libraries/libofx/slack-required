@@ -1,0 +1,17 @@
+curl >= 7.27.0-i486-2
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+cyrus-sasl >= 2.1.23-i486-4
+gcc >= 4.7.1-i486-1
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+glibmm >= 2.32.1-i486-1sl
+libffi >= 3.0.11-i486-1
+libidn >= 1.25-i486-2
+libsigc++ >= 2.2.11-i486-1sl
+libxml++ >= 2.34.2-i486-1sl
+libxml2 >= 2.8.0-i486-1
+linuxdoc-tools >= 0.9.67-i486-2
+openldap-client >= 2.4.31-i486-2
+openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1

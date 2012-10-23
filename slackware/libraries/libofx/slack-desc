@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |----handy-ruler--------------------------------------------------------|
+libofx: LibOFX (OFX Command Parser Library)
+libofx:
+libofx: This is the LibOFX library. It is a parser and an API designed to allow
+libofx: applications  to  very  easily  support  OFX command responses, usually
+libofx: provided by financial institutions for statement downloads.
+libofx:
+libofx:
+libofx:
+libofx:
+libofx:
+libofx:

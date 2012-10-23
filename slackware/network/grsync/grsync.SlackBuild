@@ -1,16 +1,18 @@
 #!/bin/sh
+
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://code.google.com/p/semantik/
-# http://www.slacky.eu
-#
-#
+# Written by Andrea Sciucca  ( gohanz at infinito.it)
+
+# Slackware build script for Grsync 
+# Official Site: http://www.opbyte.it/grsync/
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
 # 1. Redistributions of this script must retain the above copyright
 #    notice, this list of conditions and the following disclaimer.
 #
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AS IS AND ANY EXPRESS OR IMPLIED
 # WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
 # EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
@@ -20,8 +22,7 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#
+# 
 #
 # Exit on most errors
 set -e
@@ -31,20 +32,20 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=semantik
+PKGNAME=grsync
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.8.3}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-1.2.2}
+ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://semantik.googlecode.com/files/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://www.opbyte.it/release/$PKGNAME-$VERSION.tar.gz"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
-wget -c $SOURCE
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+  wget -c $SOURCE
 fi
 
 
@@ -64,24 +65,33 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Semantik |\E[0;0m"
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Grsync |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-# Fix build after Ocaml update
-sed -i -e "s/-lstr/-lcamlstr/" wscript
-chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
-LDFLAGS="$SLKLDFLAGS" \
+# Building Grsync package
+LDFLAGS="$SLKLDFLAGS -lm" \
 CFLAGS="$SLKCFLAGS" \
-./waf configure --prefix=/usr
-./waf build $JOBS
-./waf install --destdir=$PKG
+CXXFLAGS="$SLKCFLAGS" \
+./configure	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--mandir=/usr/man \
+		--docdir=/usr/doc/$PKGNAME-$VERSION \
+		--enable-unity=no \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
 
 # Strip binaries and shared objects, if present
@@ -95,8 +105,10 @@ CFLAGS="$SLKCFLAGS" \
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cp -a \
-  ChangeLog README TODO $PKG/usr/doc/$PKGNAME-$VERSION
+  AUTHORS  COPYING ChangeLog  INSTALL NEWS README \
+  $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -104,6 +116,7 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
 
 
 # Building some post-install execution script 	
@@ -122,6 +135,17 @@ fi" >> $PKG/install/doinst.sh
 
 
 
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
@@ -136,3 +160,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+

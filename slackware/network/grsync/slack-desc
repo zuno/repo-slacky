@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+grsync: Grsync (GTK2+ Rsync GUI)
+grsync:
+grsync: Grsync  is  a  GUI  for  rsync, the command  line file and directory
+grsync: synchronization  tool. While  it  can  work  with  remote hosts, its
+grsync: focus is to synchronize local directories. With this program you can
+grsync: for  example, keep  your  mp3s  in  sync  with an audio player, make
+grsync: backups of your home folder, etc.
+grsync:
+grsync:
+grsync:
+grsync:

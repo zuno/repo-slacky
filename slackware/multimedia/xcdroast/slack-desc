@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler-----------------------------------------------------|
+xcdroast: X-CD-Roast (GTK2+ Cdrtools Graphical Frontend)
+xcdroast:
+xcdroast: X-CD-Roast is a graphical  frontend  for the command  line cdrtools
+xcdroast: You can do anything X-CD-Roast does yourself using the command line
+xcdroast: tools - but it's nicer  and easier with the frontend.  The cdrtools
+xcdroast: contain "cdrecord" (which does the actual writing of CDs), "readcd"
+xcdroast: (reads  data  tracks  of  CDs"), "mkisofs" (masters CD images), and
+xcdroast: "cdda2wav" (reads audio tracks).  Cdrecord,  readcd and mkisofs are
+xcdroast: maintained by Joerg  Schilling, cdda2wav by  Heiko  Eissfeldt,  and
+xcdroast: X-CD-Roast by Thomas Niederreiter.
+xcdroast:

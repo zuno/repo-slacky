@@ -1,0 +1,117 @@
+#!/bin/sh
+#
+# Heavily based on the Slackware 14.0 SlackBuild
+#
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from atomix600 ( www.slacky.eu )
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+set -e
+
+PKGNAME=cdrkit
+VERSION=1.1.11
+ARCH=${ARCH:-i486}
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+CHOST=i486
+SOURCE=http://cdrkit.org/releases/$PKGNAME-$VERSION.tar.gz
+CWD=`pwd`
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+EXT=${EXT:-txz}
+OUTPUT=${OUTPUT:-$CWD}
+DOCS="ABOUT COPYING Changelog FAQ FORK INSTALL START TODO VERSION"
+DOCDIR=$PKG/usr/doc/$PKGNAME-$VERSION
+
+if [ ! -e $PKGNAME-$VERSION.tar.gz ]; then
+wget -c $SOURCE
+fi
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST=i486
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST=i486
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+fi
+
+if [ ! -d $TMP ]; then
+ mkdir -p $TMP
+fi
+if [ ! -d $PKG ]; then
+ mkdir -p $PKG
+fi
+
+cd $TMP
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
+
+find . -perm 666 -exec chmod 644 {} \;
+find . -perm 664 -exec chmod 644 {} \;
+find . -perm 600 -exec chmod 644 {} \;
+find . -perm 444 -exec chmod 644 {} \;
+find . -perm 400 -exec chmod 644 {} \;
+find . -perm 440 -exec chmod 644 {} \;
+find . -perm 777 -exec chmod 755 {} \;
+find . -perm 775 -exec chmod 755 {} \;
+find . -perm 511 -exec chmod 755 {} \;
+find . -perm 711 -exec chmod 755 {} \;
+find . -perm 555 -exec chmod 755 {} \;
+
+chown -R root:root .
+( mkdir build \
+   &&  cd build \
+     &&  cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+     && make  \
+&& make install DESTDIR=$PKG ) 
+
+# Remove some binary already present inside cdrtools Slackware package
+( cd $PKG/usr/bin
+rm devdump isodebug isodump isoinfo isovfy ) 
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a $DOCS $DOCDIR
+
+mv $PKG/usr/share/man $PKG/usr/man
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \;
+  for i in $(find . -type l) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $DOCDIR/$PKGNAME.SlackBuild
+
+cd $PKG
+requiredbuilder -y -v -s $CWD $PKG
+makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.$EXT
+
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
