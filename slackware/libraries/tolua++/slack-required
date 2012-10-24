@@ -1,0 +1,4 @@
+glibc-solibs >= 2.15-i486-7
+lua >= 5.1.5-i486-1sl
+ncurses >= 5.9-i486-1
+readline >= 5.2-i486-4

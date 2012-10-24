@@ -1,3 +1,29 @@
+Wed Oct 24 05:00:59 CEST 2012
+-----------------------------
+	new file:   desktop/conky/conky.SlackBuild
+	new file:   graphic/screengrab/screengrab.SlackBuild
+	new file:   libraries/farsight2/farsight2.SlackBuild
+	new file:   libraries/gssdp/gssdp.SlackBuild
+	new file:   libraries/gupnp-igd/gupnp-igd.SlackBuild
+	new file:   libraries/gupnp/gupnp.SlackBuild
+	new file:   libraries/libimobiledevice/libimobiledevice.SlackBuild
+	new file:   libraries/libnice/libnice.SlackBuild
+	new file:   libraries/soundtouch/soundtouch.SlackBuild
+	new file:   libraries/swfdec/swfdec.SlackBuild
+	new file:   libraries/tls/tls.SlackBuild
+	new file:   libraries/tolua++/tolua++.SlackBuild
+	new file:   multimedia/dvgrab/dvgrab.SlackBuild
+	new file:   multimedia/kdenlive/kdenlive.SlackBuild
+	new file:   multimedia/simpleaudioplayer/simpleaudioplayer.SlackBuild
+	new file:   multimedia/simpleburn/simpleburn.SlackBuild
+	new file:   multimedia/zbar/zbar.SlackBuild
+	new file:   network/amsn/amsn.SlackBuild
+	new file:   scientific/mecab/mecab.SlackBuild
+	new file:   system/winetricks/winetricks.SlackBuild
+	new file:   system/zenity/zenity.SlackBuild
+	new file:   utilities/gwaei/gwaei.SlackBuild
+	new file:   utilities/kqrcode/kqrcode.SlackBuild
+
 Tue Oct 23 05:02:23 CEST 2012
 -----------------------------
 	new file:   development/Twisted/Twisted.SlackBuild

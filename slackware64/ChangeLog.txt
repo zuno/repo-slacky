@@ -1,3 +1,13 @@
+Wed Oct 24 05:03:10 CEST 2012
+-----------------------------
+	new file:   development/kdiff3/kdiff3.SlackBuild
+	new file:   development/recode/recode.SlackBuild
+	new file:   libraries/enca/enca.SlackBuild
+	new file:   libraries/libaacplus/libaacplus.SlackBuild
+	new file:   libraries/libass/libass.SlackBuild
+	new file:   libraries/libvpx/libvpx.SlackBuild
+	new file:   multimedia/ripperX/ripperX.SlackBuild
+
 Tue Oct 23 05:08:02 CEST 2012
 -----------------------------
 	new file:   libraries/perl-archive-zip/perl-archive-zip.SlackBuild

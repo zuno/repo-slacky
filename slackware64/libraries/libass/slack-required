@@ -1,0 +1,8 @@
+bzip2 >= 1.0.6-x86_64-1
+enca >= 1.14-x86_64-1sl
+expat >= 2.0.1-x86_64-2
+fontconfig >= 2.9.0-x86_64-1
+freetype >= 2.4.10-x86_64-1
+fribidi >= 0.19.2-x86_64-3
+glibc-solibs >= 2.15-x86_64-7
+zlib >= 1.2.6-x86_64-1

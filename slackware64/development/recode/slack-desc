@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+recode: recode (Conversion between character sets and surfaces)
+recode:
+recode: The `recode' converts files between character sets and usages.
+recode: It recognises or produces nearly 150 different character sets and
+recode: is able to transliterate files between almost any pair. When exact
+recode: transliteration are not possible, it may get rid of the offending
+recode: characters or fall back on approximations. Most RFC 1345 character
+recode: sets are supported.
+recode:
+recode: 
+recode: 

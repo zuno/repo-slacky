@@ -1,0 +1,12 @@
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+gssdp >= 0.13.0-i486-1sl
+gstreamer >= 0.10.36-i486-1
+gupnp >= 0.19.0-i486-1sl
+gupnp-igd >= 0.2.1-i486-1sl
+libffi >= 3.0.11-i486-1
+libsoup >= 2.38.1-i486-2
+libxml2 >= 2.8.0-i486-1
+util-linux >= 2.21.2-i486-5
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1
