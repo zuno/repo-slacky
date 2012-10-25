@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler-----------------------------------------------------|
+sentinella: Sentinella (KDE4 System Activity Monitor)
+sentinella:
+sentinella: Sentinella monitors your  system  activity and, when a condition is
+sentinella: met, takes an action that you\'ve  chosen. It can  monitor your CPU
+sentinella: memory, hard disks bandwidth usage, network load and, as you choose
+sentinella: it can power  off/reboot/hibernate  your computer, kill  a  program
+sentinella: throw an alarm or execute a command.
+sentinella:
+sentinella:
+sentinella:
+sentinella:

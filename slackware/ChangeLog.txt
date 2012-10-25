@@ -1,5 +1,23 @@
 Wed Oct 24 05:00:59 CEST 2012
 -----------------------------
+	new file:   games/xmoto/xmoto.SlackBuild
+	new file:   libraries/Image-ExifTool/Image-ExifTool.SlackBuild
+	new file:   libraries/OpenCV/OpenCV.SlackBuild
+	new file:   libraries/blas/blas.SlackBuild
+	new file:   libraries/lensfun/lensfun.SlackBuild
+	new file:   libraries/libpano13/libpano13.SlackBuild
+	new file:   libraries/libsysactivity/libsysactivity.SlackBuild
+	new file:   libraries/libxmi/libxmi.SlackBuild
+	new file:   libraries/ode/ode.SlackBuild
+	new file:   libraries/tclap/tclap.SlackBuild
+	new file:   multimedia/cinelerra/cinelerra.SlackBuild
+	new file:   multimedia/kino/kino.SlackBuild
+	new file:   multimedia/mlt/mlt.SlackBuild
+	new file:   scientific/stellarium/stellarium.SlackBuild
+	new file:   system/sentinella/sentinella.SlackBuild
+
+Wed Oct 24 05:00:59 CEST 2012
+-----------------------------
 	new file:   desktop/conky/conky.SlackBuild
 	new file:   graphic/screengrab/screengrab.SlackBuild
 	new file:   libraries/farsight2/farsight2.SlackBuild

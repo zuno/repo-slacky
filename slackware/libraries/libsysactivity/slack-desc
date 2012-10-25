@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler--------------------------------------------------------|
+libsysactivity: Libsysactivity (System's Statistics Library)
+libsysactivity:
+libsysactivity: A lightweight library that retrieves statistics of the system's
+libsysactivity: activity in a portable and thread  safe way. In each OS that it
+libsysactivity: supports it offers the same API for retrieving the  activity of
+libsysactivity: hard disks, CPUs, memory, processes and network interfaces
+libsysactivity:
+libsysactivity:
+libsysactivity:
+libsysactivity:
+libsysactivity:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler----------------------------------------------------|
+cinelerra: Cinelerra (GNU/Linux Movie Studio)
+cinelerra:
+cinelerra: Cinelerra an advanced content  creation  system for Linux. It does
+cinelerra: primarily 3 main things: capturing, compositing, and editing audio
+cinelerra: and video with sample level accuracy.
+cinelerra:
+cinelerra:
+cinelerra:
+cinelerra:
+cinelerra:
+cinelerra:

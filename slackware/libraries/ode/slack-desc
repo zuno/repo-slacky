@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+ode: ODE (Open Dynamic Engine))
+ode:
+ode: It is fully featured, stable, mature and platform independent with an
+ode: easy  to  use C/C++ API. It  has advanced  joint types and integrated
+ode: collision detection  with  friction.  ODE  is  useful  for simulating
+ode: vehicles,   objects  in  virtual  reality  environments  and  virtual
+ode: creatures. It is currently used in  many computer games, 3D authoring
+ode: tools and simulation tools.
+ode:
+ode:
+ode:
