@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+libdc1394: LibDC1394 (IEEE 1394 Library)
+libdc1394:
+libdc1394: Libdc1394 is a library that is  intended  to  provide  a  high  level
+libdc1394: programming interface for application developers who wish to  control
+libdc1394: IEEE 1394 based cameras that conform to the 1394-based Digital Camera
+libdc1394:
+libdc1394:
+libdc1394:
+libdc1394:
+libdc1394:
+libdc1394:

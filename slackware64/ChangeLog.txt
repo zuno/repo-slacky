@@ -1,3 +1,10 @@
+Thu Oct 25 05:07:19 CEST 2012
+-----------------------------
+	new file:   libraries/libbluray/libbluray.SlackBuild
+	new file:   libraries/libdc1394/libdc1394.SlackBuild
+	new file:   libraries/libgsm/libgsm.SlackBuild
+	new file:   libraries/libmodplug/libmodplug.SlackBuild
+
 Wed Oct 24 05:03:10 CEST 2012
 -----------------------------
 	new file:   development/kdiff3/kdiff3.SlackBuild
