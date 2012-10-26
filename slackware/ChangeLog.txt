@@ -1,3 +1,19 @@
+Fri Oct 26 05:01:09 CEST 2012
+-----------------------------
+	new file:   development/python-distutils-extra/python-distutils-extra.SlackBuild
+	new file:   graphic/enblend-enfuse/enblend-enfuse.SlackBuild
+	new file:   graphic/kipi-plugins/kipi-plugins.SlackBuild
+	new file:   graphic/kphotoalbum/kphotoalbum.SlackBuild
+	new file:   libraries/configobj/configobj.SlackBuild
+	new file:   libraries/gdata/gdata.SlackBuild
+	new file:   libraries/lapack/lapack.SlackBuild
+	new file:   libraries/mechanize/mechanize.SlackBuild
+	new file:   libraries/pylast/pylast.SlackBuild
+	new file:   libraries/python-xlib/python-xlib.SlackBuild
+	new file:   multimedia/gsharkdown/gsharkdown.SlackBuild
+	new file:   multimedia/silicon/silicon.SlackBuild
+	new file:   system/fuseiso/fuseiso.SlackBuild
+
 Wed Oct 24 05:00:59 CEST 2012
 -----------------------------
 	new file:   games/xmoto/xmoto.SlackBuild

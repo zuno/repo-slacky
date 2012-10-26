@@ -1,0 +1,157 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# https://bitbucket.org/vkolev/gsharkdown
+# Packager Andrea Sciucca Gohanz ( gohanz at infinito.it)
+# http://www.slacky.eu
+#
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Required: configobj, gst-plugins-ugly, gst-python, notify-python,  pylast
+#
+# Exit on most errors
+set -e 
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=gsharkdown
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-0.7.0}
+ARCH=${ARCH:-i686} # i686 or x86_64
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+#SOURCE="https://bitbucket.org/vkolev/gsharkdown/get/$PKGNAME-$VERSION-1.tar.bz2"
+
+# Download sorce tarball if still not present
+#if [ ! -e $CWD/$PKGNAME-$VERSION-1.tar.bz2 ]; then
+#wget -c --no-check-certificate $SOURCE
+#fi
+
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+
+# Decompress the source tarball
+cd $TMP
+#tar xvjf $CWD/$PKGNAME-$VERSION-1.tar.bz2
+hg clone https://bitbucket.org/vkolev/gsharkdown
+
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild gSharkDown |\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships# Adjust permissions and ownerships
+cd gsharkdown
+chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
+
+# Building gSharkDown package
+mkdir -p $PKG/usr/bin
+cat << EOF > $PKG/usr/bin/gsharkdown
+#!/bin/bash
+cd /usr/share/gsharkdown
+python /usr/share/gsharkdown/gsharkdown.py
+EOF
+
+chmod 755 $PKG/usr/bin/*
+
+
+mkdir -p  $PKG/usr/share/gsharkdown/
+cp -a -r {data,lib,po} $PKG/usr/share/gsharkdown
+
+
+install -m 0755 -p -D gsharkdown.py $PKG/usr/share/gsharkdown/gsharkdown.py
+
+# Setting Gsharkdown version
+install -m 0644 -p -D VERSION $PKG/usr/share/gsharkdown/VERSION
+
+# Installing desktop file menu and icons
+mkdir -p $PKG/usr/share/applications
+cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=gSharkDown
+GenericName=Audio Player & Downloader
+Comment=This is a program to simply create your own DVD video
+Icon=/usr/share/gsharkdown/data/gsharkdown.png
+Exec=gsharkdown
+Terminal=false
+StartupNotify=true
+Categories=Application;AudioVideo
+EOF
+
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a COPYING HELP INSTALL README VERSION  $PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+# Building some post-install execution script 	
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database &> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+
+
+
+
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(configobj\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(gst-plugins-ugly\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(gst-python\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(notify-python\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(pylast\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -c -b -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
+
+
+
+
