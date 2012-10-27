@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=WxCam
+GenericName=Webcam Utility
+Comment=Webcam application for GNU/linux
+Comment[it]=Applicazione Webcam per GNU/linux
+Icon=wxcam
+TryExec=wxcam
+Exec=wxcam
+Terminal=false
+Categories=Application;AudioVideo;Video;
+StartupNotify=true

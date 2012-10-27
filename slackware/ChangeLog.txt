@@ -1,3 +1,15 @@
+Sat Oct 27 05:01:33 CEST 2012
+-----------------------------
+	new file:   graphic/digikam/digikam.SlackBuild
+	new file:   graphic/hugin/hugin.SlackBuild
+	new file:   libraries/libmikmod/libmikmod.SlackBuild
+	new file:   libraries/libresample/libresample.SlackBuild
+	new file:   multimedia/QMPlay/QMPlay.SlackBuild
+	new file:   multimedia/QMPlay2/QMPlay2.SlackBuild
+	new file:   multimedia/wxcam/wxcam.SlackBuild
+	new file:   network/FileZilla/FileZilla.SlackBuild
+	new file:   security/aircrack-ng/aircrack-ng.SlackBuild
+
 Fri Oct 26 05:01:09 CEST 2012
 -----------------------------
 	new file:   development/python-distutils-extra/python-distutils-extra.SlackBuild

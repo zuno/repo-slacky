@@ -1,0 +1,20 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+         |----handy-ruler-----------------------------------------------------|
+libmikmod: Libmikmod (Mikmod Sound System)
+libmikmod:
+libmikmod: Mikmod is a module player  and  library  supporting  many  formats
+libmikmod: including  mod,  s3m,  it, and xm. Originally  a player for MS-DOS
+libmikmod: MikMod has been ported to other platforms, such as Unix, Macintosh
+libmikmod: BeOS, and Java(!!).
+libmikmod:
+libmikmod:
+libmikmod:
+libmikmod:
+libmikmod:
+
