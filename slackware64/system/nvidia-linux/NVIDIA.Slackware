@@ -34,6 +34,11 @@ If you use the nvidia-xconfig tools to reconfigure the driver, you must delete i
 
 
 
-This package remove the nvidia libvdpau, so you need to install it.
-libvdpau 0.5 solve the problem with youtube videos without the workaround of 
-/etc/adobe/mms.cfg or disabling flash hardware acceleration.
+This package remove the nvidia libvdpau, so you need to install it (open libvdpau
+or nvidia-vdpau).
+
+
+You may need to reconfigure the X server.
+By default you have a minimal configuration in /etc/X11/xorg.conf.d but you may
+remove it and lauch nvidia-xconfig to start a new /etc/X11/xorg.conf and next
+nvidia-settings to tune it.

@@ -11,6 +11,7 @@ config() {
   # Otherwise, we leave the .new copy for the admin to consider...
 }
 config etc/X11/xorg.conf.d/nvidia.conf.new
+config etc/X11/xorg.conf.d/monitor.conf.new
 config etc/modprobe.d/nvidia.conf.new
 
 if [ -f usr/libLIBDIRSUFFIX/xorg/modules/extensions/libglx.so ];then

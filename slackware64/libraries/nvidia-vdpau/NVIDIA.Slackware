@@ -1,0 +1,11 @@
+Slackware Notes:
+
+This version of VDPAU extension is taken from the original site of NVIDIA driver:
+NVIDIA-Linux-x86_64-310.14.run
+or
+NVIDIA-Linux-x86-310.14.run
+
+Also the package contains the include headers from open libnvidia 0.5
+
+
+This nvidia vdpau solve the problem with youtube videos.

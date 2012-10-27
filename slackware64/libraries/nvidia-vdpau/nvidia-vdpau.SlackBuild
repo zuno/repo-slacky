@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# Heavily based on the Slackware 14.0 SlackBuild
+# Heavily based on the Slackware 14.0 SlackBuild (v1)
 
 # Written by Matteo Rossini ( zerouno @ slacky.it )
 # Last build from Matteo Rossini ( zerouno @ slacky.it )
 
-# Slackware build script for flash-player-plugin
-# Official Site: http://get.adobe.com/it/flashplayer/
+# Slackware build script for nvidia-vdpau
+# Official Site: http://www.nvidia.com/Download/index.aspx
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -29,16 +29,18 @@ set -e
 
 
 # Basic information. 
-PKGNAME=flash-player-plugin
-VERSION=${VERSION:-11.2.202.243}
+PKGNAME=nvidia-vdpau
+VERSION=${VERSION:-310.14}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://fpdownload.macromedia.com/get/flashplayer/pdc/$VERSION/install_flash_player_11_linux_$ARCH.tar.gz"
-TAR=      # empty = auto
-DIR=.      # empty = auto
-DOCS="readme.txt"
-SLKFILES=""
+NARCH=x86
+if [ $ARCH == "x86_64" ];then NARCH=x86_64;fi 
+SOURCE="http://it.download.nvidia.com/XFree86/Linux-$ARCH/$VERSION/NVIDIA-Linux-$NARCH-$VERSION.run"
+TAR=NVIDIA-Linux-$NARCH-$VERSION.run      # empty = auto
+DIR=NVIDIA-Linux-$NARCH-$VERSION      # empty = auto
+DOCS="html/vdpausupport.html README.txt LICENSE NVIDIA_Changelog"
+SLKFILES="vdpau.h vdpau.pc vdpau_wrapper.cfg vdpau_x11.h NVIDIA.Slackware"
 
 # If EULA
 if [ -e EULA.TXT ];then
@@ -52,7 +54,6 @@ if [ -e EULA.TXT ];then
 fi
 
 # Does not touch following if not needed
-JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
@@ -83,19 +84,58 @@ fi
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
-cd $PKG
-tar xvf $CWD/$TAR
+cd $TMP
+sh $CWD/$TAR -x
 cd $DIR
-
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
-mkdir -p usr/lib$LIBDIRSUFFIX/mozilla/plugins
-mv libflashplayer.so usr/lib$LIBDIRSUFFIX/mozilla/plugins
+## Standard
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
-# Documentations
+## Installation
+
+# Base
+mkdir -p $PKG/etc
+cat $CWD/vdpau_wrapper.cfg > $PKG/etc/vdpau_wrapper.cfg.new
+
+# Install Libraries
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
+
+install -m 755 \
+    libvdpau.so.$VERSION \
+  $PKG/usr/lib${LIBDIRSUFFIX}
+  cd $PKG/usr/lib${LIBDIRSUFFIX}
+    ln -sf libvdpau.so.$VERSION libvdpau.so.1
+    ln -sf libvdpau.so.1 libvdpau.so
+    ln -sf vdpau/libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so
+    ln -sf vdpau/libvdpau_trace.so.$VERSION libvdpau_trace.so
+  cd -
+
+
+install -m 755 \
+    libvdpau_nvidia.so.$VERSION \
+    libvdpau_trace.so.$VERSION \
+  $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
+  cd $PKG/usr/lib${LIBDIRSUFFIX}/vdpau
+    ln -sf libvdpau_nvidia.so.$VERSION libvdpau_nvidia.so.1
+    ln -sf libvdpau_trace.so.$VERSION libvdpau_trace.so.1
+    ln -sf libvdpau_nvidia.so.1 libvdpau_nvidia.so
+    ln -sf libvdpau_trace.so.1 libvdpau_trace.so
+  cd -
+
+# Install Headers from libvdpau 0.5
+
+mkdir -p $PKG/usr/include/vdpau $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
+cat $CWD/vdpau.h > $PKG/usr/include/vdpau/vdpau.h
+cat $CWD/vdpau_x11.h > $PKG/usr/include/vdpau/vdpau_x11.h
+cat $CWD/vdpau.pc > $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/vdpau.pc
+
+# Documentation
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
@@ -105,23 +145,7 @@ for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFIL
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
-
-( cd $PKG
-  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-)
-
-mkdir -p $PKG/install
-cat $CWD/slack-desc > $PKG/install/slack-desc
-[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
-[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/NVIDIA.Slackware > $PKG/usr/doc/$PKGNAME-$VERSION/NVIDIA.Slackware
 
 cd $PKG
 chown -R root:root $PKG

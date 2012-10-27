@@ -10,10 +10,10 @@ nvidia-linux: nvidia-linux (Drivers & Tools for Nvidia Interface)
 nvidia-linux:
 nvidia-linux: This is the NVIDIA Accelerated Linux Graphics Driver
 nvidia-linux: 
+nvidia-linux: the package does NOT contains vdpau libraries. You need to install
+nvidia-linux: the libvdapu 0.5 package or nvidia-vdpau proprietary libraries
 nvidia-linux:
 nvidia-linux: * please, read the NVIDIA.Slackware under *
 nvidia-linux: *   /usr/doc/nvidia-linux-*               *
 nvidia-linux: * for importants notes                    *
-nvidia-linux:
-nvidia-linux:
 nvidia-linux:

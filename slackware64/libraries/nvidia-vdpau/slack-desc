@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+nvidia-vdpau: nvidia-vdpau (Accelerated vdpau library from Nvidia Driver)
+nvidia-vdpau:
+nvidia-vdpau: This is the vdapu library extracted from the
+nvidia-vdpau: NVIDIA Accelerated Linux Graphics Driver
+nvidia-vdpau: 
+nvidia-vdpau:
+nvidia-vdpau:   * please, read the NVIDIA.Slackware under *
+nvidia-vdpau:   *   /usr/doc/nvidia-vdpau-*               *
+nvidia-vdpau:   * for importants notes                    *
+nvidia-vdpau:
+nvidia-vdpau:
