@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+crosti: Crosti (Qt4 Cross Stitches)
+crosti:
+crosti: This tool allows you to make your own unique cross stitch scheme
+crosti: from custom image. You can  resize  and rotate image, reduce the
+crosti: number of colors, change image palette, make cross stitch scheme
+crosti: preview  it, save   and   print. Cross  stitch  scheme   edition
+crosti: available: colors and  icons changing, new color addition, color
+crosti: fill, scheme pixel draw, lines and half-stitches.
+crosti:
+crosti:
+crosti:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+GeoIP-Python: GeoIP-Python (Python GeoIP Modules)
+GeoIP-Python:
+GeoIP-Python: GeoIP   is    the   proprietary     technology   that    drives
+GeoIP-Python: MaxMind's  IP  geolocation data  and  services. GeoIP  provides
+GeoIP-Python: businesses with a non invasive way  to  determine  geographical
+GeoIP-Python: and    other  information  about  their  Internet  visitors  in
+GeoIP-Python: real-time.
+GeoIP-Python:
+GeoIP-Python:
+GeoIP-Python:
+GeoIP-Python:

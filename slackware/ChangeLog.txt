@@ -1,3 +1,19 @@
+Sun Oct 28 05:00:29 CET 2012
+-----------------------------
+	new file:   development/CImg/CImg.SlackBuild
+	new file:   graphic/crosti/crosti.SlackBuild
+	new file:   libraries/GeoIP-Python/GeoIP-Python.SlackBuild
+	new file:   libraries/json-glib/json-glib.SlackBuild
+	new file:   libraries/libbs2b/libbs2b.SlackBuild
+	new file:   libraries/libcrystalhd/libcrystalhd.SlackBuild
+	new file:   libraries/libofa/libofa.SlackBuild
+	new file:   libraries/libtorrent-rasterbar/libtorrent-rasterbar.SlackBuild
+	new file:   libraries/qwt/qwt.SlackBuild
+	new file:   multimedia/boombox/boombox.SlackBuild
+	new file:   network/QuiteRSS/QuiteRSS.SlackBuild
+	new file:   network/qtransmission/qtransmission.SlackBuild
+	new file:   office/liferea/liferea.SlackBuild
+
 Sat Oct 27 05:01:33 CEST 2012
 -----------------------------
 	new file:   graphic/digikam/digikam.SlackBuild

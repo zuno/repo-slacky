@@ -1,5 +1,9 @@
 Sat Oct 27 05:06:23 CEST 2012
 -----------------------------
+	new file:   libraries/libtre/libtre.SlackBuild
+
+Sat Oct 27 05:06:23 CEST 2012
+-----------------------------
 	new file:   libraries/nvidia-vdpau/nvidia-vdpau.SlackBuild
 	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
 	modified:   system/nvidia-linux/nvidia-linux.SlackBuild

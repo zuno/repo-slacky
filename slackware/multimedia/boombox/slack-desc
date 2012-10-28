@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+boombox: BoomBox (KDE4 Audio Player)
+boombox:
+boombox: BoomBox is an audio player  with built-in database  for  easy browsing
+boombox: of local music files. It  has  no  playlist, instead  it  simply plays
+boombox: songs from current search results. These queries  can be saved to give
+boombox: you something like "dynamic playlists". It also has support for queing
+boombox: up songs to be played, replacing much of the need for a playlist.
+boombox:
+boombox:
+boombox:
+boombox:

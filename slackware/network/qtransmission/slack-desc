@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+             |-----handy-ruler--------------------------------------------------|
+qtransmission: QTransmission (QT4 Lightweight BitTorrent client)
+qtransmission:
+qtransmission: It features  a  simple,  intuitive interface   on  top on an
+qtransmission: efficient  cross-platform  back-end. gtktransmission is open
+qtransmission: source (MIT license)interface). and runs on Mac OS X  (Cocoa
+qtransmission: interface),    Linux/NetBSD/FreeBSD/OpenBSD  (QT4 interface)
+qtransmission: and BeOS (native interface).
+qtransmission:
+qtransmission:
+qtransmission:
+qtransmission:
