@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler---------------------------------------------------|
+alglib: ALGLIB (Numerical Analysis Library)
+alglib:
+alglib: ALGLIB is a cross-platform  numerical  analysis and data processing
+alglib: library. It supports several programming languages (C++, C#, Pascal
+alglib: VBA) and several operating systems (Windows, Linux, Solaris).
+alglib:
+alglib:
+alglib:
+alglib:
+alglib:
+alglib:

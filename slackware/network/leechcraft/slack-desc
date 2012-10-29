@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler-------------------------------------------------------|
+leechcraft: LeechCraft (Qt4 Modular Internet Client)
+leechcraft:
+leechcraft: LeechCraft is a free  open  source cross-platform  modular internet
+leechcraft: client. It allows to browse  the web, read RSS/Atom feeds, download
+leechcraft: files leechcraft: via BitTorrent, FTP, HTTP, automatically download
+leechcraft: play  or  stream  podcasts  and  much more. Due to great LeechCraft
+leechcraft: modularity, every user can modify  set of  client's features on the
+leechcraft: fly with plugins.
+leechcraft:
+leechcraft:
+leechcraft:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler----------------------------------------------------|
+kiwi: Kiwi (PyGTK Classes and Wrappers)
+kiwi:
+kiwi: Kiwi consists of a set  of  classes and wrappers for PyGTK that were
+kiwi: developed  to  provide a sort of  framework for  applications. Fully
+kiwi: object-oriented, and roughly Smalltalk's MVC, Kiwi provides a simple
+kiwi: practical way to build forms, windows and widgets that transparently
+kiwi: access and display your object data.
+kiwi:
+kiwi:
+kiwi:
+kiwi:

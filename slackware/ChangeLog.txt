@@ -1,3 +1,20 @@
+Mon Oct 29 05:00:51 CET 2012
+-----------------------------
+	new file:   development/asio/asio.SlackBuild
+	new file:   development/qross/qross.SlackBuild
+	new file:   libraries/alglib/alglib.SlackBuild
+	new file:   libraries/kiwi/kiwi.SlackBuild
+	new file:   libraries/libgsasl/libgsasl.SlackBuild
+	new file:   libraries/libvmime/libvmime.SlackBuild
+	new file:   libraries/qxmpp/qxmpp.SlackBuild
+	new file:   libraries/raptor2/raptor2.SlackBuild
+	new file:   multimedia/mkvtoolnix/mkvtoolnix.SlackBuild
+	new file:   network/leechcraft/leechcraft.SlackBuild
+	new file:   network/nss-mdns/nss-mdns.SlackBuild
+	new file:   network/transmission/transmission.SlackBuild
+	new file:   utilities/requiredbuilder/requiredbuilder.SlackBuild
+	new file:   utilities/thunderbird-servicemenu/thunderbird-servicemenu.SlackBuild
+
 Sun Oct 28 05:00:29 CET 2012
 -----------------------------
 	new file:   development/CImg/CImg.SlackBuild

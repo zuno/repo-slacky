@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler----------------------------------------------------|
+asio: Asio (C++ Network Library)
+asio:
+asio: Asio is  a cross-platform C++  library  for network programming that
+asio: provides developers with a consistent asynchronous I/O model using a
+asio: modern C++ approach.
+asio:
+asio:
+asio:
+asio:
+asio:
+asio:
