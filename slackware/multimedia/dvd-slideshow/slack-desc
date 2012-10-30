@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler----------------------------------------------|
+dvd-slideshow: DVD Slideshow (DVD Video Slideshow Maker) 
+dvd-slideshow:
+dvd-slideshow: DVD Slideshow makes a DVD slideshow video with menus from
+dvd-slideshow: a text file listing of pictures, effects, and audio tracks.
+dvd-slideshow: You can add some  nice  effects  like  fades,  crops,
+dvd-slideshow: scrolls, or Ken Burns  effects. Think of a command-line
+dvd-slideshow: clone of imovie.
+dvd-slideshow:
+dvd-slideshow:
+dvd-slideshow:
+dvd-slideshow:

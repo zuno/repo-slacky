@@ -1,9 +1,12 @@
 #!/bin/sh
+# Copyright 2008 Loris Vincenzi (http://www.slacky.eu)
+# All rights reserved.
+#
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://code.google.com/p/xnoise/
-# Packagers Andrea Sciucca ( gohanz at infinito.it)
-# http://www.slacky.eu
-# 
+#
+#
+# http://www.MPlayerHQ.hu
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -21,8 +24,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: gst-ffmpeg, gst-plugins-ugly, libunique, vala
 #
+# Requirements: a52dec, dirac, enca, faac, faad2, jack-audio-connection-kit, lame, ladspa (compilation), libass, libbluray, libcrystalhd
+# Requirements: libs2b, libdca, libdv, libdvdcss, libdvdnav, libgsm, libvpx, libnut (Statically linked)
+# Requirements: live555(Statically linked),  opencore-amr, openjpeg, orc, rtmpdump,  schroendinger, speex, twolame
+# Requirements: x264, xvidcore
 #
 # Exit on most errors
 set -e
@@ -33,20 +39,30 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=xnoise
+PKGNAME=MPlayer
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.2.13}
-ARCH=${ARCH:-i486}
+VERSION=${VERSION:-1.1}
+ARCH=${ARCH:-i686}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+SKIN=Blue
+SKINV=${SKINV:-1.8}
+BUILD=${BUILD:-5}
 TAG=${TAG:-sl}
 
 
-SOURCE="https://github.com/downloads/shuerhaaken/xnoise/$PKGNAME-$VERSION.tar.gz"
+SOURCE="ftp://ftp.mplayerhq.hu/MPlayer/releases/$PKGNAME-$VERSION.tar.xz"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.xz ]; then
+wget -c $SOURCE
+fi
+
+
+SOURCE="http://www.mplayerhq.hu/MPlayer/skins/$SKIN-$SKINV.tar.bz2"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$SKIN-$SKINV.tar.bz2 ]; then
 wget -c $SOURCE
 fi
 
@@ -60,44 +76,54 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
-
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
 # Decompress the source tarball
 cd $TMP
-tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
+tar xvf $CWD/$PKGNAME-$VERSION.tar.xz
+tar xvjf $CWD/$SKIN-$SKINV.tar.bz2
 
-echo -e "\E[0;32m+-------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild XNoise |\E[0;0m"
-echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m+--------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild MPlayer |\E[0;0m"
+echo -e "\E[0;32m+--------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 
-
-# Building XNoise package
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure 	--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libdir=/usr/lib${LIBDIRSUFFIX} \
-		--disable-static \
-		--mandir=/usr/man \
-		--program-prefix= \
-		--program-suffix= \
-		--build=$CHOST-slackware-linux
+# Building MPlayer package
+./configure --prefix=/usr \
+--confdir=/etc/mplayer \
+--codecsdir=/usr/lib${LIBDIRSUFFIX}/codecs \
+--mandir=/usr/man \
+--disable-ivtv \
+--disable-openal \
+--disable-dvdread-internal \
+--enable-joystick \
+--enable-xvmc \
+--enable-xmms \
+--enable-gui \
+--enable-menu \
+--enable-radio \
+--language=all \
+--enable-runtime-cpudetection \
+$EXTRASWITCH
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
 make $JOBS
 make install DESTDIR=$PKG
 
+
+# Prepare the configfile:
+mkdir -p $PKG/etc/mplayer
+cp etc/example.conf $PKG/etc/mplayer/mplayer.conf
+cp etc/{codecs.conf,dvb-menu.conf,input.conf,menu.conf}  $PKG/etc/mplayer
+( cd $PKG/etc/mplayer
+for i in *.conf; do mv "$i" "`basename $i .conf`.conf.new"; done )
+ 
 
 # Strip binaries and shared objects, if present
 ( cd $PKG
@@ -109,25 +135,20 @@ make install DESTDIR=$PKG
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a  AUTHORS  COPYING  ChangeLog  INSTALL NEWS README $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS Changelog DOCS LICENSE README $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+# Installing skins
+mkdir -p $PKG/usr/share/mplayer/skins/default
+mv -f $TMP/$SKIN/* $PKG/usr/share/mplayer/skins/default
 
 
 # Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
-
-
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
 
 
 # Building some post-install execution script 	
@@ -145,13 +166,22 @@ fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
 
+
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-ADD=$(ls /var/log/packages/ | sed -ne 's/\(gst-ffmpeg\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(gst-plugins-ugly\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(vala\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(libdvdcss\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -b -s  $CWD $PKG
 fi
 # Create txz package
@@ -162,7 +192,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
-
-
 
 
