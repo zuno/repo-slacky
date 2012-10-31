@@ -1,3 +1,10 @@
+Wed Oct 31 05:11:06 CET 2012
+-----------------------------
+	new file:   development/gc/gc.SlackBuild
+	new file:   libraries/confuse/confuse.SlackBuild
+	new file:   libraries/libva/libva.SlackBuild
+	new file:   system/tilda/tilda.SlackBuild
+
 Mon Oct 29 05:03:29 CET 2012
 -----------------------------
 	new file:   desktop/yelp/yelp.SlackBuild
