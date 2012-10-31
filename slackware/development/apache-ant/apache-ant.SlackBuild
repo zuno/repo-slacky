@@ -1,0 +1,119 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by baldelario ~at~ gmail ~dot~ com ( www.slacky.eu )
+
+# Slackware build script for Apache Ant
+# Official Site: http://ant.apache.org
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AS IS AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Exit the script on errors
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}"' ERR
+
+# Catching variables
+PKGNAME=${PKGNAME:-apache-ant}
+VERSION=${VERSION:-1.8.4}
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+SOURCE="http://www.apache.org/dist/ant/binaries/$PKGNAME-$VERSION-bin.tar.bz2"
+
+CWD=${CWD:-`pwd`}
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=${PKG:-$TMP/package-$PKGNAME}
+OUTPUT=${OUTPUT:-$CWD}
+
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  SLKLDFLAGS=""
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  SLKLDFLAGS=""
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  SLKLDFLAGS=""
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  SLKLDFLAGS="-L/usr/lib64"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
+fi
+
+# Source file availability
+if [ ! -e $CWD/$PKGNAME-$VERSION-bin.tar.bz2 ] ; then
+    wget $SOURCE
+fi
+
+# Create working directories
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+
+# Package building
+cd $TMP
+tar xvjf $CWD/$PKGNAME-$VERSION-bin.tar.bz2
+cd $PKGNAME-$VERSION
+
+chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
+
+mkdir -p $PKG/etc/profile.d
+mkdir -p $PKG/usr/{bin,lib/ant,share/java}
+
+cp -rf * $PKG/usr/lib/ant
+ln -sf /usr/lib/ant/bin/ant $PKG/usr/bin/ant
+for FILE in $PKG/$ANT_HOME/lib/*.jar ; do
+  ln -sf $ANT_HOME/lib/$(basename $FILE) $PKG/usr/share/java/$(basename $FILE)
+done
+rm -rf $PKG/usr/lib/ant/bin/{*.bat,*.cmd}
+rm -rf $PKG/usr/lib/ant/docs
+
+( cd $PKG/etc/profile.d; tar xzvf $CWD/profile.d.tar.gz
+  chmod 755 $PKG/etc/profile.d/*
+)
+
+# Adding documentation
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+mv $PKG/usr/lib/ant/{KEYS,LICENS*,README,NOTICE,WHATSNEW,INSTALL} \
+  $PKG/usr/doc/$PKGNAME-$VERSION
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+
+# Adding slack-desc and slack-required
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+fi
+
+# Make the package
+cd $PKG
+chown -R root:root $PKG
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+# Clean up the extra stuff
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP $PKG
+fi

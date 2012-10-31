@@ -1,8 +1,9 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://zaps166.sourceforge.net/?app=QMPlay2
+# http://icculus.org/smpeg/
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
+#
 #
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,37 +24,22 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-# Required: celt, enca, faac, ffmpeg, lame, libaacplus, libass, libbluray, libgsm, libmodplug
-# Required: libva, libvpx, libxavs, openal-soft, opencore-amr, openjpeg
-# Required:  opus, orc, portaudio, rtmpdump, schroedinger, speex
-# Required: twolame, vo-aacenc, vo-amrwbenc, x264, xvidcore
-#
-#
-#
 # Exit on most errors
 set -e
-
-
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=QMPlay2
+PKGNAME=smpeg
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-29X2012}
+VERSION=${VERSION:-`date +%Y%m%d`}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/zaps166/QMPlay2/$PKGNAME-src-$VERSION.tar.bz2"
-
-# Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-src-$VERSION.tar.bz2 ]; then
-wget -c $SOURCE
-fi
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -68,89 +54,55 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-# Decompress source tarball
-cd $TMP
-tar xvjf $CWD/$PKGNAME-src-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+--------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild QMPlay2 |\E[0;0m"
-echo -e "\E[0;32m+--------------------------+\E[0;0m"
+# Download SVN source
+cd $TMP
+svn co svn://svn.icculus.org/smpeg/trunk smpeg
+
+# Tar and Backup SVN source
+tar czf $PKGNAME-`date +%Y%m%d`.tar.gz smpeg
+mv $PKGNAME-`date +%Y%m%d`.tar.gz $CWD/$PKGNAME-`date +%Y%m%d`.tar.gz
+
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Smpeg |\E[0;0m"
+echo -e "\E[0;32m+------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd $PKGNAME-src
-# Disable Pulseaudio plugin. 
-sed -i 's_unix:!mac: SUBDIRS += XVideo PulseAudio_#unix:!mac: SUBDIRS += XVideo PulseAudio_' src/modules/modules.pro
-chmod -R u+w,go+r-w,a-s .
+cd $PKGNAME
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-
-# Building QMPlay2 package
-# Configure:
-
-
-mkdir -p $PKG/usr/bin
-cat << EOF > $PKG/usr/bin/qmplay2
-#!/bin/bash
-cd /usr/share/qmplay2
-exec /usr/share/qmplay2/QMPlay2
-EOF
-
-chmod 755 $PKG/usr/bin/*
-
-# Building translations
-./lang_unix
-
-# Configure:
-qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile QMPlay2.pro
-
-
-# Build and install:
+# Building Smpeg package
+./autogen.sh
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--mandir=/usr/man \
+		--docdir=/usr/doc/$PKGNAME-$VERSION \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
 make $JOBS
+make install DESTDIR=$PKG
 
 
-install -m 0755 -p -D QMPlay2 $PKG/usr/share/qmplay2/QMPlay2
-cp -R src/modules/Extensions/Scripts app/share/qmplay2/BrowserEngine
-cp ChangeLog app/share/qmplay2
-cp -a -r {app,lang} $PKG/usr/share/qmplay2
-
-
-# Strip binaries and shared objects, if present
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-# Installing desktop menu file and icons
 
-install -m 644 -p -D  $CWD/QMPlay2.png  $PKG/usr/share/pixmaps/QMPlay2.png 
-
-mkdir -p $PKG/usr/share/applications
-cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=QMPlay2
-GenericName=Media Player
-GenericName[it]=Lettore Multimediale
-Comment=Qt4 multi-platform media player 
-Comment[it]=Lettore multimediale multipiattaforma scritto in Qt4
-Icon=QMPlay2
-Exec=qmplay2
-Terminal=false
-StartupNotify=true
-Categories=Application;Qt;AudioVideo;
-EOF
-
-
-
-#Add documentation files: readme, changelog and so on
+# Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a COPYING ChangeLog README TODO $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a BUGS CHANGES COPYING README* TODO $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -160,15 +112,14 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
 
 
 
@@ -176,14 +127,15 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -c -b -s  $CWD $PKG
+requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.txz
 
 
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
 

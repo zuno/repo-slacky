@@ -1,5 +1,16 @@
 Tue Oct 30 05:02:45 CET 2012
 -----------------------------
+	new file:   desktop/ColorFolder/ColorFolder.SlackBuild
+	new file:   development/apache-ant/apache-ant.SlackBuild
+	new file:   development/fltk/fltk.SlackBuild
+	new file:   development/openjdk/openjdk.SlackBuild
+	modified:   multimedia/QMPlay2/QMPlay2.SlackBuild
+	new file:   multimedia/smpeg/smpeg.SlackBuild
+	new file:   network/eiskaltdcpp/eiskaltdcpp.SlackBuild
+	new file:   office/texmaker/texmaker.SlackBuild
+
+Tue Oct 30 05:02:45 CET 2012
+-----------------------------
 	new file:   development/mono/mono.SlackBuild
 	new file:   graphic/dcraw/dcraw.SlackBuild
 	new file:   graphic/gtkrawgallery/gtkrawgallery.SlackBuild
