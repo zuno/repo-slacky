@@ -1,0 +1,113 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# hhttp://www.pygame.org
+# Packagers Andrea Sciucca ( gohanz at infinito.it)
+# http://www.slacky.eu
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Requirements: Smpeg, Numpy, portmidi
+#
+# Exit on most errors
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=pygame
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+#VERSION=${VERSION:-1.9.1}
+VERSION=${VERSION:-`date +%Y%m%d`}
+ARCH=${ARCH:-i686} # i686 or x86_64
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+
+# Download sorce tarball if still not present
+#SOURCE=http://www.pygame.org/ftp/$PKGNAME-$VERSION'release'.tar.gz
+
+#if [ ! -e $CWD/$PKGNAME-$VERSION'release'.tar.gz ]; then
+# wget $SOURCE
+#fi
+
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+
+# Decompress the source tarball
+cd $TMP
+#tar xvzf $CWD/$PKGNAME-$VERSION'release'.tar.gz
+hg clone https://bitbucket.org/pygame/pygame
+
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild PyGame |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+#cd $PKGNAME-$VERSION'release'
+cd pygame
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Building PyGame  package
+python setup.py build
+python setup.py install --root=$PKG
+
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+
+# Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a  LGPL WHATSNEW  $PKG/usr/doc/$PKGNAME-$VERSION
+chmod -R 644  $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(numpy\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(portmidi\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(smpeg\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -c -b -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi

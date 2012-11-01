@@ -1,0 +1,10 @@
+GeoIP-Python >= 1.2.7-i686-1sl
+Mako >= 0.7.2-i686-1sl
+Twisted >= 12.2.0-i486-1sl
+libtorrent-rasterbar >= 0.15.10-i486-1sl
+notify-python >= 0.1.1-i486-3
+pyOpenSSL >= 0.11-i686-3sl
+pygame >= 20121031-i686-3sl
+pygtk >= 2.24.0-i486-1
+python2-chardet >= 2.0.1-i686-3sl
+pyxdg >= 0.23-i686-3sl

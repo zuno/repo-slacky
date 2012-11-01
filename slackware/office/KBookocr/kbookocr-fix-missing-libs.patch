@@ -1,0 +1,15 @@
+diff --git a/KBookocr/KBookocr.pro b/KBookocr/KBookocr.pro
+index e32a90a..8592fd8 100644
+--- a/KBookocr/KBookocr.pro
++++ b/KBookocr/KBookocr.pro
+@@ -44,7 +44,9 @@ FORMS    += kbookocr.ui \
+ 
+ INCLUDEPATH  += /usr/include/poppler/qt4
+ LIBS         += -lpoppler-qt4 \
+-		-lksane
++		-lksane \
++		-lkdecore \
++		-lkdeui
+ 
+ RESOURCES += \
+     ico.qrc

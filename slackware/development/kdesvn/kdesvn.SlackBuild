@@ -1,10 +1,16 @@
 #!/bin/sh
+
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://leechcraft.org/
-# Packager Andrea Sciucca ( gohanz at infinito.it)
+
+# Slackware build script for Kdesvn
+# Official site: http://kdesvn.alwins-world.de
+
+# Written Andrea Sciucca ( gohanz at infinito.it)
+# Thanks to Michiel van Wessem, Manchester, United Kingdom
 # http://www.slacky.eu
-#
-#
+
+
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -22,25 +28,29 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: GeoIP, libtorrent-rasterbar(Problemi versione 0.16), libvmime, qjson, qwt, qxmpp
 #
 # Exit on most errors
 set -e
 
+
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=leechcraft
+PKGNAME=kdesvn
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.5.85}
-#VERSION=${VERSION:-`date +%Y%m%d`}
+VERSION=${VERSION:-1.6.0}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-11}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
+# Download sorce tarball if still not present
+SOURCE="http://kdesvn.alwins-world.de/downloads/$PKGNAME-$VERSION.tar.bz2"
 
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+ wget $SOURCE
+fi
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -51,8 +61,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
-
-
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -60,23 +68,19 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-#tar xvf $CWD/$PKGNAME-$VERSION.tar.xz
-git clone git://github.com/0xd34df00d/leechcraft.git
+tar xvf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild LeechCraft |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Kdesvn |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd leechcraft
-#cd $PKGNAME-$VERSION
+cd $PKGNAME-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-
-# Build LeechCraft package
-( cd src 
-  mkdir -p build \
+# Build KdeSvn package
+( mkdir -p build \
     && cd build \
       && cmake .. \
     -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
@@ -89,9 +93,7 @@ chmod -R u+w,go+r-w,a-s .
     -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
     -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
     -DBUILD_SHARED_LIBS:BOOL=ON \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DENABLE_TORRENT=TRUE \
-    && make  $JOBS \
+    && make $JOBS  \
 && make install DESTDIR=$PKG ) 
 
 
@@ -105,7 +107,7 @@ chmod -R u+w,go+r-w,a-s .
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a  CHANGELOG COPYING INSTALL README $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS COPYING GPL.txt ChangeLog INSTALL*  $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -117,8 +119,14 @@ cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAM
 
 
 
+
+# Fix manpage dirctory
+mkdir -p $PKG/usr/man
+mv  $PKG/usr/share/man  $PKG/usr/man
+
+
+
 # Compress the man pages if present
-mv $PKG/usr/share/man $PKG/usr
 if [ -d $PKG/usr/man ]; then
     ( cd $PKG/usr/man
       find . -type f -exec gzip -9 {} \;
@@ -139,6 +147,8 @@ fi" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
   /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+
 
 
 
@@ -147,13 +157,15 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -b -s  $CWD $PKG
+requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
 
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
 

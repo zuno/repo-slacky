@@ -28,7 +28,7 @@
 set -e
 
 PKGNAME=${PKGNAME:-libtorrent-rasterbar}
-VERSION=${VERSION:-0.16.5}
+VERSION=${VERSION:-0.15.10}
 ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}

@@ -1,3 +1,27 @@
+Thu Nov  1 05:01:52 CET 2012
+-----------------------------
+	modified:   development/Twisted/Twisted.SlackBuild
+	new file:   development/kdesvn/kdesvn.SlackBuild
+	new file:   development/kdiff3/kdiff3.SlackBuild
+	new file:   libraries/icedtea-web/icedtea-web.SlackBuild
+	new file:   libraries/libktorrent/libktorrent.SlackBuild
+	modified:   libraries/libtorrent-rasterbar/libtorrent-rasterbar.SlackBuild
+	new file:   libraries/pygame/pygame.SlackBuild
+	new file:   libraries/rlog/rlog.SlackBuild
+	new file:   multimedia/portmidi/portmidi.SlackBuild
+	new file:   network/deluge/deluge.SlackBuild
+	new file:   network/knemo/knemo.SlackBuild
+	new file:   network/ktorrent/ktorrent.SlackBuild
+	modified:   network/leechcraft/leechcraft.SlackBuild
+	new file:   office/KBookocr/KBookocr.SlackBuild
+	new file:   office/cuneiform/cuneiform.SlackBuild
+	new file:   security/keepassx/keepassx.SlackBuild
+	new file:   system/encfs/encfs.SlackBuild
+	new file:   system/kdirwatch/kdirwatch.SlackBuild
+	new file:   system/kencfs/kencfs.SlackBuild
+	new file:   utilities/kdocker/kdocker.SlackBuild
+	new file:   utilities/krecipes/krecipes.SlackBuild
+
 Wed Oct 31 05:03:54 CET 2012
 -----------------------------
 	new file:   graphic/scribus/scribus.SlackBuild
