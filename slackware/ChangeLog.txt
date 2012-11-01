@@ -1,5 +1,9 @@
 Thu Nov  1 05:01:52 CET 2012
 -----------------------------
+	deleted:    libraries/raptor2/raptor2.SlackBuild
+
+Thu Nov  1 05:01:52 CET 2012
+-----------------------------
 	modified:   development/Twisted/Twisted.SlackBuild
 	new file:   development/kdesvn/kdesvn.SlackBuild
 	new file:   development/kdiff3/kdiff3.SlackBuild
