@@ -1,0 +1,151 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# Packager Andrea Sciucca ( gohanz at infinito.it)
+# http://www.slacky.eu
+# http://sourceforge.net/projects/kstreamripper/
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Required: streamripper
+#
+# Exit on most errors
+set -e
+
+
+
+# Set variables:
+CWD=$(pwd)
+
+PRGNAME=${PRGNAME:-kstreamripper}
+VERSION=${VERSION:-0.7.100}
+PKGVERSION=$(echo $VERSION | tr - _)
+ARCH=${ARCH:-i486}
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+TMP=${TMP:-/tmp/pkg}
+JOBS=${JOBS:--j2}
+SOURCE="http://downloads.sourceforge.net/project/kstreamripper/kstreamripper/$PRGNAME-${VERSION}.tar.bz2"
+PKG=$TMP/package-$PRGNAME
+DOCS="$PKG/usr/doc/$PRGNAME-$VERSION"
+
+# Insert document files in this variable
+DOCFILES="AUTHORS COPYING* INSTALL NEWS PACKAGING README TESTCASES TODO* WARRANTY"
+
+# Set compiling FLAGS
+case "$ARCH" in
+    i486)
+	SLKCFLAGS="-O2 -march=i486 -mtune=i686"; CHOST="i486"
+	SLKLDFLAGS=""; LIBDIRSUFFIX=""
+        ;;
+    i686)
+	SLKCFLAGS="-O2 -march=i686 -pipe -fomit-frame-pointer"; CHOST="i486"
+	SLKLDFLAGS=""; LIBDIRSUFFIX=""
+        ;;
+    x86_64)
+	SLKCFLAGS="-O2 -fPIC -pipe -fomit-frame-pointer"; CHOST="x86_64"
+	SLKLDFLAGS=""; LIBDIRSUFFIX="64"
+        ;;
+esac
+
+# Download source, if not exist
+if ! [ -e $(basename $SOURCE) ]; then
+    wget $SOURCE
+fi
+
+# Extract source and prepare:
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PRGNAME
+
+tar xjvf $CWD/$PRGNAME-$VERSION.tar.bz2
+cd $PRGNAME
+ 
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Configure
+mkdir -p build
+cd build
+cmake .. \
+-DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+-DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+-DCMAKE_LD_FLAGS:STRING="$SLKLDFLAGS" \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DSYSCONF_INSTALL_DIR=/etc/kde \
+-DLIB_SUFFIX=$($LIBDIRSUFFIX) \
+-DCMAKE_BUILD_TYPE=Release 
+
+
+
+# Build and install:
+make $JOBS
+make install/strip DESTDIR=${PKG}
+cd ..
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \;
+  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+)
+fi
+
+# Add a documentation directory:
+mkdir -p ${DOCS}
+for i in ${DOCFILES}; do
+    if [ -e ${i} ]; then
+        if ! [ -L ${i} ]; then
+	    cp -a ${i} ${DOCS}
+	else
+	    cp -LRp ${i} ${DOCS}
+        fi
+    fi;
+done
+
+# Add a slackbuild script:
+cat $CWD/$PRGNAME.SlackBuild > $DOCS/$PRGNAME.SlackBuild
+
+# Add slack-desc
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Add a doinst.sh, if any
+if [ -f $CWD/doinst.sh.gz ]; then
+    zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+elif [ -f $CWD/doinst.sh ]; then
+    cat $CWD/doinst.sh > $PKG/install/doinst.sh
+fi
+
+# Create slack-required file:
+if [ -x /usr/bin/requiredbuilder ]; then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(streamripper\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -s  $CWD $PKG
+fi
+
+# Create package:
+cd $PKG
+/sbin/makepkg -l y -c n $CWD/$PRGNAME-$PKGVERSION-$ARCH-${BUILD}${TAG}.txz
+
+# Clean file, if option is set:
+if [ "$1" = "--cleanup" ]; then
+  rm -rf ${TMP}/${PRGNAME}-${VERSION}
+  rm -rf $PKG
+fi

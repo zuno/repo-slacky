@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler-----------------------------------------------------|
+libLASi: libLASi (C++ Postscript Library)
+libLASi:
+libLASi: libLASi is a library written by Larry Siden that provides a C++
+libLASi: stream output   interface   ( with  operator << )   for  creating
+libLASi: Postscript documents  that  can  contain  characters from  any of
+libLASi: the scripts and symbol blocks supported in  Unicode and by Owen
+libLASi: Taylor's Pango  layout engine.
+libLASi:
+libLASi:
+libLASi:
+libLASi:

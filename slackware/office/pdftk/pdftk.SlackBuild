@@ -1,0 +1,134 @@
+#!/bin/sh
+# Heavily based on the Slackware 14 SlackBuild
+# http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
+# Packager Andrea Sciucca ( gohanz at infinito.it)
+# Last build from umaga (frankyricci(at)gmail(dot)com)
+
+# Thanks to larsrh <hupel@in.tum.de>
+# http://www.slacky.eu
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+# Exit on most errors
+set -e
+
+
+# Set variables:
+CWD=$(pwd)
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=pdftk
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-1.44}
+ARCH=${ARCH:-i686}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+# Download sorce tarball if still not present
+SOURCE="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/$PKGNAME-$VERSION-src.zip"
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.zip)$//')}
+DOCS="*.txt *.html *.notes license_gpl_pdftk/*"
+SLKFILES=""
+
+if [ ! -e $CWD/$PKGNAME-$VERSION-src.zip ]; then
+ wget $SOURCE
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+
+# Decompress the source tarball
+cd $TMP
+unzip -o $CWD/$TAR
+
+
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild PdfTk |\E[0;0m"
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+cd $PKGNAME-$VERSION-dist
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Building and installing binary
+( cd $PKGNAME
+make -f Makefile.Slackware-13.1
+install -m 755 -p -D pdftk $PKG/usr/bin/pdftk )
+
+# Installing manpage
+install -m 644 -p -D pdftk.1 $PKG/usr/man/man1/pdftk.1
+
+
+# Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+
+# Strip binary
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+ 
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+fi
+ 
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+ 
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+

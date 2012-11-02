@@ -1,0 +1,6 @@
+faad2 >= 2.7-i486-9sl
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+libmad >= 0.15.1b-i486-3
+libogg >= 1.3.0-i486-1
+libvorbis >= 1.3.3-i486-1

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+kstreamripper: KStreamRipper (KDE4 Internet Radio Recorder)
+kstreamripper:
+kstreamripper: KStreamRipper (formaly KRadioRipper) is a program for recording
+kstreamripper: Internet radios and  other  streams  which comes  with a stream
+kstreamripper: catalog. Itt can split the stream and  create  an  own file for
+kstreamripper: each track - with corresponding metadata.
+kstreamripper:
+kstreamripper:
+kstreamripper:
+kstreamripper:
+kstreamripper:

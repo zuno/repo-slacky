@@ -1,5 +1,31 @@
 Thu Nov  1 05:01:52 CET 2012
 -----------------------------
+	new file:   development/ocaml/ocaml.SlackBuild
+	new file:   games/krosswordpuzzle/krosswordpuzzle.SlackBuild
+	new file:   libraries/ETL/ETL.SlackBuild
+	new file:   libraries/HTK/HTK.SlackBuild
+	new file:   libraries/QTeXEngine/QTeXEngine.SlackBuild
+	new file:   libraries/gts/gts.SlackBuild
+	new file:   libraries/judy/judy.SlackBuild
+	new file:   libraries/libLASi/libLASi.SlackBuild
+	new file:   multimedia/gtkwave/gtkwave.SlackBuild
+	new file:   network/avahi/avahi.SlackBuild
+	new file:   network/kshowmail/kshowmail.SlackBuild
+	new file:   network/kstreamripper/kstreamripper.SlackBuild
+	new file:   network/kvirc/kvirc.SlackBuild
+	new file:   network/streamripper/streamripper.SlackBuild
+	new file:   office/keurocalc/keurocalc.SlackBuild
+	new file:   office/klatexformula/klatexformula.SlackBuild
+	new file:   office/pdftk/pdftk.SlackBuild
+	new file:   system/kvirustotal/kvirustotal.SlackBuild
+	new file:   system/qemu/qemu.SlackBuild
+	new file:   system/qtgzmanager/qtgzmanager.SlackBuild
+	new file:   utilities/krename/krename.SlackBuild
+	new file:   utilities/kshutdown/kshutdown.SlackBuild
+	new file:   utilities/simon/simon.SlackBuild
+
+Thu Nov  1 05:01:52 CET 2012
+-----------------------------
 	deleted:    libraries/raptor2/raptor2.SlackBuild
 
 Thu Nov  1 05:01:52 CET 2012
