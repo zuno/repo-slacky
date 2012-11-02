@@ -1,3 +1,11 @@
+Fri Nov  2 05:09:18 CET 2012
+-----------------------------
+	new file:   libraries/goffice8/goffice8.SlackBuild
+	new file:   libraries/opencore-amr/opencore-amr.SlackBuild
+	new file:   libraries/openjpeg/openjpeg.SlackBuild
+	new file:   libraries/opus/opus.SlackBuild
+	new file:   multimedia/google-talkplugin/google-talkplugin.SlackBuild
+
 Wed Oct 31 05:11:06 CET 2012
 -----------------------------
 	new file:   development/gc/gc.SlackBuild

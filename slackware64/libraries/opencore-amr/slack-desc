@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+opencore-amr: OpenCORE-AMR (Adaptive Multi-Rate Floating-point 3G video)
+opencore-amr:
+opencore-amr: OpenCORE-AMR is the multimedia framework of Android originally
+opencore-amr: contributed   by   PacketVideo.  It   provides  an  extensible
+opencore-amr: framework for multimedia rendering  and  authoring  and  video
+opencore-amr: telephony (3G-324M).
+opencore-amr:
+opencore-amr:
+opencore-amr:
+opencore-amr:
+opencore-amr:
