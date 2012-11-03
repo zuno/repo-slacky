@@ -1,0 +1,11 @@
+[Desktop Entry]
+Exec=pd -jack -rt
+Name=Pure Data
+GenericName=Graphical Audio/Video Programming Environment
+GenericName[it]=Ambiente Grafico di Programmazione Audio/Video  
+Icon=pure-data
+StartupNotify=true
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+Categories=Application;Development;

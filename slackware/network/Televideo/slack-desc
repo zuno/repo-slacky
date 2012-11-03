@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler---------------------------------------------------|
+Televideo: Televideo (PyQt4 RAI Teletext/Televideo)
+Televideo:
+Televideo: This project brings RAI teletext (Televideo) to the desktop, making
+Televideo: it easier to navigate.  It is  multiplatform,  tested on  GNU/Linux
+Televideo: and Windows. Most of  the   pages   and  the  program itself are in
+Televideo: Italian since that is the primary target.
+Televideo:
+Televideo:
+Televideo:
+Televideo:
+Televideo:

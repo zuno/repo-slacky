@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler---------------------------------------------------|
+EmfEngine: EmfEngine (Enhanced MetaFile Format Engine)
+EmfEngine:
+EmfEngine: The Enhanced  MetaFile  format (EMF) is the native  vector graphics
+EmfEngine: file   format  on  Windows. Qt  is  a  cross-platform   application
+EmfEngine: development  framework, widely  used  for  the  development  of GUI
+EmfEngine: programs. Although  it  provides  tools for  almost every aspect of
+EmfEngine: software development, Qt doesn't include a straightforward solution
+EmfEngine: for the export  of  2D graphics to the EMF format. EmfEngine covers
+EmfEngine: this  lack  and enables  Qt  based  applications  to  easily export
+EmfEngine: graphics created using the  QPainter class to the Enhanced Metafile
+EmfEngine: format.

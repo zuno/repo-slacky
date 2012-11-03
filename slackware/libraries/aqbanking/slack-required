@@ -1,0 +1,12 @@
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+gcc >= 4.7.1-i486-1
+glibc-solibs >= 2.15-i486-7
+gmp >= 5.0.5-i486-1
+gnutls >= 3.0.23-i486-1
+gwenhywfar >= 4.3.3-i486-3sl
+ktoblzcheck >= 1.40-i486-1sl
+libgcrypt >= 1.5.0-i486-1
+libgpg-error >= 1.10-i486-1
+nettle >= 2.5-i486-1
+p11-kit >= 0.12-i486-1
+zlib >= 1.2.6-i486-1
