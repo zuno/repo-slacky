@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler--------------------------------------------------------|
+kgmailnotifier: KGmailNotifier (KDE4 Gmail Notifier Applet )
+kgmailnotifier:
+kgmailnotifier: KGmailNotifier is a gmail notifier applet for KDE.  When  new
+kgmailnotifier: mail has arrived  in  your  inbox  a small window  will popup
+kgmailnotifier: showing author and subject of the newest mail. The underlined
+kgmailnotifier: link will take you right to your inbox with your preferred
+kgmailnotifier: browser.
+kgmailnotifier:
+kgmailnotifier:
+kgmailnotifier:
+kgmailnotifier:

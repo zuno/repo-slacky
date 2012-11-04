@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+     |----handy-ruler---------------------------------------------------------|
+ktikz: KtikZ (Qt4 TikZ Diagrams)
+ktikz:
+ktikz: KtikZ is a small application helping you to create TikZ (from the LaTeX
+ktikz: pgf  package)   diagrams   for   your  publications. It   requires  qt4
+ktikz: libpoppler, LaTeX (pdflatex), the LaTeX preview-latex-style package and
+ktikz: pgf itself
+ktikz:
+ktikz:
+ktikz:
+ktikz:
+ktikz:

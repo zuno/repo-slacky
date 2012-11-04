@@ -1,9 +1,9 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://qtgzmanager.wordpress.com/
-# Packager Andrea Sciucca ( gohanz at infinito.it)
+# http://parchive.sourceforge.net
+# Packagers Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
-#
+# Thanks SBO patch and script
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -22,31 +22,29 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
-#
 # Exit on most errors
-set -e
-
+set -e 
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=qtgzmanager
+PKGNAME=par2cmdline
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.0rc1}
+VERSION=${VERSION:-0.4}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-7}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/jtgzmanager/jtgzmanager/$VERSION/$PKGNAME-$VERSION-src.tar.bz2"
-
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION-src.tar.bz2 ]; then
- wget -c $SOURCE
+SOURCE="http://downloads.sourceforge.net/project/parchive/par2cmdline/$VERSION/$PKGNAME-$VERSION.tar.gz"
+
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+ wget $SOURCE
 fi
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -64,51 +62,49 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvf $CWD/$PKGNAME-$VERSION-src.tar.bz2
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
 echo -e "\E[0;32m+------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild QTGZManager |\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Par2cmdline |\E[0;0m"
 echo -e "\E[0;32m+------------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-chmod -R u+w,go+r-w,a-s .
+# Patch the source to fix compilation problem with Slackware 13.0 Thanks to Neil Ord 
+patch -p0 < $CWD/par2cmdline-0.4-gcc4.patch
+# Fix crash in quiet mode
+patch -p1 < $CWD/offset.patch
+# Kill warnings (and fix a PPC compilation error)
+patch -p1 < $CWD/letype.patch
+# Kill warnings
+patch -p1 < $CWD/precedence.patch
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-# Configure:
-qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile qtgzmanager.pro
-
-
-# Build and install:
+# Building Par2cmdline package
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--mandir=/usr/man \
+                --disable-static \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
 make $JOBS
+make check
+make install DESTDIR=$PKG
 
-# Installing binary
-install -m 755 -p -D  bin/qtgzmanager $PKG/usr/bin/qtgzmanager
 
-
-# Installing desktop menu file and icons
-
-install -m 644 -p -D  $CWD/qtgzmanager.png  $PKG/usr/share/pixmaps/qtgzmanager.png 
-
-mkdir -p $PKG/usr/share/applications
-cat << EOF > $PKG/usr/share/applications/qtgzmanager.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=QTGZManager
-GenericName=Slackware Package Manager
-Comment=A Slackware TGZ management app
-Comment[it]=Una applicazione per la gestione dei pacchetti Slackware
-Icon=/usr/share/pixmaps/qtgzmanager.png
-TryExec=qtgzmanager
-Exec=qtgzmanager -graphicsystem raster
-Terminal=false
-Categories=Qt;Application;System
-EOF
-
+# Replace the hardlinks with symlinks
+cd $PKG/usr/bin
+rm -f par2create; ln -s par2 par2create
+rm -f par2repair; ln -s par2 par2repair
+rm -f par2verify; ln -s par2 par2verify
+cd -
 
 # Strip binaries and shared objects, if present
 ( cd $PKG
@@ -118,13 +114,11 @@ EOF
 )
 
 
-
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL LICENSE THANKS   \
-  $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a  AUTHORS COPYING ChangeLog INSTALL NEWS PORTING README ROADMAP  \
+$PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -134,15 +128,14 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
+# Install the man pages
+mkdir -p $PKG/usr/man/man1
+gzip -9 < $CWD/par2.1 > $PKG/usr/man/man1/par2.1.gz
+cd $PKG/usr/man/man1
+ln -s par2.1.gz par2create.1.gz
+ln -s par2.1.gz par2repair.1.gz
+ln -s par2.1.gz par2verify.1.gz
+
 
 
 # Find and print dependencies into slack-required file
@@ -159,8 +152,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
-
-
-
 
 

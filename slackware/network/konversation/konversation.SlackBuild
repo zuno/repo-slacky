@@ -1,9 +1,9 @@
 #!/bin/sh
-# Heavily based on the Slackware 14.0 SlackBuild
-# http://qtgzmanager.wordpress.com/
-# Packager Andrea Sciucca ( gohanz at infinito.it)
-# http://www.slacky.eu
+# Copyright 2008 Loris Vincenzi (http://www.slacky.eu)
+# All rights reserved.
 #
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://www.konversation.org/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,25 +28,25 @@
 set -e
 
 
-
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=qtgzmanager
+PKGNAME=konversation
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.0rc1}
+VERSION=${VERSION:-1.4}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/jtgzmanager/jtgzmanager/$VERSION/$PKGNAME-$VERSION-src.tar.bz2"
+SOURCE="ftp://ftp.kde.org/pub/kde/stable/konversation//$VERSION/src/$PKGNAME-$VERSION.tar.xz"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION-src.tar.bz2 ]; then
- wget -c $SOURCE
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.xz ]; then
+wget -c $SOURCE
 fi
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -57,6 +57,7 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
+
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -64,50 +65,34 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvf $CWD/$PKGNAME-$VERSION-src.tar.bz2
+tar xvf  $CWD/$PKGNAME-$VERSION.tar.xz
 
-echo -e "\E[0;32m+------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild QTGZManager |\E[0;0m"
-echo -e "\E[0;32m+------------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Konversation |\E[0;0m"
+echo -e "\E[0;32m+-------------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 
-# Configure:
-qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile qtgzmanager.pro
 
-
-# Build and install:
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make $JOBS
-
-# Installing binary
-install -m 755 -p -D  bin/qtgzmanager $PKG/usr/bin/qtgzmanager
-
-
-# Installing desktop menu file and icons
-
-install -m 644 -p -D  $CWD/qtgzmanager.png  $PKG/usr/share/pixmaps/qtgzmanager.png 
-
-mkdir -p $PKG/usr/share/applications
-cat << EOF > $PKG/usr/share/applications/qtgzmanager.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=QTGZManager
-GenericName=Slackware Package Manager
-Comment=A Slackware TGZ management app
-Comment[it]=Una applicazione per la gestione dei pacchetti Slackware
-Icon=/usr/share/pixmaps/qtgzmanager.png
-TryExec=qtgzmanager
-Exec=qtgzmanager -graphicsystem raster
-Terminal=false
-Categories=Qt;Application;System
-EOF
+# Building Konversation application
+( mkdir -p build \
+    && cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make $JOBS \
+&& make install DESTDIR=$PKG ) 
 
 
 # Strip binaries and shared objects, if present
@@ -118,13 +103,10 @@ EOF
 )
 
 
-
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL LICENSE THANKS   \
-  $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS COPYING* ChangeLog INSTALL README TODO  $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -145,11 +127,12 @@ fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
 
+
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -b -s  $CWD $PKG
+requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
@@ -159,6 +142,7 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
 
 
 

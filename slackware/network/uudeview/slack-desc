@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler-----------------------------------------------------|
+uudeview: UUDeview (The Nice and Friendly Usenet Decoder)
+uudeview:
+uudeview: Using electronic mail or  newsgroups The  UUDeview  package  includes
+uudeview: both an encoder and a decoder.
+uudeview: The decoder automatically detects the type of encoding used, offering
+uudeview: MIME's Base64 and  BinHex as  well as the  popular uuencoding and the
+uudeview: less frequently used xxencoding methods.
+uudeview:
+uudeview:
+uudeview:
+uudeview:

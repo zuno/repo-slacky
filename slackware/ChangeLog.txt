@@ -1,3 +1,22 @@
+Sun Nov  4 05:01:06 CET 2012
+-----------------------------
+	new file:   libraries/liblo/liblo.SlackBuild
+	new file:   multimedia/aubio/aubio.SlackBuild
+	new file:   multimedia/kaffeine/kaffeine.SlackBuild
+	new file:   network/KTrafficAnalyzer/KTrafficAnalyzer.SlackBuild
+	new file:   network/kgmailnotifier/kgmailnotifier.SlackBuild
+	new file:   network/konversation/konversation.SlackBuild
+	new file:   network/kopete-facebook/kopete-facebook.SlackBuild
+	new file:   network/kwooty/kwooty.SlackBuild
+	new file:   network/uudeview/uudeview.SlackBuild
+	new file:   office/ktikz/ktikz.SlackBuild
+	new file:   system/kio-clipboard/kio-clipboard.SlackBuild
+	new file:   system/ktsuss/ktsuss.SlackBuild
+	new file:   system/kup/kup.SlackBuild
+	new file:   system/microsoft-fonts-ttf/microsoft-fonts-ttf.SlackBuild
+	new file:   system/par2cmdline/par2cmdline.SlackBuild
+	modified:   system/qtgzmanager/qtgzmanager.SlackBuild
+
 Sat Nov  3 05:01:46 CET 2012
 -----------------------------
 	new file:   development/gwenhywfar/gwenhywfar.SlackBuild

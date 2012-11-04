@@ -1,6 +1,6 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://qtgzmanager.wordpress.com/
+# http://sourceforge.net/projects/kwooty
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
 #
@@ -23,6 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
+# Required: par2cmdline, uudeview
 #
 # Exit on most errors
 set -e
@@ -32,21 +33,22 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=qtgzmanager
+PKGNAME=kwooty
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.0rc1}
+VERSION=${VERSION:-0.9.1}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/jtgzmanager/jtgzmanager/$VERSION/$PKGNAME-$VERSION-src.tar.bz2"
-
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION-src.tar.bz2 ]; then
- wget -c $SOURCE
+SOURCE="http://switch.dl.sourceforge.net/sourceforge/kwooty/$PKGNAME-$VERSION.tar.gz"
+
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+ wget $SOURCE
 fi
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -61,53 +63,32 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
 # Decompress the source tarball
 cd $TMP
-tar xvf $CWD/$PKGNAME-$VERSION-src.tar.bz2
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild QTGZManager |\E[0;0m"
-echo -e "\E[0;32m+------------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Kwooty |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-# Configure:
-qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile qtgzmanager.pro
-
-
-# Build and install:
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make $JOBS
-
-# Installing binary
-install -m 755 -p -D  bin/qtgzmanager $PKG/usr/bin/qtgzmanager
-
-
-# Installing desktop menu file and icons
-
-install -m 644 -p -D  $CWD/qtgzmanager.png  $PKG/usr/share/pixmaps/qtgzmanager.png 
-
-mkdir -p $PKG/usr/share/applications
-cat << EOF > $PKG/usr/share/applications/qtgzmanager.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=QTGZManager
-GenericName=Slackware Package Manager
-Comment=A Slackware TGZ management app
-Comment[it]=Una applicazione per la gestione dei pacchetti Slackware
-Icon=/usr/share/pixmaps/qtgzmanager.png
-TryExec=qtgzmanager
-Exec=qtgzmanager -graphicsystem raster
-Terminal=false
-Categories=Qt;Application;System
-EOF
+# Building Kwooty package
+(  cd build \
+&& cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+&& make $JOBS \
+&& make install DESTDIR=$PKG ) 
 
 
 # Strip binaries and shared objects, if present
@@ -118,11 +99,10 @@ EOF
 )
 
 
-
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL LICENSE THANKS   \
-  $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a COPYING  INSTALL.txt README.txt  \
+$PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -132,6 +112,7 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
 
 
 # Building some post-install execution script 	
@@ -144,11 +125,12 @@ fi" >> $PKG/install/doinst.sh
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
-
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(par2cmdline\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(uudeview\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -b -s  $CWD $PKG
 fi
 # Create txz package
@@ -159,8 +141,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
-
-
-
 
 

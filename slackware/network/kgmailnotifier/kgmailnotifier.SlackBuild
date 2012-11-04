@@ -1,9 +1,8 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://qtgzmanager.wordpress.com/
+# http://kde-apps.org/content/show.php/KGmailNotifier?content=55375&PHPSESSID=333c7bfeab4b53f7a0ceca65cc1dc6d0
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
-#
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,30 +22,30 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-#
 # Exit on most errors
 set -e
-
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=qtgzmanager
+PKGNAME=kgmailnotifier
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.0rc1}
+VERSION=${VERSION:-0.5.2}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/jtgzmanager/jtgzmanager/$VERSION/$PKGNAME-$VERSION-src.tar.bz2"
-
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION-src.tar.bz2 ]; then
- wget -c $SOURCE
+SOURCE="http://kde-apps.org/CONTENT/content-files/55375-$PKGNAME-$VERSION.tar.gz"
+
+if [ ! -e $CWD/55375-$PKGNAME-$VERSION.tar.gz ]; then
+ wget $SOURCE
 fi
+
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -57,6 +56,7 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
+
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -64,50 +64,35 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvf $CWD/$PKGNAME-$VERSION-src.tar.bz2
+tar xvf $CWD/55375-$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild QTGZManager |\E[0;0m"
-echo -e "\E[0;32m+------------------------------+\E[0;0m"
+echo -e "\E[0;32m+---------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild KGmailNotifier |\E[0;0m"
+echo -e "\E[0;32m+---------------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd $PKGNAME-$VERSION
-chmod -R u+w,go+r-w,a-s .
+cd $PKGNAME
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-# Configure:
-qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile qtgzmanager.pro
-
-
-# Build and install:
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make $JOBS
-
-# Installing binary
-install -m 755 -p -D  bin/qtgzmanager $PKG/usr/bin/qtgzmanager
-
-
-# Installing desktop menu file and icons
-
-install -m 644 -p -D  $CWD/qtgzmanager.png  $PKG/usr/share/pixmaps/qtgzmanager.png 
-
-mkdir -p $PKG/usr/share/applications
-cat << EOF > $PKG/usr/share/applications/qtgzmanager.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=QTGZManager
-GenericName=Slackware Package Manager
-Comment=A Slackware TGZ management app
-Comment[it]=Una applicazione per la gestione dei pacchetti Slackware
-Icon=/usr/share/pixmaps/qtgzmanager.png
-TryExec=qtgzmanager
-Exec=qtgzmanager -graphicsystem raster
-Terminal=false
-Categories=Qt;Application;System
-EOF
+# Building KGmailNotifier package
+( mkdir -p build \
+    && cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS \
+&& make install DESTDIR=$PKG ) 
 
 
 # Strip binaries and shared objects, if present
@@ -118,12 +103,11 @@ EOF
 )
 
 
-
-#Add documentation files: readme, changelog and so on
+# Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL LICENSE THANKS   \
-  $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a COPYING ChangeLog $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
 
 
 
@@ -134,13 +118,14 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
+
 # Building some post-install execution script 	
 	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database &> /dev/null
+  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
@@ -149,7 +134,7 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -b -s  $CWD $PKG
+requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
@@ -159,8 +144,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
-
-
-
 
 

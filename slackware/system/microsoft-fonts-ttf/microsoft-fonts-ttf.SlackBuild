@@ -1,0 +1,115 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by tom ( www.slacky.eu )
+# Last build from Loris Vincenzi (info@slacky.it)
+
+# Slackware build script for Microsoft TrueType Core Fonts
+# Official Site: http://corefonts.sourceforge.net
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AS IS AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# IMPORTANT NOTE:
+# According to terms of the EULA, the Microsoft TrueType Core Fonts can be
+# distributed in original form, so the package created from this SlackBuild
+# will contain the original .exe files. After installation of the package
+# the tool "cabextract" will extract the fonts in the right place.
+
+# Required to build:
+# cabextract
+
+# Exit the script on errors:
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}"' ERR
+
+# Accept terms of EULA:
+more EULA
+echo "Do you accept terms? [y/N]"
+read ACCEPT
+if [ "$ACCEPT" != "y" ];then
+  echo "SlackBuild aborted"
+  exit 1
+fi
+
+# Catch variables:
+PKGNAME=microsoft-fonts-ttf
+VERSION=20060430
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+CWD=${CWD:-`pwd`}
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=${PKG:-$TMP/package-$PKGNAME}
+OUTPUT=${OUTPUT:-$CWD}
+
+# Source files availability:
+for i in andale arial arialb comic courie georgi impact times trebuc verdan webdin ; do
+  SOURCE="http://downloads.sourceforge.net/corefonts/${i}32.exe"
+  if [ ! -e $CWD/$(basename $SOURCE) ] ; then
+    wget $SOURCE
+  fi
+done
+
+# Create working directories:
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+
+echo -e "\e[0;32m+--------------------------------------+\e[m"
+echo -e "\e[0;32m| Start SlackBuild microsoft-fonts-ttf |\e[m"
+echo -e "\e[0;32m+--------------------------------------+\e[m"
+
+# Copy the fonts in native form:
+mkdir -p $PKG/tmp/$PKGNAME
+cp $CWD/*.exe $PKG/tmp/$PKGNAME
+
+# Create empty .ttf files, so the fonts will be removed if you uninstall the package:
+mkdir -p $PKG/usr/share/fonts/TTF
+for i in \
+  andalemo arial arialbd arialbi ariali ariblk comic comicbd cour courbd courbi couri \
+  georgia georgiab georgiai georgiaz impact times timesbd timesbi timesi trebuc trebucbd \
+  trebucbi trebucit verdana verdanab verdanai verdanaz webdings
+do
+  touch $PKG/usr/share/fonts/TTF/$i.ttf
+done
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a $CWD/EULA $PKG/usr/doc/$PKGNAME-$VERSION
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+
+# Add slack-desc and doinst.sh:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+sed -e "s/_VERSION_/$VERSION/g" $CWD/doinst.sh > $PKG/install/doinst.sh
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  ADD=$(ls /var/log/packages/ | sed -ne 's/\(cabextract\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+  requiredbuilder -y -v -s $CWD $PKG
+fi
+
+# Make the package:
+cd $PKG
+chown -R root:root $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+# Clean up the extra stuff:
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP $PKG
+fi

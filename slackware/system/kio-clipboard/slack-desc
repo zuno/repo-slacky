@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+             |-----handy-ruler--------------------------------------------------------|
+kio-clipboard: KIO-Clipboard (KDE4 I/O System KIO-Slaves)
+kio-clipboard:
+kio-clipboard: KIO-Clipboard  implements  kio-slaves, protocols   for  KDEs  io
+kio-clipboard: system. It makes the content of clipboards available inside file
+kio-clipboard: management. That  means  you  can  access the clipboards entries
+kio-clipboard: using standard file dialogs like 'File open' or 'Save File', you
+kio-clipboard: even can use a file  browser and  access entries. In general you
+kio-clipboard: can use the slaves wherever you can use an URL inside KDE to get
+kio-clipboard: access to  the  clipboards content. There are  no temporary file
+kio-clipboard: generated.
+kio-clipboard:
