@@ -1,0 +1,10 @@
+geoip >= 1.4.8-x86_64-2sl
+glibc-solibs >= 2.15-x86_64-7
+libgcrypt >= 1.5.0-x86_64-1
+libgpg-error >= 1.10-x86_64-1
+libxml2 >= 2.8.0-x86_64-1
+libxslt >= 1.1.26-x86_64-2
+openssl >= 1.0.1c-x86_64-3 | openssl-solibs >= 1.0.1c-x86_64-3
+pcre >= 8.12-x86_64-1
+xz >= 5.0.4-x86_64-1
+zlib >= 1.2.6-x86_64-1

@@ -1,3 +1,7 @@
+Sun Nov  4 05:03:09 CET 2012
+-----------------------------
+	new file:   network/nginx/nginx.SlackBuild
+
 Fri Nov  2 05:09:18 CET 2012
 -----------------------------
 	new file:   libraries/goffice8/goffice8.SlackBuild
