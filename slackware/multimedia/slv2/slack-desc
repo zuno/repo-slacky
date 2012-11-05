@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+slv2: SLV2 (LV2 Plugins Library)
+slv2:
+slv2: SLV2  is  a  library  to  make  the use of LV2 plugins as simple as 
+slv2: possible for applications.
+slv2: SLV2 is free  software  (GPL v2 or later)  written in C99 using the 
+slv2: Redland RDF toolkit, and is known to work on GNU/Linux and Mac OS X
+slv2:
+slv2:
+slv2:
+slv2:
+slv2:

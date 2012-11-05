@@ -1,0 +1,24 @@
+curl >= 7.27.0-i486-2
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+cyrus-sasl >= 2.1.23-i486-4
+db44 >= 4.4.20-i486-3
+gcc >= 4.7.1-i486-1
+glibc-solibs >= 2.15-i486-7
+gmp >= 5.0.5-i486-1
+icu4c >= 49.1.2-i486-1
+jack-audio-connection-kit >= 0.121.3-i486-3sl
+libidn >= 1.25-i486-2
+libtool >= 2.4.2-i486-1
+libxml2 >= 2.8.0-i486-1
+libxslt >= 1.1.26-i486-2
+lv2 >= 1.2.0-i486-1sl
+mhash >= 0.9.9.9-i486-3
+mpfr >= 3.1.0-i486-1
+openldap-client >= 2.4.31-i486-2
+openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+raptor2 >= 2.0.8-i486-1
+rasqal >= 0.9.29-i486-1
+redland >= 1.0.15-i486-4
+util-linux >= 2.21.2-i486-5
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1

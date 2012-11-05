@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+kraidmonitor: K Raid Monitor (KDE4 RAID Monitor)
+kraidmonitor:
+kraidmonitor: K Raid Monitor create a button in your kicker, the color of this
+kraidmonitor: button is green if the raid arrays are fine, and it turns red if
+kraidmonitor: a disk of one of the arrays fails. If one of the  raid arrays is
+kraidmonitor: not available, the color is yellow.
+kraidmonitor:
+kraidmonitor:
+kraidmonitor:
+kraidmonitor:
+kraidmonitor:

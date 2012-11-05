@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler-----------------------------------------------------|
+kpartsplugin: KParts Plugin (KDE4 KParts Netscape Plugins)
+kpartsplugin:
+kpartsplugin: This  software  implements  a  plugin  for Netscape-compatible
+kpartsplugin: browsers in a Unix environment. This plugin uses  KDE's KParts
+kpartsplugin: technology  to  embed  file  viewers (e.g. for PDF files) into
+kpartsplugin: non-KDE browsers. Tested browsers include both Mozilla Firefox
+kpartsplugin: and Opera.  With this  plugin, you  can e.g. view PDF files in
+kpartsplugin: Firefox using Okular as an embedded plugin.
+kpartsplugin:
+kpartsplugin:
+kpartsplugin:

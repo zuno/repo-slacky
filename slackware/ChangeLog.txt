@@ -1,3 +1,30 @@
+Mon Nov  5 05:01:51 CET 2012
+-----------------------------
+	new file:   desktop/koceansaver/koceansaver.SlackBuild
+	new file:   development/dejagnu/dejagnu.SlackBuild
+	new file:   development/fox/fox.SlackBuild
+	new file:   development/kdbg/kdbg.SlackBuild
+	new file:   graphic/graphviz/graphviz.SlackBuild
+	new file:   libraries/libgnomecanvas/libgnomecanvas.SlackBuild
+	new file:   libraries/liblrdf/liblrdf.SlackBuild
+	new file:   libraries/plib/plib.SlackBuild
+	new file:   libraries/raptor/raptor.SlackBuild
+	new file:   multimedia/jack-rack/jack-rack.SlackBuild
+	new file:   multimedia/kaudiocreator/kaudiocreator.SlackBuild
+	new file:   multimedia/lv2/lv2.SlackBuild
+	new file:   multimedia/qjackctl/qjackctl.SlackBuild
+	new file:   multimedia/slv2/slv2.SlackBuild
+	new file:   multimedia/xmms-jack/xmms-jack.SlackBuild
+	new file:   network/dropbox/dropbox.SlackBuild
+	new file:   network/kmess/kmess.SlackBuild
+	new file:   network/kpartsplugin/kpartsplugin.SlackBuild
+	new file:   office/kile/kile.SlackBuild
+	new file:   office/lemonpos/lemonpos.SlackBuild
+	new file:   system/bleachbit/bleachbit.SlackBuild
+	new file:   system/isomaster/isomaster.SlackBuild
+	new file:   system/kraidmonitor/kraidmonitor.SlackBuild
+	new file:   utilities/kpassgen/kpassgen.SlackBuild
+
 Sun Nov  4 05:01:06 CET 2012
 -----------------------------
 	new file:   libraries/liblo/liblo.SlackBuild

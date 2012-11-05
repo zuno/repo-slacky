@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler----------------------------------------------------|
+graphviz: Graphviz (Graph Visualization Tool)
+graphviz:
+graphviz: Graph  visualization  is a way of representing structural
+graphviz: information as diagrams of abstract graphs  and networks. Automatic
+graphviz: graph drawing has many important applications in software
+graphviz: engineering, database and web  design, networking,  and  in  visual
+graphviz: interfaces for many others other domains.
+graphviz:
+graphviz:
+graphviz:
+graphviz:

@@ -1,0 +1,17 @@
+diff -urN graphviz-2.28.0/tclpkg/gv/gv_php_init.c graphviz-2.28.0.orig/tclpkg/gv/gv_php_init.c
+--- graphviz-2.28.0/tclpkg/gv/gv_php_init.c	2011-01-25 17:30:51.000000000 +0100
++++ graphviz-2.28.0.orig/tclpkg/gv/gv_php_init.c	2012-11-01 13:16:59.355014342 +0100
+@@ -19,11 +19,13 @@
+ 
+ static size_t gv_string_writer (GVJ_t *job, const char *s, size_t len)
+ {
++    TSRMLS_FETCH();
+     return PHPWRITE(s, len);
+ }
+ 
+ static size_t gv_channel_writer (GVJ_t *job, const char *s, size_t len)
+ {
++    TSRMLS_FETCH();
+     return PHPWRITE(s, len);
+ }
+ 

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler-------------------------------------------------------|
+plib: PLIB (Portable Game Libraries)
+plib:
+plib: PLIB  includes  sound  effects,  music,  a complete 3D engine, font
+plib: rendering, a simple Windowing library, a game scripting language, a
+plib: GUI, networking, 3D math library and a  collection of handy utility
+plib: functions. All are 100% portable across nearly all modern computing
+plib: platforms. What's more, it's all available on line - and completely
+plib: free. Each  library  component  is fairly independent of the others
+plib: so if you want to use SDL, GTK, GLUT, or FLTK instead of 
+plib: PLIB's 'PW' windowing library, you can.
+plib:

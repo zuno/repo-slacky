@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler--------------------------------------------------------|
+lemonpos: Lemon POS (KDE4 Business Software)
+lemonpos:
+lemonpos: Lemon is an  open  source  point  of  sale  for Linux and other Unix
+lemonpos: systems. It is targeted for the small and medium sized business, and
+lemonpos: has been conceived for ease of use. It is considered a general point
+lemonpos: of sale, not  focused  to  a  specific sector. It  can  be used at a
+lemonpos: general store, a fast-food restaurant or a book store.
+lemonpos:
+lemonpos:
+lemonpos:
+lemonpos:
