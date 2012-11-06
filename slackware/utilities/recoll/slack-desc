@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+recoll: Recoll (Qt4 Full Text Search Tool)
+recoll:
+recoll: Recoll is based on  the  very  strong Xapian  back-end, for  which it
+recoll: provides a feature-rich yet easy to use front-end with a QT graphical
+recoll: interface.
+recoll:
+recoll:
+recoll:
+recoll:
+recoll:
+recoll:

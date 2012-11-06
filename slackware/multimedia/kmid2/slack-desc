@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler-------------------------------------------------------|
+kmid2: KMid2 (KDE4 MIDI/Karaoke Player)
+kmid2:
+kmid2: KMid2 plays MIDI and  karaoke files to hardware MIDI devices or software
+kmid2: synthesizers. It supports playlists, MIDI mappers, tempo (speed) control
+kmid2: volume  and  pitch  (transpose)  controls,  and  configurable  character
+kmid2: encoding, font, and color for lyrics. The graphic views include a rhythm
+kmid2: view (visual metronome), a channels window with solo/muting controls and
+kmid2: instrument selectors, and a piano player window (pianola). KMid2 runs on
+kmid2: Linux using the ALSA Sequencer.
+kmid2:
+kmid2:

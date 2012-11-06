@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler----------------------------------------------------|
+neroaaccodec: Nero AAC Codec (Nero Free AAC Audio Codec)
+neroaaccodec:
+neroaaccodec: Nero AAC reference quality MPEG-4 and 3GPP audio codec.
+neroaaccodec:
+neroaaccodec:                     IMPORTANT NOTE
+neroaaccodec: Nero AG license you to use this software package for personal
+neroaaccodec: non-commercial and/or technology-evaluation purposes.
+neroaaccodec:
+neroaaccodec:
+neroaaccodec:
+neroaaccodec:

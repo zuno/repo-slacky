@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler-----------------------------------------------------|
+kmidimon: KMidimon (KDE4 MIDI Monitor)
+kmidimon:
+kmidimon: MIDI events coming from a MIDI external port or application via the
+kmidimon: ALSA sequencer. It is  especially useful  if you want to debug MIDI
+kmidimon: software or your MIDI setup.
+kmidimon: * Easy to use KDE graphic user interface.
+kmidimon: * Based on ALSA sequencer.
+kmidimon: * Customizable event filters and sequencer parameters.
+kmidimon: * Supports all MIDI messages, System Exclusive,and ALSA messages.
+kmidimon: * Saves to a text file (CSV format) the recorded event list.
+kmidimon:

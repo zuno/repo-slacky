@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+kfilebox: KFilebox (KDE4 File Sharing)
+kfilebox:
+kfilebox: Unofficial KDE4 Dropbox client developed in QT. KFilebox (previously
+kfilebox: called  KDropbox)  offers  almost  the same features as the official
+kfilebox: Dropbox Linux application, but works on KDE4.
+kfilebox:
+kfilebox:
+kfilebox:
+kfilebox:
+kfilebox:
+kfilebox:

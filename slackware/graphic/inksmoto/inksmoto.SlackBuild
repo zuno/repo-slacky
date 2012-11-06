@@ -1,0 +1,103 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://xmoto.sourceforge.net
+# Packagers Andrea Sciucca  ( gohanz at infinito.it)
+# http://www.slacky.eu
+#
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Required: inkscape
+#
+# Exit on most errors
+set -e 
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=inksmoto
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-0.7.0}
+ARCH=${ARCH:-i486}
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+
+# Download sorce tarball if still not present
+SOURCE="http://download.tuxfamily.org/xmoto/svg2lvl/$VERSION/$PKGNAME-$VERSION.tar.gz"
+
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+ wget $SOURCE
+fi
+
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+
+# Decompress the source tarball
+cd $TMP
+
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild InksMoto |\E[0;0m"
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
+
+
+# Building InksMoto  package
+mkdir -p $PKG/usr/share/inkscape
+( cd $PKG/usr/share/inkscape
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz )
+
+
+# Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+( cd  $PKG/usr/share/inkscape/extensions
+rm Makefile*
+mv AUTHORS COPYING ChangeLog.editor INSTALL README \
+$PKG/usr/doc/$PKGNAME-$VERSION )
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(inkscape\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p' ) \
+requiredbuilder -y -v -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+

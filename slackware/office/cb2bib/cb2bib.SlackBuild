@@ -1,9 +1,8 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://www.xm1math.net/texmaker/
+# http://www.molspaces.com/cb2bib/
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
-#
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -22,29 +21,32 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+#
+# Required: bibutils, image-exiftool
+#
 # Exit on most errors
-set -e
-
+set -e 
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=texmaker
+PKGNAME=cb2bib
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-3.5.2}
+VERSION=${VERSION:-1.4.9}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 # Download sorce tarball if still not present
-SOURCE="http://www.xm1math.net/texmaker/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://www.molspaces.com/dl/progs/$PKGNAME-$VERSION.tar.gz"
 
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
-wget -c $SOURCE
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+ wget $SOURCE
 fi
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -55,35 +57,43 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
+
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
+
 # Decompress the source tarball
 cd $TMP
-tar xvjf  $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Texmaker |\E[0;0m"
-echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild cb2Bib |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
 
-# Adjust permissions and ownerships# Adjust permissions and ownerships
+# Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Build cb2Bib package
+( mkdir -p build \
+    && cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make $JOBS  \
+&& make install DESTDIR=$PKG ) 
 
 
-# Building Texmaker package
-# Configure:
-qmake PREFIX=/usr DESKTOPDIR=/usr/share/applications ICONDIR=/usr/share/pixmaps QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile   texmaker.pro
-
-
-# Build and install:
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make $JOBS
-make install INSTALL_ROOT=$PKG
 
 # Strip binaries and shared objects, if present
 ( cd $PKG
@@ -95,6 +105,7 @@ make install INSTALL_ROOT=$PKG
 
 # Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a AUTHORS CHANGELOG COPYRIGHT LICENSE $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -107,28 +118,24 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-
 # Building some post-install execution script 	
-echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-echo "if [ -x /usr/bin/update-desktop-database ]; then
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
   /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
 fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
   /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
-
+	echo "" >> $PKG/install/doinst.sh
 
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -c -b -s  $CWD $PKG
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(Image-ExifTool\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(bibutils\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}

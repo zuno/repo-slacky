@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+cb2bib: cb2Bib (QT4 Biblographic References Tool)
+cb2bib:
+cb2bib: cb2Bib reads the clipboard text contents and process it against a set
+cb2bib: of  predefined  patterns. If this  automatic  detection is successful
+cb2bib: cb2Bib formats the  clipboard data according to the structured BibTeX
+cb2bib: reference standard.
+cb2bib:
+cb2bib:
+cb2bib:
+cb2bib:
+cb2bib:

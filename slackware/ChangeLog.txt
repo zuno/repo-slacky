@@ -1,3 +1,22 @@
+Tue Nov  6 05:01:42 CET 2012
+-----------------------------
+	new file:   development/nanoblogger/nanoblogger.SlackBuild
+	new file:   games/kbackgammon/kbackgammon.SlackBuild
+	new file:   graphic/inksmoto/inksmoto.SlackBuild
+	new file:   libraries/xapian-core/xapian-core.SlackBuild
+	new file:   multimedia/drumstick/drumstick.SlackBuild
+	new file:   multimedia/hydrogen/hydrogen.SlackBuild
+	new file:   multimedia/kmid2/kmid2.SlackBuild
+	new file:   multimedia/kmidimon/kmidimon.SlackBuild
+	new file:   multimedia/neroaaccodec/neroaaccodec.SlackBuild
+	new file:   multimedia/wildmidi/wildmidi.SlackBuild
+	new file:   network/kfilebox/kfilebox.SlackBuild
+	new file:   office/cb2bib/cb2bib.SlackBuild
+	modified:   office/texmaker/texmaker.SlackBuild
+	new file:   utilities/bibutils/bibutils.SlackBuild
+	new file:   utilities/recoll/recoll.SlackBuild
+	new file:   utilities/xarchiver/xarchiver.SlackBuild
+
 Mon Nov  5 05:01:51 CET 2012
 -----------------------------
 	new file:   desktop/koceansaver/koceansaver.SlackBuild
