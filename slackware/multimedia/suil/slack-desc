@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+    |----handy-ruler------------------------------------------------------|
+suil: Suil (LV2 Lightweight C Library)
+suil:
+suil: Suil  makes  it possible  to load a  UI of any  toolkit in a host using
+suil: any  other  toolkit  (assuming the toolkits are both supported by Suil)
+suil: Hosts  do  not  need  to  build  against  or  link  to  foreign toolkit
+suil: libraries  to  use  UIs  written  with  that toolkit (Suil performs its
+suil: magic at runtime using dynamically loaded modules). The API is designed
+suil: such that hosts do  not need to  explicitly support particular toolkits
+suil: whatsoever – if Suil supports a particular toolkit, then all hosts that
+suil: use Suil will support that toolkit “for free”.
+suil:

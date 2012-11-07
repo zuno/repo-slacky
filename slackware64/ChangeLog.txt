@@ -1,3 +1,7 @@
+Wed Nov  7 05:04:52 CET 2012
+-----------------------------
+	modified:   system/nvidia-linux-compat32/nvidia-linux-compat32.SlackBuild
+
 Mon Nov  5 05:07:27 CET 2012
 -----------------------------
 	modified:   development/openjdk/openjdk.SlackBuild

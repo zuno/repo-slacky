@@ -1,0 +1,4 @@
+glibc-solibs >= 2.15-i486-7
+lv2 >= 1.2.0-i486-1sl
+serd >= 0.18.0-i486-1sl
+sord >= 0.10.4-i486-1sl

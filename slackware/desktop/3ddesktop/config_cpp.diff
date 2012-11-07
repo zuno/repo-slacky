@@ -1,0 +1,10 @@
+--- config.cpp.orig	2009-09-04 12:14:24.000000000 +0200
++++ config.cpp	2009-09-04 12:14:45.000000000 +0200
+@@ -20,6 +20,7 @@
+ //
+ 
+ #include "config.hpp"
++#include <cstring>
+ 
+ static void 
+ usage_and_bye (void)

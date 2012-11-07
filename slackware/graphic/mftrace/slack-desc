@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+mftrace: Mftrace (Bitmap to PFB Utility)
+mftrace:
+mftrace: Mftrace is a small Python program that lets you trace a TeX bitmap
+mftrace: font into a PFA or PFB font (A PostScript Type1 Scalable Font).
+mftrace:
+mftrace: 
+mftrace:
+mftrace:
+mftrace:
+mftrace:
+mftrace:

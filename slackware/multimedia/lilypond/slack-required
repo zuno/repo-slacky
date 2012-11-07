@@ -1,0 +1,17 @@
+bzip2 >= 1.0.6-i486-1
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+expat >= 2.0.1-i486-2
+fontconfig >= 2.9.0-i486-1
+fontforge >= 20120731-i486-1sl
+freetype >= 2.4.10-i486-1
+gcc >= 4.7.1-i486-1
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+gmp >= 5.0.5-i486-1
+guile >= 1.8.8-i486-1
+libffi >= 3.0.11-i486-1
+libtool >= 2.4.2-i486-1
+mftrace >= 1.2.17-i486-1sl
+pango >= 1.30.1-i486-1
+t1utils >= 1.37-i486-1sl
+zlib >= 1.2.6-i486-1

@@ -30,7 +30,7 @@ set -e
 
 # Basic information. 
 PKGNAME=nvidia-linux-compat32
-VERSION=${VERSION:-304.60}
+VERSION=${VERSION:-310.14}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
@@ -153,7 +153,7 @@ done
 cd $PKG
 chown -R root:root $PKG
 
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION$C32-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP

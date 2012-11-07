@@ -1,3 +1,25 @@
+Wed Nov  7 05:01:30 CET 2012
+-----------------------------
+	new file:   desktop/3ddesktop/3ddesktop.SlackBuild
+	new file:   graphic/mftrace/mftrace.SlackBuild
+	new file:   graphic/potrace/potrace.SlackBuild
+	new file:   libraries/libgnomecanvasmm/libgnomecanvasmm.SlackBuild
+	new file:   libraries/lilv/lilv.SlackBuild
+	new file:   libraries/sratom/sratom.SlackBuild
+	new file:   libraries/stk/stk.SlackBuild
+	new file:   multimedia/ardour/ardour.SlackBuild
+	new file:   multimedia/dssi/dssi.SlackBuild
+	new file:   multimedia/lilypond/lilypond.SlackBuild
+	new file:   multimedia/lmms/lmms.SlackBuild
+	new file:   multimedia/rosegarden/rosegarden.SlackBuild
+	new file:   multimedia/rubberband/rubberband.SlackBuild
+	new file:   multimedia/serd/serd.SlackBuild
+	new file:   multimedia/sord/sord.SlackBuild
+	new file:   multimedia/suil/suil.SlackBuild
+	new file:   utilities/perl-xml-twig/perl-xml-twig.SlackBuild
+	new file:   utilities/t1utils/t1utils.SlackBuild
+	new file:   utilities/texi2html/texi2html.SlackBuild
+
 Tue Nov  6 05:01:42 CET 2012
 -----------------------------
 	new file:   development/nanoblogger/nanoblogger.SlackBuild

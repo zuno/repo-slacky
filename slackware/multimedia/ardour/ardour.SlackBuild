@@ -1,0 +1,177 @@
+#!/bin/sh
+# Copyright Loris Vincenzi (http://www.slacky.eu)
+# All rights reserved.
+#
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://ardour.org/
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+# Required: atkmm, aubio, cairomm, glibmm, gtkmm, jack-audio-connection-kit, ladspa_sdk, 
+# Required: libgnomecanvas, libgnomecanvasmm, liblo, liblrdf, libsigc++, lilv, pangomm
+# Required: rubberband, serd, sord, sratom, suil, scons (Only compilation) 
+# Required: slv2, vcdimager, wine
+#
+# Exit on most errors
+set -e
+
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=ardour
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-2.8.14}
+ARCH=${ARCH:-i686} # i686 or x86_64
+JOBS=${JOBS:--j2}
+BUILD=${BUILD:-5}
+TAG=${TAG:-sl}
+
+# Download sorce tarball if still not present
+SOURCE="http://www.liwjatan.at/files/src/ardour/$PKGNAME-$VERSION.tar.bz2"
+
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+ wget $SOURCE
+fi
+
+
+
+# Set compiling FLAGS
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+
+# Decompress the source tarball
+cd $TMP
+tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Ardour |\E[0;0m"
+echo -e "\E[0;32m+-------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+cd $PKGNAME-$VERSION
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+
+# Make FREEDESKTOP work with DESTDIR
+patch -d gtk2_ardour -p0 -i $CWD/SConscript.diff
+
+# Omit -O3 from the CFLAGS
+patch -p1 -i $CWD/SConstruct.diff
+
+
+
+# If you experience a "Segmentation Fault" (noticed on some "AthlonXP" cpu) try to re-compile by adding the option: LV2=0 (scons DIST_TARGET=i386 LV2=0 PREFIX=/usr).
+scons \
+  PREFIX=/usr \
+  LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+  DIST_TARGET="$ARCH" \
+  ARCH="$(echo $SLKCFLAGS)" \
+  FREEDESKTOP=1 \
+  FREESOUND=1 \
+  SYSLIBS=1 \
+  LV2=1 \
+  VST=1
+scons \
+  PREFIX=/usr \
+  LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+  DIST_TARGET="$ARCH" \
+  ARCH="$(echo $SLKCFLAGS)" \
+  FREEDESKTOP=1 \
+  FREESOUND=1 \
+  SYSLIBS=1 \
+  LV2=1 \
+  VST=1 \
+  DESTDIR=$PKG  install
+
+# Linking ardourvst binary to ardour2
+ln -s /usr/bin/ardourvst $PKG/usr/bin/ardour2
+
+
+# Strip binaries and shared objects, if present
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a COPYING PACKAGER_README  $PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+
+# Let's not clobber config files
+cd $PKG/etc/ardour2
+  for i in * ; do
+    mv $i $i.new
+    echo "config etc/ardour2/$i.new" >> $PKG/install/doinst.sh
+  done
+cd -
+
+
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(fftw\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(ladspa_sdk\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(slv2\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(vcdimager\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+requiredbuilder -y -v -b -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
+
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
