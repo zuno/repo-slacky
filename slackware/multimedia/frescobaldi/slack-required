@@ -1,0 +1,5 @@
+lilypond >= 2.16.0-i486-1sl
+pygame >= 20121031-i686-3sl
+python >= 2.7.3-i486-2
+python-poppler-qt4 >= 0.16.2-i686-3sl
+rumor >= 1.0.5-i486-1sl

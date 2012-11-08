@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+libsmi: Libsmi (SMI MIB Information Library)
+libsmi:
+libsmi: Libsmi allow management applications to access SMI MIB module
+libsmi: definitions. On top of this library, there are tools to check
+libsmi: analyze dump, convert, and  compare MIB  definitions. Finally
+libsmi: the distribution contains a  steadily maintained  and revised
+libsmi: archive of all IETF and IANA maintained standard MIB  and PIB
+libsmi: modules.
+libsmi:
+libsmi:
+libsmi:

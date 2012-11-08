@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+valgrind: Valgrind (Debugging Tools Suite)
+valgrind:
+valgrind: With the tools that come with Valgrind, you can automatically detect
+valgrind: many  memory  management  and  threading  bugs,  avoiding  hours  of
+valgrind: frustrating  bug-hunting, making  your programs more stable. You can
+valgrind: also perform  detailed profiling, to speed  up and reduce memory use
+valgrind: of your programs.
+valgrind:
+valgrind:
+valgrind:
+valgrind:

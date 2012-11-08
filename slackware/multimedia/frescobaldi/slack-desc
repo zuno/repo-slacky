@@ -1,0 +1,20 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler-----------------------------------------------------|
+frescobaldi: Frescobaldi (PyQt4 Sheet Music Editor)
+frescobaldi:
+frescobaldi: Frescobaldi  is  a  LilyPond  sheet music  editor. It  aims to be
+frescobaldi: powerful, yet lightweight and easy to use. You can edit  LilyPond
+frescobaldi: documents and build and preview them with a mouse click. Clicking
+frescobaldi: on notes  in the PDF preview places  the text cursor in the right
+frescobaldi: place. A score wizard  is provided to quickly setup a music score
+frescobaldi: There are editing tools to manipulate  the  rhythm, acticulations
+frescobaldi: lyrics hyphenation, etc.
+frescobaldi:
+frescobaldi:
+

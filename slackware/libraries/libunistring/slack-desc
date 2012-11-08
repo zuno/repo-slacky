@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------|
+libunistring: Libunistring
+libunistring:
+libunistring: Text files are nowadays usually encoded in Unicode, and may
+libunistring: consist of very different scripts ? from Latin letters to
+libunistring: Chinese Hanzi ?, with many kinds of special characters ?
+libunistring: accents, right-to-left writing marks, hyphens, Roman numbers,
+libunistring: and much more. But the POSIX platform APIs for text do not
+libunistring: contain adequate functions for dealing with particular
+libunistring: properties of many Unicode characters. In fact, the POSIX APIs
+libunistring: for text have several assumptions at their base which don't
+libunistring: hold for Unicode text. 

@@ -1,5 +1,27 @@
 Wed Nov  7 05:01:30 CET 2012
 -----------------------------
+	new file:   development/bluefish/bluefish.SlackBuild
+	new file:   development/codeblocks/codeblocks.SlackBuild
+	new file:   development/valgrind/valgrind.SlackBuild
+	new file:   games/neverball/neverball.SlackBuild
+	new file:   libraries/c-ares/c-ares.SlackBuild
+	new file:   libraries/libextractor/libextractor.SlackBuild
+	new file:   libraries/libmicrohttpd/libmicrohttpd.SlackBuild
+	new file:   libraries/libsmi/libsmi.SlackBuild
+	new file:   libraries/libunistring/libunistring.SlackBuild
+	new file:   libraries/physfs/physfs.SlackBuild
+	new file:   libraries/python-poppler-qt4/python-poppler-qt4.SlackBuild
+	new file:   multimedia/audacity/audacity.SlackBuild
+	new file:   multimedia/frescobaldi/frescobaldi.SlackBuild
+	new file:   multimedia/rumor/rumor.SlackBuild
+	new file:   network/gnunet/gnunet.SlackBuild
+	modified:   network/google-chrome/google-chrome.SlackBuild
+	modified:   network/opera/opera.SlackBuild
+	new file:   network/wireshark/wireshark.SlackBuild
+	new file:   system/nmapsi4/nmapsi4.SlackBuild
+
+Wed Nov  7 05:01:30 CET 2012
+-----------------------------
 	new file:   desktop/3ddesktop/3ddesktop.SlackBuild
 	new file:   graphic/mftrace/mftrace.SlackBuild
 	new file:   graphic/potrace/potrace.SlackBuild

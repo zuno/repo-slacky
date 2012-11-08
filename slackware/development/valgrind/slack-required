@@ -1,0 +1,4 @@
+binutils >= 2.22.52.0.2-i486-2 | util-linux >= 2.21.2-i486-5
+gdb >= 7.5-i486-1 | glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+grep >= 2.14-i486-1
