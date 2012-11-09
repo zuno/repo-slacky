@@ -1,0 +1,11 @@
+--- ipager.cpp_old	2012-10-28 23:54:15.000000000 +0100
++++ ipager.cpp	2012-10-28 23:54:21.000000000 +0100
+@@ -34,7 +34,7 @@
+ using namespace std;
+ 
+ #include "pager.h"
+-
++#include <unistd.h>
+ 
+ void show_help(){
+ 

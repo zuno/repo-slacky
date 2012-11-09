@@ -1,0 +1,24 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+ssmtp: sSMTP - Extremely simple MTA to get mail off the system to a mailhub
+ssmtp:
+ssmtp: sSMTP is a program that replaces sendmail on workstations that 
+ssmtp: should send their mail via the departmental mailhub from which they 
+ssmtp: pick up their mail (via pop, imap, rsmtp, pop_fetch, NFS... or the 
+ssmtp: like).  This program accepts mail and sends it to the mailhub, 
+ssmtp: optionally replacing the domain in the From: line with a different 
+ssmtp: one.
+ssmtp:
+ssmtp:
+ssmtp:
+
+ 
+ 
+ 
+ 

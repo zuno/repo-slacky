@@ -1,0 +1,25 @@
+aspell >= 0.60.6-x86_64-1
+curl >= 7.27.0-x86_64-2
+cxxlibs >= 6.0.17-x86_64-1 | gcc-g++ >= 4.7.1-x86_64-1
+cyrus-sasl >= 2.1.23-x86_64-4
+glibc-solibs >= 2.15-x86_64-7
+glibc-solibs >= 2.15-x86_64-7 | skype_static >= 4.0.0.8-x86_64-1sl
+gmp >= 5.0.5-x86_64-1
+gnutls >= 3.0.23-x86_64-1
+guile >= 1.8.8-x86_64-1
+libgcrypt >= 1.5.0-x86_64-1
+libgpg-error >= 1.10-x86_64-1
+libidn >= 1.25-x86_64-2
+libtool >= 2.4.2-x86_64-1
+lua >= 5.1.5-x86_64-1sl | lua >= 5.1.5-x86_64-3sl
+ncurses >= 5.9-x86_64-1
+nettle >= 2.5-x86_64-1
+openldap-client >= 2.4.31-x86_64-2
+openssl >= 1.0.1c-x86_64-3 | openssl-solibs >= 1.0.1c-x86_64-3
+p11-kit >= 0.12-x86_64-1
+perl >= 5.16.1-x86_64-1
+python >= 2.7.3-x86_64-2
+readline >= 5.2-x86_64-4
+ruby >= 1.9.3_p194-x86_64-2
+tcl >= 8.5.11-x86_64-1
+zlib >= 1.2.6-x86_64-1

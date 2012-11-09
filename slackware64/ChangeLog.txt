@@ -1,3 +1,20 @@
+Fri Nov  9 05:10:00 CET 2012
+-----------------------------
+	new file:   desktop/docker/docker.SlackBuild
+	new file:   desktop/ipager/ipager.SlackBuild
+	new file:   desktop/worker/worker.SlackBuild
+	new file:   games/pcsxr/pcsxr.SlackBuild
+	new file:   hardware/lshw/lshw.SlackBuild
+	new file:   libraries/libburn/libburn.SlackBuild
+	new file:   libraries/libisofs/libisofs.SlackBuild
+	new file:   multimedia/brasero/brasero.SlackBuild
+	new file:   multimedia/dvdauthor/dvdauthor.SlackBuild
+	new file:   multimedia/vcdimager/vcdimager.SlackBuild
+	new file:   network/ssmtp/ssmtp.SlackBuild
+	new file:   network/weechat/weechat.SlackBuild
+	new file:   system/rxvt-unicode/rxvt-unicode.SlackBuild
+	new file:   utilities/slim/slim.SlackBuild
+
 Wed Nov  7 05:04:52 CET 2012
 -----------------------------
 	modified:   system/nvidia-linux-compat32/nvidia-linux-compat32.SlackBuild

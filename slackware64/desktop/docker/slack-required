@@ -1,0 +1,6 @@
+glib2 >= 2.32.4-x86_64-1
+glibc-solibs >= 2.15-x86_64-7 | skype_static >= 4.0.0.8-x86_64-1sl
+libX11 >= 1.5.0-x86_64-1
+libXau >= 1.0.7-x86_64-1
+libXdmcp >= 1.1.1-x86_64-1
+libxcb >= 1.8.1-x86_64-1

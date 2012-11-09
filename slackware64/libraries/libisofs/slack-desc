@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+libisofs: Libisofs (ISO 9660 Disk Image Library)
+libisofs:
+libisofs: Libisofs a free software  library to pack up  hard  disk  files and
+libisofs: directories into a ISO  9660  disk image. This may then be  brought
+libisofs: to CD via libburn. libisofs is to be the foundation of the upcoming
+libisofs: mkisofs emulation.
+libisofs:
+libisofs:
+libisofs:
+libisofs:
+libisofs:

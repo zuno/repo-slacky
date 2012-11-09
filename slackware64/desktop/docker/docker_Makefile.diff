@@ -1,0 +1,24 @@
+--- Makefile_old	2012-10-28 23:11:16.000000000 +0100
++++ Makefile	2012-10-28 23:44:29.000000000 +0100
+@@ -5,9 +5,9 @@
+ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+ 
+ # Change this PREFIX to where you want docker to be installed
+-PREFIX=/usr/local
++PREFIX=/usr
+ # Change this XLIBPATH to point to your X11 development package's installation
+-XLIBPATH=/usr/X11R6/lib
++XLIBPATH=/usr/X11R6/lib64
+ 
+ # Sets some flags for stricter compiling
+ CFLAGS=-pedantic -Wall -W -O
+@@ -40,7 +40,8 @@
+ 	sed -e "s/@VERSION@/$(VERSION)/" version.h.in > $@
+ 
+ install: all
+-	install $(target) $(PREFIX)/bin/$(target)
++	mkdir -p $(DESTDIR)/$(PREFIX)/bin/
++	install $(target) $(DESTDIR)/$(PREFIX)/bin/$(target)
+ 
+ uninstall:
+ 	rm -f $(PREFIX)/$(target)

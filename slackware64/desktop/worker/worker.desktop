@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment=Two-pane Filemanager
+Encoding=UTF-8
+Exec=worker
+GenericName=File Manager
+Icon=/usr/share/pixmaps/WorkerIcon48.xpm
+MimeType=
+Name=Worker
+Name[en_US]=Worker
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+Categories=Application;FileManager;Utility;Qt;KDE;
+X-DCOP-ServiceType=
+X-KDE-SubstituteUID=
+X-KDE-Username=
+X-KDE-AuthorizeAction=

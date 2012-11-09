@@ -1,0 +1,19 @@
+--- SConstruct_old	2005-11-06 12:23:24.000000000 +0100
++++ SConstruct	2012-10-29 00:13:24.000000000 +0100
+@@ -14,7 +14,7 @@
+ 
+     BoolOption('xinerama', 'support xinerama', 0),
+ 
+-    PathOption('PREFIX', 'install-path base', '/usr/local'),
++    PathOption('PREFIX', 'install-path base', '/usr'),
+     PathOption('DESTDIR', 'install to $DESTDIR/$PREFIX', '/')
+ )
+ 
+@@ -115,7 +115,6 @@
+     else:
+         print "yes"
+         ipager_env.AppendUnique(
+-            CPPPATH = imlib2_env.Dictionary()['CPPPATH'], 
+             CCFLAGS = imlib2_env.Dictionary()['CCFLAGS'], 
+             LIBPATH = imlib2_env.Dictionary()['LIBPATH'],
+             LIBS    = imlib2_env.Dictionary()['LIBS']
