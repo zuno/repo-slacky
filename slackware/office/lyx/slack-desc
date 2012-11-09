@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |------------------handy-ruler---------------------------------------------|
+lyx: LyX (Qt4 WYSIWYM Document Processor)
+lyx:
+lyx: LyX is an advanced open source document processor running on many Unix and
+lyx: some non-Unix platforms. It  is  called  a  "document processor",  because
+lyx: unlike  standard  word  processors, LyX  encourages an approach to writing
+lyx: based on the structure of your documents, not their appearance.
+lyx:
+lyx:
+lyx:
+lyx:
+lyx:

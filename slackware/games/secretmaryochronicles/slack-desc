@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+                     |-----handy-ruler----------------------------------------------------|
+secretmaryochronicles: SMC (Secret Maryo Chronicles)
+secretmaryochronicles:
+secretmaryochronicles: Secret Maryo Chronicles is  an Open Source 2 dimensional
+secretmaryochronicles: platform game  with  a style designed similar to classic
+secretmaryochronicles: sidescroller   games   which   utilizes   the   platform
+secretmaryochronicles: independent library, SDL  and since Version   0.98  with
+secretmaryochronicles: the   OpenGL   accelerated  Graphics  Renderer developed
+secretmaryochronicles: in C++.
+secretmaryochronicles:
+secretmaryochronicles:
+secretmaryochronicles:

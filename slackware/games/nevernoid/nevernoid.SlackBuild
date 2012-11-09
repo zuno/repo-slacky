@@ -1,0 +1,98 @@
+#!/bin/sh
+# Copyright Loris Vincenzi (http://www.slacky.eu)
+# Thanks to Watson (yalhcru@gmail.com)
+# 
+# All rights reserved.
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://dssi.sourceforge.net/
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+# Exit on most errors
+set -e
+
+
+
+PRGNAM=nevernoid
+ARCHIVE="NeverNoid_v12_linux_x86.tar.gz"
+VERSION=${VERSION:-1.2}
+ARCH=i486  # which might be a lie! (we dunno how it was compiled)
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/Krs}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+# Binary-only package, so no CFLAGS here
+
+SOURCE="http://www.sourcefiles.org/Games/Arcade/Block_Based/NeverNoid_v12_linux_x86.tar.gz"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/NeverNoid_v12_linux_x86.tar.gz ]; then
+wget -c $SOURCE
+fi
+
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM
+tar xvf $CWD/$ARCHIVE
+cd $PRGNAM
+chown -R root:root .
+chmod -R a-s,u+w,go+r-w .
+find . -type f -print0 | xargs -0 chmod 644
+
+mkdir -p $PKG/usr/libexec $PKG/usr/games $PKG/usr/share/nevernoid
+install -m0755 -o root -g root nevernoid $PKG/usr/libexec
+cp -r fonts maps music sounds sprites $PKG/usr/share/nevernoid
+
+# game expects to be run from within its data directory like a windows app,
+# and expects to write highscore/settings data to the same place. Wrapper
+# script allows system-wide installation with per-user data.
+install -m0755 -o root -g root $CWD/nevernoid.wrapper $PKG/usr/games/nevernoid
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+sed 's/\r//g' readme.txt > $PKG/usr/doc/$PRGNAM-$VERSION/readme.txt
+cat $CWD/nevernoid.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/nevernoid.SlackBuild
+
+mkdir -p $PKG/usr/share/applications
+cp $CWD/nevernoid.desktop $PKG/usr/share/applications
+
+# Oddly, there's no win32 icon for this game...
+# Don't laugh, I made this icon from a screenshot of the title screen
+# in the gimp. Took about 10 minutes plus lots of cussing & head-scratching.
+# If anyone who actually knows anything at all about graphic design would
+# like to do a better icon, email me.
+mkdir -p $PKG/usr/share/pixmaps
+cp $CWD/nevernoid.png $PKG/usr/share/pixmaps
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+requiredbuilder -v -y -s $CWD $PKG
+makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+

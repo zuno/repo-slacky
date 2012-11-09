@@ -1,3 +1,26 @@
+Fri Nov  9 05:03:21 CET 2012
+-----------------------------
+	new file:   games/nevernoid/nevernoid.SlackBuild
+	new file:   games/secretmaryochronicles/secretmaryochronicles.SlackBuild
+	new file:   graphic/CEGUI/CEGUI.SlackBuild
+	new file:   graphic/calibre/calibre.SlackBuild
+	new file:   graphic/kgraphviewer/kgraphviewer.SlackBuild
+	new file:   libraries/FreeImage/FreeImage.SlackBuild
+	new file:   libraries/beautifulsoup4/beautifulsoup4.SlackBuild
+	new file:   libraries/cssutils/cssutils.SlackBuild
+	new file:   libraries/dnspython/dnspython.SlackBuild
+	new file:   libraries/dotconf/dotconf.SlackBuild
+	new file:   libraries/ez_setup/ez_setup.SlackBuild
+	new file:   libraries/netifaces/netifaces.SlackBuild
+	new file:   libraries/python-dateutil/python-dateutil.SlackBuild
+	new file:   libraries/srtp/srtp.SlackBuild
+	new file:   multimedia/kmetronome/kmetronome.SlackBuild
+	new file:   multimedia/kradio4/kradio4.SlackBuild
+	new file:   multimedia/speech-dispatcher/speech-dispatcher.SlackBuild
+	new file:   network/lanmap/lanmap.SlackBuild
+	new file:   office/lyx/lyx.SlackBuild
+	new file:   scientific/zhu3d/zhu3d.SlackBuild
+
 Wed Nov  7 05:01:30 CET 2012
 -----------------------------
 	new file:   development/bluefish/bluefish.SlackBuild

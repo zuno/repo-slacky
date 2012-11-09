@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+zhu3d: Zhu3d (Qt4 3D Functions Viewer/Animator)
+zhu3d:
+zhu3d: With  Zhu3D  you  interactively  can   view   and  animate   functions
+zhu3d: isosurfaces  and  a further independent  parametric  system. Numerical
+zhu3d: solutions of equation systems can be found with a precise and reliable
+zhu3d: adaptive random search.
+zhu3d:
+zhu3d:
+zhu3d:
+zhu3d:
+zhu3d:

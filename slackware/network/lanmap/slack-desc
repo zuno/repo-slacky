@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+lanmap: Lanmap (Graphic Network Discovery Tool)
+lanmap: 
+lanmap: Lanmap Listens to all available  traffic on the interface of your
+lanmap: choice, figures  out  who's talking to who, how much, using which
+lanmap: protocols.
+lanmap: This information is then put into a nice human-readable 2d  image
+lanmap: (various formats are available) which can be used to understand a
+lanmap: network's topology.
+lanmap: 
+lanmap:
+lanmap:

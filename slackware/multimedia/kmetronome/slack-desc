@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler-----------------------------------------------------|
+kmetronome: KMetronome (KDE4 MIDI Based Metronome)
+kmetronome:
+kmetronome: This program is a  MIDI  metronome with KDE interface and based on
+kmetronome: the ALSA sequencer. The intended  audience are musicians and music
+kmetronome: students. Like the solid, real metronomes it is a tool to keep the
+kmetronome: rhythm while playing musical instruments.
+kmetronome:
+kmetronome:
+kmetronome:
+kmetronome:
+kmetronome:

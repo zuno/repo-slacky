@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+kgraphviewer: KGraphViewer (KDE4 GraphViz Viewer)
+kgraphviewer:
+kgraphviewer: KGraphViewer is a GraphViz dot graph viewer for KDE. The graphviz
+kgraphviewer: program suite is a free software set of layout engines for graphs
+kgraphviewer: They are commonly used in scientific domains and  particularly in
+kgraphviewer: computer science. But until now there was a lack of a  modern GUI
+kgraphviewer: to look at the graphs.
+kgraphviewer:
+kgraphviewer:
+kgraphviewer:
+kgraphviewer:

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=NeverNoid
+GenericName=Arcanoid Clone
+GenericName[it]=Gioco simile ad Arkanoid
+Comment=Clone of the Arkanoid arcade game
+Comment[it]=Clone del gioco Arkanoid
+Exec=nevernoid
+Type=Application
+Icon=nevernoid
+Categories=Game;ArcadeGame;

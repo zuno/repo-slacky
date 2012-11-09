@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler--------------------------------------------------------|
+kradio4: KRadio4 (KDE4 Radio Application)
+kradio4:
+kradio4: KRadio4 is a comfortable KDE4 application for  internet radio and
+kradio4: AM/FM radio cards supported by V4L/V4L2. It has a lot of valuable
+kradio4: features such as RDS decoding,  pre-recording, timeshift playback
+kradio4: recording (wav, mp3, ogg),  PVR  support,  versatile alarms, LIRC
+kradio4: support, and much more. 
+kradio4:
+kradio4:
+kradio4:
+kradio4:
