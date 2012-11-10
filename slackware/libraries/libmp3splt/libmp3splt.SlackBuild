@@ -1,10 +1,9 @@
 #!/bin/sh
+# Copyright 2009 Loris Vincenzi (http://www.slacky.eu)
+# All rights reserved.
+#
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://kde-apps.org/content/show.php/KNemo?content=12956
-# Packager Andrea Sciucca ( gohanz at infinito.it)
-# http://www.slacky.eu
-#
-#
+# http://mp3splt.sourceforge.net/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,28 +22,26 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
 # Exit on most errors
 set -e
-
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=knemo
+PKGNAME=libmp3splt
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.7.5}
+VERSION=${VERSION:-0.7.3}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 # Download sorce tarball if still not present
-SOURCE="http://kde-apps.org/CONTENT/content-files/12956-$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/mp3splt/libmp3splt/$VERSION/$PKGNAME-$VERSION.tar.gz"
 
-if [ ! -e $CWD/12956-$PKGNAME-$VERSION.tar.bz2 ]; then
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
  wget $SOURCE
 fi
 
@@ -61,39 +58,39 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
+
 # Decompress the source tarball
 cd $TMP
-tar xjvf $CWD/12956-$PKGNAME-$VERSION.tar.bz2
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
 
-echo -e "\E[0;32m+------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild KNemo |\E[0;0m"
-echo -e "\E[0;32m+------------------------+\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild LibMp3Splt |\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-
-# Building KNemo package
-( mkdir -p build \
-    && cd build \
-      && cmake .. \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DINCLUDE_INSTALL_DIR=/usr/include \
-    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DBUILD_SHARED_LIBS:BOOL=ON
+# Building LibMp3Splt package
+LDFLAGS="$SLKLDFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--mandir=/usr/man \
+		--docdir=/usr/doc/$PKGNAME-$VERSION \
+		--htmldir=/usr/doc/$PKGNAME-$VERSION/html \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
-make $JOBS \
-&& make install DESTDIR=$PKG ) 
-
+make  $JOBS
+make install DESTDIR=$PKG
 
 # Strip binaries and shared objects, if present
 ( cd $PKG
@@ -105,9 +102,8 @@ make $JOBS \
 
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a AUTHORS COPYING ChangeLog INSTALL README  $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -116,22 +112,10 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
-
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-
-
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -v -y -b -s  $CWD $PKG
+requiredbuilder -y -v -c -b -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
@@ -141,3 +125,6 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+
+

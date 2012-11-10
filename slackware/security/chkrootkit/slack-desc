@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+          |----handy-ruler----------------------------------------------------|
+chkrootkit: Chkrootkit (Rootkit Checker Tool)
+chkrootkit:
+chkrootkit: Chkrootkit is a script that contains tools  to check for system
+chkrootkit: binaries for rootkit modification, check if the interface is in
+chkrootkit: promiscuous mode, check for  lastlog  deletions, check for wtmp
+chkrootkit: deletions, check for signs of LKM trojans,  utmp  deletions and
+chkrootkit: many other.
+chkrootkit:
+chkrootkit:
+chkrootkit:
+chkrootkit:

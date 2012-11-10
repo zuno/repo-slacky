@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |----handy-ruler-------------------------------------------------------|
+mp3splt: Mp3Splt (Mp3/Ogg Command Line Split Tool)
+mp3splt:
+mp3splt: Mp3Splt is a command  line  utility  to split mp3 (VBR supported)  and
+mp3splt: ogg  files  selecting  a begin  and  an  end  time  position,  without
+mp3splt: decoding. It's very  useful  to split large  mp3/ogg to  make  smaller
+mp3splt: files or to split entire albums to obtain original tracks. If you want
+mp3splt: to split an album, you can select split  points and filenames manually
+mp3splt: or you can get them automatically from CDDB (internet or a local file)
+mp3splt: or from .cue files. Supports also automatic silence split, that can be
+mp3splt: used also to adjust cddb/cue splitpoints.
+mp3splt:

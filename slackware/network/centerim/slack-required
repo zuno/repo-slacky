@@ -1,0 +1,14 @@
+curl >= 7.27.0-i486-2
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+cyrus-sasl >= 2.1.23-i486-4
+gcc >= 4.7.1-i486-1
+glibc-solibs >= 2.15-i486-7
+gpgme >= 1.3.2-i486-1
+libassuan >= 2.0.3-i486-1
+libgpg-error >= 1.10-i486-1
+libidn >= 1.25-i486-2
+libjpeg >= v8a-i486-1
+ncurses >= 5.9-i486-1
+openldap-client >= 2.4.31-i486-2
+openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3 | secondlife >= 3.0.3.240895-i686-1sl
+zlib >= 1.2.6-i486-1

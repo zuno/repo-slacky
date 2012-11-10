@@ -1,3 +1,19 @@
+Sat Nov 10 05:01:11 CET 2012
+-----------------------------
+	new file:   desktop/oxygen-gtk2/oxygen-gtk2.SlackBuild
+	new file:   desktop/xfe/xfe.SlackBuild
+	new file:   libraries/libmp3splt/libmp3splt.SlackBuild
+	new file:   multimedia/mp3splt-gtk/mp3splt-gtk.SlackBuild
+	new file:   multimedia/mp3splt/mp3splt.SlackBuild
+	new file:   multimedia/qt-recordmydesktop/qt-recordmydesktop.SlackBuild
+	new file:   network/centerim/centerim.SlackBuild
+	new file:   network/coccinella/coccinella.SlackBuild
+	new file:   network/gajim/gajim.SlackBuild
+	modified:   network/knemo/knemo.SlackBuild
+	new file:   network/ssmtp/ssmtp.SlackBuild
+	new file:   security/chkrootkit/chkrootkit.SlackBuild
+	new file:   system/clamav/clamav.SlackBuild
+
 Fri Nov  9 05:03:21 CET 2012
 -----------------------------
 	new file:   games/nevernoid/nevernoid.SlackBuild
