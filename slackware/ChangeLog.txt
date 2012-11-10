@@ -1,5 +1,9 @@
 Sat Nov 10 05:01:11 CET 2012
 -----------------------------
+	new file:   development/geany/geany.SlackBuild
+
+Sat Nov 10 05:01:11 CET 2012
+-----------------------------
 	new file:   desktop/oxygen-gtk2/oxygen-gtk2.SlackBuild
 	new file:   desktop/xfe/xfe.SlackBuild
 	new file:   libraries/libmp3splt/libmp3splt.SlackBuild
