@@ -1,0 +1,5 @@
+flac >= 1.2.1-x86_64-3
+glibc-solibs >= 2.15-x86_64-7
+libogg >= 1.3.0-x86_64-1
+libsndfile >= 1.0.24-x86_64-1
+libvorbis >= 1.3.3-x86_64-1

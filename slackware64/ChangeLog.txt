@@ -1,3 +1,24 @@
+Mon Nov 12 05:06:13 CET 2012
+-----------------------------
+	new file:   desktop/dmenu-xft/dmenu-xft.SlackBuild
+	modified:   desktop/tint2/tint2.SlackBuild
+	new file:   desktop/volumeicon/volumeicon.SlackBuild
+	new file:   desktop/zenity/zenity.SlackBuild
+	new file:   libraries/libdv/libdv.SlackBuild
+	new file:   libraries/libmpcdec/libmpcdec.SlackBuild
+	new file:   libraries/libmpeg2/libmpeg2.SlackBuild
+	new file:   libraries/libsidplay/libsidplay.SlackBuild
+	new file:   libraries/orc/orc.SlackBuild
+	new file:   libraries/soundtouch/soundtouch.SlackBuild
+	new file:   multimedia/gst-ffmpeg/gst-ffmpeg.SlackBuild
+	new file:   multimedia/gst-plugins-bad/gst-plugins-bad.SlackBuild
+	new file:   multimedia/gst-plugins-ugly/gst-plugins-ugly.SlackBuild
+	new file:   multimedia/mjpegtools/mjpegtools.SlackBuild
+	new file:   multimedia/rtmpdump/rtmpdump.SlackBuild
+	new file:   multimedia/twolame/twolame.SlackBuild
+	new file:   network/uzbl/uzbl.SlackBuild
+	new file:   office/galculator/galculator.SlackBuild
+
 Sun Nov 11 05:02:58 CET 2012
 -----------------------------
 	new file:   desktop/evince/evince.SlackBuild
