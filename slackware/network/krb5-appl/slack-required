@@ -1,0 +1,7 @@
+expect >= 5.44.1.15-i486-1 | netkit-rsh >= 0.17-i486-1
+glibc-solibs >= 2.15-i486-7
+keyutils >= 1.5.5-i486-1
+krb5 >= 1.10.3-i486-1sl
+libtermcap >= 1.2.3-i486-7
+ncurses >= 5.9-i486-1
+netkit-rsh >= 0.17-i486-1

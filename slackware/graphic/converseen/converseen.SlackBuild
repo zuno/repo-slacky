@@ -1,6 +1,9 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://www.winehq.com
+# http://smplayer.sourceforge.net
+# Packager Andrea Sciucca Gohanz ( gohanz at infinito.it)
+# http://www.slacky.eu
+#
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -20,9 +23,6 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-# Required: fontforge, openal-soft, prelink (Only compilation), webcore-fonts, wine_gecko
-#
-#
 # Exit on most errors
 set -e
 
@@ -31,22 +31,21 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=wine
+PKGNAME=converseen
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.5.17}
+VERSION=${VERSION:-0.5.1}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
-SOURCE="http://prdownloads.sourceforge.net/wine/$PKGNAME-$VERSION.tar.bz2"
-
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
- wget -c $SOURCE
-fi
+SOURCE="http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/$VERSION/$PKGNAME-$VERSION.tar.bz2"
 
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+ wget $SOURCE
+fi
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -57,88 +56,48 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
-
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-
 
 # Decompress the source tarball
 cd $TMP
 tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-# Print some funny text
-echo -e "\E[0;32m+-----------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild WINE |\E[0;0m"
-echo -e "\E[0;32m+-----------------------+\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Converseen |\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-# Option to pass at the compilation process
+# Building Converseen package
+# Configure:
+qmake PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile converseen.pro
+
+
+# Build and install:
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure 	--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libdir=/usr/lib${LIBDIRSUFFIX} \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--program-prefix= \
-		--program-suffix= \
-		--build=$CHOST-slackware-linux
-# Build and install
-echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
-read
-make depend
 make $JOBS
-make install DESTDIR=$PKG
 
-#Add documentation files: readme, changelog and so on
+# Installing binary
+install -m 755 -p -D converseen $PKG/usr/bin/converseen
+
+# Installing desktop menu file and icons
+mkdir -p $PKG/usr/share/{applications,converseen,pixmaps}
+install -m 644 -p loc/*.qm $PKG/usr/share/converseen
+install -m 755 -p res/converseen.png $PKG/usr/share/pixmaps
+install -m 755 -p res/converseen.desktop $PKG/usr/share/applications
+
+
+# Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a ANNOUNCE AUTHORS COPYING.LIB LICENSE LICENSE.OLD README VERSION \
-$PKG/usr/doc/$PKGNAME-$VERSION
+cp -a INSTALL README $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
-
-install -m 644 -p -D  $CWD/wine.png ${PKG}/usr/share/pixmaps/wine.png
-mkdir -p ${PKG}/usr/share/applications
-cat <<-_EOT_ > ${PKG}/usr/share/applications/winecfg.desktop
-	[Desktop Entry]
-	Type=Application
-	Encoding=UTF-8
-	Name=WineCFG
-	Exec=winecfg
-	Icon=/usr/share/pixmaps/wine.png
-	Terminal=false
-	GeneriName=WINE Configurator
-	GeneriName[it]=Configuratore per WINE
-	Comment=WINE GUI configuration tool
-	Comment[it]=Interfaccia grafica per la configurazione di WINE
-	Categories=Application;Settings;
-	_EOT_
-
-
-# Strip binaries and shared objects, if present
-( cd $PKG
-  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-)
-
-
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
-
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -148,7 +107,7 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-# Building some post-install execution script 		
+# Building some post-install execution script 	
 	echo "if [ -x /usr/bin/update-mime-database ]; then
   /usr/bin/update-mime-database /usr/share/mime &> /dev/null
 fi" >> $PKG/install/doinst.sh
@@ -163,15 +122,14 @@ fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
 
+# Strip binary
+strip --strip-unneeded $PKG/usr/bin/*
 
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-ADD=$(ls /var/log/packages/ | sed -ne 's/\(fontforge\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(webcore-fonts\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(wine_gecko\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
@@ -182,3 +140,4 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+

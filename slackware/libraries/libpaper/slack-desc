@@ -5,15 +5,15 @@
 # exactly 11 lines for the formatting to be correct.  It's also customary to
 # leave one space after the ':'.
 
-        |-----handy-ruler----------------------------------------------------|
-sylpheed: Sylpheed (GTK2+ Lightweight Email Client)
-sylpheed:
-sylpheed: Sylpheed is an e-mail client and news reader based on GTK2+
-sylpheed: GUI toolkit, and runs on X Window System. 
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
+        |-----handy-ruler------------------------------------------------------|
+libpaper: Libpaper (Paper Size Library)
+libpaper:
+libpaper: The paper library and accompanying files are intended to provide
+libpaper: a simple way to take actions based on a system or user-specified
+libpaper: paper size.
+libpaper:
+libpaper:
+libpaper:
+libpaper:
+libpaper:
+libpaper:

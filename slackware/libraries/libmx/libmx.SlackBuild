@@ -1,6 +1,9 @@
 #!/bin/sh
+# Packager Andrea Sciucca ( gohanz at infinito.it)
+# All rights reserved.
+#
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://www.winehq.com
+# http://www.clutter-project.org
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -19,9 +22,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
-# Required: fontforge, openal-soft, prelink (Only compilation), webcore-fonts, wine_gecko
-#
+# Required: clutter, cogl, json-glib
 #
 # Exit on most errors
 set -e
@@ -31,20 +32,22 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=wine
+PKGNAME=mx
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.5.17}
+VERSION=${VERSION:-1.4.6}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://prdownloads.sourceforge.net/wine/$PKGNAME-$VERSION.tar.bz2"
+
+SOURCE=http://pkgs.fedoraproject.org/repo/pkgs/libmx/mx-1.4.6.tar.xz/92ec1bb29cc878932857de737b111827/$PKGNAME-$VERSION.tar.xz
+
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
- wget -c $SOURCE
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.xz ]; then
+  wget -c $SOURCE
 fi
 
 
@@ -62,22 +65,19 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
-
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
-
-# Print some funny text
-echo -e "\E[0;32m+-----------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild WINE |\E[0;0m"
-echo -e "\E[0;32m+-----------------------+\E[0;0m"
+tar xvf $CWD/$PKGNAME-$VERSION.tar.xz
+echo -e "\E[0;32m+------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Libmx |\E[0;0m"
+echo -e "\E[0;32m+------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-# Option to pass at the compilation process
+# Building Libmx package
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -85,41 +85,17 @@ CXXFLAGS="$SLKCFLAGS" \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
 		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--docdir=/usr/doc/$PKGNAME-$VERSION \
 		--program-prefix= \
 		--program-suffix= \
 		--build=$CHOST-slackware-linux
-# Build and install
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
-make depend
 make $JOBS
 make install DESTDIR=$PKG
 
-#Add documentation files: readme, changelog and so on
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a ANNOUNCE AUTHORS COPYING.LIB LICENSE LICENSE.OLD README VERSION \
-$PKG/usr/doc/$PKGNAME-$VERSION
-chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
-
-install -m 644 -p -D  $CWD/wine.png ${PKG}/usr/share/pixmaps/wine.png
-mkdir -p ${PKG}/usr/share/applications
-cat <<-_EOT_ > ${PKG}/usr/share/applications/winecfg.desktop
-	[Desktop Entry]
-	Type=Application
-	Encoding=UTF-8
-	Name=WineCFG
-	Exec=winecfg
-	Icon=/usr/share/pixmaps/wine.png
-	Terminal=false
-	GeneriName=WINE Configurator
-	GeneriName[it]=Configuratore per WINE
-	Comment=WINE GUI configuration tool
-	Comment[it]=Interfaccia grafica per la configurazione di WINE
-	Categories=Application;Settings;
-	_EOT_
 
 
 # Strip binaries and shared objects, if present
@@ -130,14 +106,10 @@ cat <<-_EOT_ > ${PKG}/usr/share/applications/winecfg.desktop
 )
 
 
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a COPYING* ChangeLog NEWS README $PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
 
@@ -145,22 +117,7 @@ fi
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
-
-
-# Building some post-install execution script 		
-	echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
+cat $CWD/libmx.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/libmx.SlackBuild
 
 
 
@@ -169,16 +126,14 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-ADD=$(ls /var/log/packages/ | sed -ne 's/\(fontforge\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(webcore-fonts\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(wine_gecko\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+/sbin/makepkg -l y -c n $OUTPUT/libmx-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
 
 
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+

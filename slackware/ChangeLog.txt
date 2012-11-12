@@ -1,3 +1,26 @@
+Mon Nov 12 05:01:48 CET 2012
+-----------------------------
+	new file:   desktop/openbox/openbox.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> development/itstool/itstool.SlackBuild
+	modified:   graphic/calibre/calibre.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> graphic/converseen/converseen.SlackBuild
+	modified:   graphic/danbooru-client/danbooru-client.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> graphic/gocr/gocr.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/clutter-gst/clutter-gst.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/clutter-gtk/clutter-gtk.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/clutter/clutter.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/cogl/cogl.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/gnome-desktop/gnome-desktop.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/gnome-video-effects/gnome-video-effects.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/libgee/libgee.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/libmx/libmx.SlackBuild
+	copied:     network/sylpheed/sylpheed.SlackBuild -> libraries/libpaper/libpaper.SlackBuild
+	new file:   multimedia/mp3blaster/mp3blaster.SlackBuild
+	new file:   network/krb5-appl/krb5-appl.SlackBuild
+	modified:   network/sylpheed/sylpheed.SlackBuild
+	new file:   system/gnome-vfs/gnome-vfs.SlackBuild
+	modified:   system/wine/wine.SlackBuild
+
 Sun Nov 11 05:00:38 CET 2012
 -----------------------------
 	new file:   multimedia/gtk-recordmydesktop/gtk-recordmydesktop.SlackBuild

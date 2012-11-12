@@ -5,15 +5,15 @@
 # exactly 11 lines for the formatting to be correct.  It's also customary to
 # leave one space after the ':'.
 
-        |-----handy-ruler----------------------------------------------------|
-sylpheed: Sylpheed (GTK2+ Lightweight Email Client)
-sylpheed:
-sylpheed: Sylpheed is an e-mail client and news reader based on GTK2+
-sylpheed: GUI toolkit, and runs on X Window System. 
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
-sylpheed:
+         |-----handy-ruler---------------------------------------------------|
+krb5-appl: Kerberos Application (Addtional applications for Kerberos)
+krb5-appl:
+krb5-appl: This package include an additional set of apps for Kerberos 5
+krb5-appl:
+krb5-appl:
+krb5-appl:
+krb5-appl:
+krb5-appl:
+krb5-appl:
+krb5-appl:
+krb5-appl:

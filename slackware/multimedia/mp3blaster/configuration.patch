@@ -1,0 +1,20 @@
+--- configure	2011-01-29 20:39:46.813000001 +0100
++++ configure	2011-01-29 20:38:09.562000001 +0100
+@@ -10,6 +10,8 @@
+ ## M4sh Initialization.  ##
+ ## --------------------- ##
+ 
++# Patched by Luca De Pandis aka atomix600 (atomix600(at)hotmail(dot)it)
++
+ # Be more Bourne compatible
+ DUALCASE=1; export DUALCASE # for MKS sh
+ if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
+@@ -2267,7 +2269,7 @@
+ 
+ 
+ #Custom C++ flags - later options override earlier ones
+-if  -z "$CXXFLAGS"  ; then
++if [ -z "$CXXFLAGS" ] ; then
+ 	CXXFLAGS="-O2 -Wall -W -fno-strength-reduce"
+ fi
+ 
