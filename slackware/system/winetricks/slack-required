@@ -1,3 +1,3 @@
-cabextract >= 1.4-i486-1sl
-wine >= 1.3.22-i486-1sl
-zenity >= 2.32.1-i486-1sl
+cabextract >= 1.4-i486-2sl
+wine >= 1.5.15-i486-1sl
+zenity >= 3.2.0-i486-1sl

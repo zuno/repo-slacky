@@ -1,0 +1,163 @@
+#!/bin/sh
+# Heavily based on the Slackware 14.0 SlackBuild
+# http://gpac.sourceforge.net
+# Packagers Andrea Sciucca  ( gohanz at infinito.it)
+# http://www.slacky.eu
+#
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Required: a52dec, celt, faac, faad2, ffmpeg,  jack-audio-connection-ki, lame, libaacplus, 
+# Required: libbluray, libgsm, libmodplug, libva, libvpx, opencore-amr, openjpeg, opus, orc
+# Required: rtmpdump, schroedinger, speex, twolame, vo-aacenc, vo-amrwbenc, x264, xvidcore
+#  
+#
+# Exit on most errors
+#set -e
+
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=gpac
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+#VERSION=${VERSION:-0.5.0}
+VERSION=${VERSION:-`date +%Y%m%d`}
+ARCH=${ARCH:-i486}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+# Download sorce tarball if still not present
+#SOURCE="http://puzzle.dl.sourceforge.net/sourceforge/gpac/$PKGNAME-$VERSION.tar.gz"
+
+#if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
+# wget $SOURCE
+#fi
+
+# Set compiling FLAGS
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+# Decompress the source tarball
+cd $TMP
+#tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
+svn co https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac gpac
+
+echo -e "\E[0;32m+-----------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild GPAC |\E[0;0m"
+echo -e "\E[0;32m+-----------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+cd $PKGNAME
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Building GPAC  package
+./configure --prefix=/usr \
+  --mandir=/usr/man \
+  --mozdir=/usr/lib/seamonkey \
+  --disable-opt \
+  --disable-wx \
+  --cpu=${ARCH} \
+  --extra-cflags="$SLKCFLAGS" 
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make
+make install DESTDIR=$PKG
+
+ln -s MP4Box $PKG/usr/bin/mp4box
+ln -s MP4Client $PKG/usr/bin/mp4client
+
+
+# Strip binaries and shared objects, if present
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a AUTHORS BUGS COPYING Changelog INSTALLME README TODO \
+$PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+
+#mkdir -p $PKG/usr/share/{applications,pixmaps}
+#cp    -a  $CWD/osmo4.png $PKG/usr/share/pixmaps
+
+#cat << EOF > $PKG/usr/share/applications/Osmo4.desktop
+#[Desktop Entry]
+#Type=Application
+#Encoding=UTF-8
+#Name=Osmo4
+#Name[it]=Osmo4
+#GenericName=MPEG-4 player 
+#GenericName[it]=Lettore multimediale MPEG-4
+#Comment=GPAC 2D MPEG-4 player 
+#Icon=/usr/share/pixmaps/osmo4.png
+#Exec=Osmo4
+#Terminal=false
+#Categories=AudioVideo;Player;
+#EOF
+
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+requiredbuilder -y -v -b -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+

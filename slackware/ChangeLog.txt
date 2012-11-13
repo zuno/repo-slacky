@@ -1,3 +1,13 @@
+Tue Nov 13 05:00:47 CET 2012
+-----------------------------
+	new file:   graphic/drawpile/drawpile.SlackBuild
+	new file:   multimedia/asunder/asunder.SlackBuild
+	new file:   multimedia/gpac/gpac.SlackBuild
+	new file:   multimedia/ogmrip/ogmrip.SlackBuild
+	new file:   office/winefish/winefish.SlackBuild
+	modified:   system/winetricks/winetricks.SlackBuild
+	new file:   utilities/icoutils/icoutils.SlackBuild
+
 Mon Nov 12 05:01:48 CET 2012
 -----------------------------
 	new file:   desktop/openbox/openbox.SlackBuild
