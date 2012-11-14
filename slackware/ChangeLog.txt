@@ -1,3 +1,26 @@
+Wed Nov 14 05:02:26 CET 2012
+-----------------------------
+	copied:     network/FileZilla/FileZilla.SlackBuild -> development/vstsdk/vstsdk.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> games/qbriscola/qbriscola.SlackBuild
+	modified:   graphic/converseen/converseen.SlackBuild
+	new file:   libraries/GetMediumURL/GetMediumURL.SlackBuild
+	new file:   libraries/cfitsio/cfitsio.SlackBuild
+	new file:   libraries/libasyncns/libasyncns.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> libraries/libmediainfo/libmediainfo.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> libraries/libzen/libzen.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> multimedia/getmediainfo/getmediainfo.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> multimedia/mediainfo/mediainfo.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> multimedia/neformal/neformal.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> multimedia/qtractor/qtractor.SlackBuild
+	copied:     network/FileZilla/FileZilla.SlackBuild -> multimedia/sopcast-player/sopcast-player.SlackBuild
+	new file:   multimedia/sopcast/sopcast.SlackBuild
+	new file:   multimedia/xvidenc/xvidenc.SlackBuild
+	modified:   network/FileZilla/FileZilla.SlackBuild
+	new file:   network/arora/arora.SlackBuild
+	modified:   network/chromium/chromium.SlackBuild
+	new file:   system/man-pages-it/man-pages-it.SlackBuild
+	modified:   utilities/cherrytree/cherrytree.SlackBuild
+
 Tue Nov 13 05:00:47 CET 2012
 -----------------------------
 	new file:   graphic/drawpile/drawpile.SlackBuild

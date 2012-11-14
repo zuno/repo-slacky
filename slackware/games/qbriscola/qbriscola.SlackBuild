@@ -1,7 +1,7 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://smplayer.sourceforge.net
-# Packager Andrea Sciucca Gohanz ( gohanz at infinito.it)
+# http://sourceforge.net/projects/qbriscola
+# Packagers Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
 #
 #
@@ -31,21 +31,24 @@ set -e
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=converseen
+PKGNAME=qbriscola
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.5.2}
+VERSION=${VERSION:-1.1}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-5}
 TAG=${TAG:-sl}
 
-# Download sorce tarball if still not present
-SOURCE="http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/$VERSION/$PKGNAME-$VERSION.tar.bz2"
 
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
- wget $SOURCE
+SOURCE=http://downloads.sourceforge.net/qbriscola/$PKGNAME-src'_'$VERSION.tar.bz2
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME-src'_'$VERSION.tar.bz2 ]; then
+wget -c $SOURCE
 fi
+
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -62,42 +65,49 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xjvf $CWD/$PKGNAME-src'_'$VERSION.tar.bz2
 
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Converseen |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m+----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild QBriscola |\E[0;0m"
+echo -e "\E[0;32m+----------------------------+\E[0;0m"
+
 
 # Adjust permissions and ownerships
-cd $PKGNAME-$VERSION
-chown -R root:root .
+cd $PKGNAME
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
-# Building Converseen package
-# Configure:
-qmake PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile converseen.pro
-
-
-# Build and install:
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make $JOBS
-
-# Installing binary
-install -m 755 -p -D converseen $PKG/usr/bin/converseen
-
-# Installing desktop menu file and icons
-mkdir -p $PKG/usr/share/{applications,converseen,pixmaps}
-install -m 644 -p loc/*.qm $PKG/usr/share/converseen
-install -m 755 -p res/converseen.png $PKG/usr/share/pixmaps
-install -m 755 -p res/converseen.desktop $PKG/usr/share/applications
+# Building QBriscola package
+( mkdir -p build 
+    cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make $JOBS \
+&& make install DESTDIR=$PKG ) 
 
 
-# Add documentation files: readme, changelog and so on
+# Strip binaries and shared objects, if present
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+
+#Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL README $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a  README gpl-3.0.txt $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
 
 
 # Also add the slack-desk file and this slackbuild to the package
@@ -107,34 +117,29 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
+
 # Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
+  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
 fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
+	echo  >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
+	echo  >> $PKG/install/doinst.sh
 
 
-# Strip binary
-strip --strip-unneeded $PKG/usr/bin/*
 
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+requiredbuilder -y -v -b -s  $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
 
 # Cleanup if enabled
 if [ "$1" = "--cleanup" ]; then

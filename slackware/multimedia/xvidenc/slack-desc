@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler----------------------------------------------------|
+xvidenc: Xvidenc (DvD to XviD Encoder)
+xvidenc:
+xvidenc: Advanced  shell  script  for  encoding DVDs or video files to the
+xvidenc: XviD format using the encoding utility MEncoder from MPlayer.
+xvidenc: Supports all the useful options an end-user would need to make a
+xvidenc: successful encode. The script is a CLI front end to MEncoder.
+xvidenc:
+xvidenc:
+xvidenc:
+xvidenc:
+xvidenc:

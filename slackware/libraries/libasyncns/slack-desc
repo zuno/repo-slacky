@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler-------------------------------------------------|
+libasyncns: Libasyncns (Name Service Asynchronously Library)
+libasyncns:
+libasyncns: Libasyncns is a C library for Linux/Unix for executing name
+libasyncns: service queries  asynchronously. It  is  an   asynchronous
+libasyncns: wrapper around getaddrinfo(3), getnameinfo(3), res_query(3)
+libasyncns: and res_search(3) from libc and libresolv.
+libasyncns:
+libasyncns:
+libasyncns:
+libasyncns:
+libasyncns:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler----------------------------------------------------|
+vstsdk: VST SDk (Steinberg's VST SDK)
+vstsdk:
+vstsdk: The Steinberg VST Plug-In Software Development Kit can  be used freely
+vstsdk: subject  to  certain  licensing  conditions  by  anyone  interested in
+vstsdk: developing Plug-Ins, or to extend an application so that  it’s capable
+vstsdk: of hosting VST Plug-Ins. When you chose to receive the VST Plug-In SDK
+vstsdk: you   declared   yourself  to  be  in  agreement  with  the  Licensing
+vstsdk: conditions.
+vstsdk:
+vstsdk:
+vstsdk:

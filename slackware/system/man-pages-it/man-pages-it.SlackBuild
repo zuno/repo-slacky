@@ -1,0 +1,98 @@
+#!/bin/sh
+ 
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Loris Vincenzi (http://www.slacky.eu)
+# Last build from Loris Vincenzi (http://www.slacky.eu)
+# 
+# Slackware build script for man-pages-it
+# Official Site: http://ftp.pluto.it/pub/pluto/ildp/man/
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+set -e
+
+# Catching variables
+PKGNAME=man-pages-it
+VERSION=${VERSION:-2.80}
+EXTRA=extra-0.5.0
+BUILD=${BUILD:-6}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+
+# Source files avaiability
+for SRC in $PKGNAME-{$VERSION,$EXTRA} ; do
+  SOURCE="http://ftp.unina.it/pub/linux/pluto/pluto/ildp/man/$SRC.tar.gz"
+  if [ ! -e $CWD/$SRC ];then
+    wget $SOURCE
+  fi
+done
+
+# Create working directories
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+
+# Package building
+cd $TMP
+tar xzvf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
+
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a CHANGELOG HOWTOHELP POSIX-COPYRIGHT readme $PKG/usr/doc/$PKGNAME-$VERSION
+rm CHANGELOG HOWTOHELP POSIX-COPYRIGHT readme* Makefile
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+mkdir -p $PKG/usr/man/it
+cp -a * $PKG/usr/man/it
+rm -rf $PKG/usr/man/it/man*p
+cd $TMP
+tar xzvf $CWD/$PKGNAME-$EXTRA.tar.gz
+cd $PKGNAME-$EXTRA
+chown -R root:root .
+rm changelog readme* Makefile
+mkdir -p $PKG/usr/man/it
+cp -a * $PKG/usr/man/it
+find $PKG/usr/man/it -type f -exec gzip -9 {} \;
+
+# Adding slack-desc
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Change permissions
+cd $PKG
+chown -R root:root $PKG
+
+find . \( -perm 777 -o -perm 770 -o -perm 711 \) -exec chmod 755 {} \;
+find . \( -perm 700 -o -perm 555 -o -perm 511 \) -exec chmod 755 {} \;
+find . \( -perm 666 -o -perm 664 -o -perm 600 \) -exec chmod 644 {} \;
+find . \( -perm 444 -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+# Make the package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+# Clean up the extra stuff
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi

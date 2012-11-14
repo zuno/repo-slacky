@@ -1,11 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Loris Vincenzi (http://www.slacky.eu)
+# Written by Andrea Sciucca (gohanz at infinito.it)
 # Last build from Loris Vincenzi (http://www.slacky.eu)
 # 
-# Slackware build script for filezilla
-# Official Site: http://filezilla-project.org
+# Slackware build script for libasyncns
+# Official Site: http://0pointer.de/lennart/projects/libasyncns
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=FileZilla
-VERSION=${VERSION:-3.6.0}
-BUILD=${BUILD:-1}
+PKGNAME=libasyncns
+VERSION=${VERSION:-0.8}
+BUILD=${BUILD:-4}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/3.6.0/FileZilla_3.6.0_src.tar.bz2"
+SOURCE="http://0pointer.de/lennart/projects/libasyncns/$PKGNAME-$VERSION.tar.gz"
 TAR=
-DIR=filezilla-$VERSION
-DOCS="AUTHORS ChangeLog COPYING README INSTALL"
+DIR=
+DOCS="LICENSE README"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -76,19 +76,20 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-CFLAGS="$SLKCFLAGS -ldl" \
+CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure --prefix=/usr \
+./configure \
+--prefix=/usr \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
 --sysconfdir=/etc \
 --localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
 --mandir=/usr/man \
---with-tinyxml=builtin \
+--docdir=/usr/doc/$PKGNAME-$VERSION \
 --disable-static \
 --program-prefix= \
 --program-suffix= \
 --build=$CHOST-slackware-linux
-make $JOBS
+make
 make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -114,17 +115,6 @@ fi
 )
 
 mkdir -p $PKG/install
-
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler----------------------------------------------------|
+sopcast: SoP (Streaming Over P2P)
+sopcast:
+sopcast: Sopcast is the Streaming  Direct Broadcast  System based on P2P.
+sopcast: The core is the communication protocol produced by Sopcast Team,
+sopcast: which is named Sop://, or  sop technology. Our goal  is to let
+sopcast: everyone in the world have a chance to set up their own on-line
+sopcast: media.
+sopcast:
+sopcast:
+sopcast:
+sopcast:

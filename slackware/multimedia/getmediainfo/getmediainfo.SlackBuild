@@ -1,7 +1,7 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://smplayer.sourceforge.net
-# Packager Andrea Sciucca Gohanz ( gohanz at infinito.it)
+# http://kde-apps.org/content/show.php/getMediaInfo?content=141946
+# Packager Andrea Sciucca ( gohanz at infinito.it )
 # http://www.slacky.eu
 #
 #
@@ -22,84 +22,54 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+# Required: mediainfo
 #
 # Exit on most errors
-set -e
-
+set -e 
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=converseen
+PKGNAME=getmediainfo
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.5.2}
-ARCH=${ARCH:-i486}
-JOBS=${JOBS:--j2}
-BUILD=${BUILD:-3}
+VERSION=${VERSION:-0.6}
+ARCH=${ARCH:-i686}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
+SOURCE=http://kde-apps.org/CONTENT/content-files/141946-MediaInfoKDE.desktop
+
 # Download sorce tarball if still not present
-SOURCE="http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/$VERSION/$PKGNAME-$VERSION.tar.bz2"
-
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
- wget $SOURCE
+if [ ! -e $CWD/141946-MediaInfoKDE.desktop ]; then
+wget -c $SOURCE
 fi
 
-# Set compiling FLAGS
-if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
-elif [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
-elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
-fi
 
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
+
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Converseen |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-
-# Adjust permissions and ownerships
-cd $PKGNAME-$VERSION
-chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
-
-# Building Converseen package
-# Configure:
-qmake PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile converseen.pro
+echo -e "\E[0;32m+-------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild getMediaInfo |\E[0;0m"
+echo -e "\E[0;32m+-------------------------------+\E[0;0m"
 
 
-# Build and install:
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make $JOBS
-
-# Installing binary
-install -m 755 -p -D converseen $PKG/usr/bin/converseen
-
-# Installing desktop menu file and icons
-mkdir -p $PKG/usr/share/{applications,converseen,pixmaps}
-install -m 644 -p loc/*.qm $PKG/usr/share/converseen
-install -m 755 -p res/converseen.png $PKG/usr/share/pixmaps
-install -m 755 -p res/converseen.desktop $PKG/usr/share/applications
+# Building getMediaInfo package
+	install -m 0644 -p -D $CWD/141946-MediaInfoKDE.desktop \
+         $PKG/usr/share/kde4/services/MediaInfoKDE.desktop
+	
 
 
-# Add documentation files: readme, changelog and so on
+
+
+#Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL README $PKG/usr/doc/$PKGNAME-$VERSION
-chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
-
 # Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
@@ -113,23 +83,21 @@ cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAM
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
+  /usr/bin/update-desktop-database &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
-
-# Strip binary
-strip --strip-unneeded $PKG/usr/bin/*
 
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(mediainfo\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
@@ -140,4 +108,5 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
 

@@ -1,8 +1,9 @@
 #!/bin/sh
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://smplayer.sourceforge.net
+# http://qt-apps.org/content/show.php/Neformal?content=103003
 # Packager Andrea Sciucca Gohanz ( gohanz at infinito.it)
 # http://www.slacky.eu
+#
 #
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,30 +23,31 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
 # Exit on most errors
 set -e
-
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=converseen
+PKGNAME=neformal
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.5.2}
+VERSION=${VERSION:-4.3.1}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-5}
 TAG=${TAG:-sl}
 
-# Download sorce tarball if still not present
-SOURCE="http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/neformal/neformal/$VERSION/$PKGNAME-$VERSION.tar.bz2"
 
+# Download sorce tarball if still not present
 if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
- wget $SOURCE
+wget -c $SOURCE
 fi
+
+
+
 
 # Set compiling FLAGS
 if [ "$ARCH" = "i486" ]; then
@@ -60,22 +62,34 @@ fi
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
+
+
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xvf $CWD/$PKGNAME-$VERSION.tar.bz2
 
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Converseen |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Neformal |\E[0;0m"
+echo -e "\E[0;32m+---------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
-chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
 
-# Building Converseen package
+# Building Neformal package
+mkdir -p $PKG/usr/bin
+cat << EOF > $PKG/usr/bin/neformal
+#!/bin/bash
+cd /usr/share/neformal
+exec /usr/share/neformal/neformal
+EOF
+
+chmod 755 $PKG/usr/bin/*
+
+
 # Configure:
-qmake PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile converseen.pro
+qmake PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile neformal.pro
 
 
 # Build and install:
@@ -84,19 +98,34 @@ CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 make $JOBS
 
-# Installing binary
-install -m 755 -p -D converseen $PKG/usr/bin/converseen
 
-# Installing desktop menu file and icons
-mkdir -p $PKG/usr/share/{applications,converseen,pixmaps}
-install -m 644 -p loc/*.qm $PKG/usr/share/converseen
-install -m 755 -p res/converseen.png $PKG/usr/share/pixmaps
-install -m 755 -p res/converseen.desktop $PKG/usr/share/applications
+install -m 755 -p -D  bin/neformal $PKG/usr/share/neformal/neformal
+install -m 644 -p -D  $CWD/neformal.svg  $PKG/usr/share/pixmaps/neformal.svg
+
+cp -a -r {icons,manuals,res,translations} $PKG/usr/share/neformal
+
+mkdir -p $PKG/usr/share/applications
+cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Neformal
+GenericName=Audio Player
+GenericName[it]=Lettore Audio
+Comment=Small Qt-Phonon-based player
+Comment[it]=Leggero lettore audio basato sulle librerie Qt-Phonon
+Icon=/usr/share/pixmaps/neformal.svg
+Exec=neformal
+Terminal=false
+StartupNotify=true
+Categories=Application;Qt;AudioVideo;
+EOF
 
 
-# Add documentation files: readme, changelog and so on
+#Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a INSTALL README $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS COPYING  ChangeLog INSTALL NEWS* README TODO  \
+$PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -108,29 +137,25 @@ cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAM
 
 
 # Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
+  /usr/bin/update-desktop-database &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
+# Strip Nefromal binary
+strip --strip-unneeded $PKG/usr/share/neformal/neformal
 
-# Strip binary
-strip --strip-unneeded $PKG/usr/bin/*
 
 
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+requiredbuilder -y -v -c -b -s   $CWD $PKG
 fi
 # Create txz package
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
@@ -140,4 +165,6 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
+
+
 
