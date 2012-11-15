@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+           |-----handy-ruler------------------------------------------------------|
+wxHexEditor: wxHexEditor (WxGTK Hex Editor)
+wxHexEditor:
+wxHexEditor: wxHexEditor is another hex tool writen with wx library. I built it
+wxHexEditor: because there is no good  hex editor  for open  giant files and HD
+wxHexEditor: drives. You can open file or  block  devices up to some exabyte in
+wxHexEditor: lenght.
+wxHexEditor:
+wxHexEditor:
+wxHexEditor:
+wxHexEditor:
+wxHexEditor:

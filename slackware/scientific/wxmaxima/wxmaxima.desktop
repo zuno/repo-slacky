@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=wxMaxima
+GenericName=GUI for Maxima
+GenericName[it]=Interfaccia grafica per Maxima
+Type=Application
+Encoding=UTF-8
+TryExec=wxmaxima
+Exec=wxmaxima
+Terminal=false
+Icon=wxmaxima.png
+Categories=Education;Science;Math;

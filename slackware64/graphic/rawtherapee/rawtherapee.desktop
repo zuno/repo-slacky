@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Raw Threapee
+GenericName=RAW converter 
+GenericName[it]=Convertitore per immagini RAW
+Comment=The Experimental Raw Photo Editor
+Comment[it]=Editor sperimentale per immagini RAW
+Exec=rawtherapee
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/rawtherapee.png
+Categories=Application;Graphics;
+Encoding=UTF-8
+MimeType=image/x-canon-cr2;image/x-canon-crw;image/x-fuji-raf;image/x-kodak-dcr;image/x-kodak-k25;image/x-kodak-kdc;image/x-minolta-mrw;image/x-nikon-nef;image/x-olympus-orf;image/x-panasonic-raw;image/x-pentax-pef;image/x-sony-arw;image/x-sony-sr2;image/x-sony-srf;

@@ -1,3 +1,8 @@
+Thu Nov 15 05:04:59 CET 2012
+-----------------------------
+	new file:   graphic/rawtherapee/rawtherapee.SlackBuild
+	new file:   libraries/libiptcdata/libiptcdata.SlackBuild
+
 Mon Nov 12 05:06:13 CET 2012
 -----------------------------
 	new file:   desktop/dmenu-xft/dmenu-xft.SlackBuild

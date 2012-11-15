@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+                    |-----handy-ruler------------------------------------------------------|
+slapt-update-service: Slapt Update Service (GSlapt DBus Notifier)
+slapt-update-service:
+slapt-update-service: Slapt Update Service is  a  DBus service which notifies
+slapt-update-service: about  package updates   available  via  slapt-get  and
+slapt-update-service: gslapt.  Slapt Update Service places  an  icon  in  the 
+slapt-update-service: the user's notification area when updates are available
+slapt-update-service:.Clicking the icon starts upgrading with gslapt.
+slapt-update-service:
+slapt-update-service:
+slapt-update-service:
+slapt-update-service:

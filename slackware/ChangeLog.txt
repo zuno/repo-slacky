@@ -1,3 +1,17 @@
+Thu Nov 15 05:01:22 CET 2012
+-----------------------------
+	new file:   development/wxHexEditor/wxHexEditor.SlackBuild
+	new file:   libraries/libgksu/libgksu.SlackBuild
+	new file:   libraries/libgtop/libgtop.SlackBuild
+	new file:   multimedia/mediainfo-gui/mediainfo-gui.SlackBuild
+	new file:   multimedia/qmmp/qmmp.SlackBuild
+	new file:   office/webissues/webissues.SlackBuild
+	new file:   scientific/maxima/maxima.SlackBuild
+	new file:   scientific/wxmaxima/wxmaxima.SlackBuild
+	new file:   system/gksu/gksu.SlackBuild
+	new file:   system/q4wine/q4wine.SlackBuild
+	new file:   system/slapt-update-service/slapt-update-service.SlackBuild
+
 Wed Nov 14 05:02:26 CET 2012
 -----------------------------
 	copied:     network/FileZilla/FileZilla.SlackBuild -> development/vstsdk/vstsdk.SlackBuild
