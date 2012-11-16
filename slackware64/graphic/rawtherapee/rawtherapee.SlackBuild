@@ -34,7 +34,7 @@ VERSION=${VERSION:-4.0.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://${PKGNAME}.googlecode.com/files/${PKGNAME}-${VERSION}.tar.xz"
+SOURCE="https://${PKGNAME}.googlecode.com/hg/"
 SOURCE_DOC="http://www.rawtherapee.com/shared/documentation/RawTherapeeManual_en.pdf"
 TAR=      # empty = auto
 DIR=      # empty = auto
@@ -60,8 +60,8 @@ TAR=${TAR:-$(basename $SOURCE)}
 TAR_DOC=${TAR_DOC:-$(basename $SOURCE_DOC)}
 DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
 
-if [ ! -e $CWD/$TAR ];then
-  wget $SOURCE -O "$CWD/$TAR"
+if [ ! -e $CWD/rthg ];then
+  hg clone $SOURCE rthg 
 fi
 
 if [ ! -e $CWD/$TAR_DOC ];then
@@ -87,8 +87,9 @@ fi
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-tar xJf $CWD/$TAR
+cp -r $CWD/rthg $DIR
 cd $DIR
+VERSION=$VERSION"."$(hg tags 2>/dev/null|grep "^tip"|sed 's/.*\ \([0-9]\{1,\}\):.*/\1/')
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .

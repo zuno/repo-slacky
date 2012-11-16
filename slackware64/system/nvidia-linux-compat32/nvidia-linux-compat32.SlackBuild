@@ -30,13 +30,13 @@ set -e
 
 # Basic information. 
 PKGNAME=nvidia-linux-compat32
-VERSION=${VERSION:-310.14}
+VERSION=${VERSION:-310.19}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 NARCH=x86
 if [ $ARCH == "x86_64" ];then NARCH=x86_64;fi 
-SOURCE="http://it.download.nvidia.com/XFree86/Linux-$ARCH/$VERSION/NVIDIA-Linux-$NARCH-$VERSION.run"
+SOURCE="http://download.nvidia.com/XFree86/Linux-$ARCH/$VERSION/NVIDIA-Linux-$NARCH-$VERSION.run"
 TAR=NVIDIA-Linux-$NARCH-$VERSION.run      # empty = auto
 DIR=NVIDIA-Linux-$NARCH-$VERSION      # empty = auto
 DOCS="README.txt LICENSE"

@@ -1,3 +1,12 @@
+Fri Nov 16 05:06:50 CET 2012
+-----------------------------
+	modified:   graphic/rawtherapee/rawtherapee.SlackBuild
+	new file:   libraries/mutagen/mutagen.SlackBuild
+	modified:   libraries/nvidia-vdpau/nvidia-vdpau.SlackBuild
+	new file:   multimedia/quodlibet/quodlibet.SlackBuild
+	modified:   system/nvidia-linux-compat32/nvidia-linux-compat32.SlackBuild
+	modified:   system/nvidia-linux/nvidia-linux.SlackBuild
+
 Thu Nov 15 05:04:59 CET 2012
 -----------------------------
 	new file:   graphic/rawtherapee/rawtherapee.SlackBuild

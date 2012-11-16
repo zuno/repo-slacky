@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+pokerth: PokerTH (Qt4 Poker Game)
+pokerth:
+pokerth: PokerTH is a single-player poker  game written in C++/QT4. You can
+pokerth: play the  popular "Texas Hold'em" poker variant against up to four
+pokerth: computer-opponents. This poker engine is open-source and available
+pokerth: for Linux and Windows.
+pokerth:
+pokerth:
+pokerth:
+pokerth:
+pokerth:

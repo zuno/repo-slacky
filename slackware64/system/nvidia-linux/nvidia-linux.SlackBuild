@@ -32,14 +32,14 @@ set -e
 
 # Basic information. 
 PKGNAME=nvidia-linux
-VERSION=${VERSION:-310.14}
+VERSION=${VERSION:-310.19}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 MODPREBUILD=${MODPREBUILD:-yes} # no / yes
 NARCH=x86
 if [ $ARCH == "x86_64" ];then NARCH=x86_64;fi 
-SOURCE="http://it.download.nvidia.com/XFree86/Linux-$ARCH/$VERSION/NVIDIA-Linux-$NARCH-$VERSION.run"
+SOURCE="http://download.nvidia.com/XFree86/Linux-$ARCH/$VERSION/NVIDIA-Linux-$NARCH-$VERSION.run"
 TAR=NVIDIA-Linux-$NARCH-$VERSION.run      # empty = auto
 DIR=NVIDIA-Linux-$NARCH-$VERSION      # empty = auto
 DOCS="html README.txt LICENSE NVIDIA_Changelog"
