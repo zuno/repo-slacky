@@ -1,0 +1,16 @@
+fuse >= 2.8.5-i486-1
+glib2 >= 2.32.4-i486-1
+glibc-solibs >= 2.15-i486-7
+gmp >= 5.0.5-i486-1
+gnutls >= 3.0.23-i486-1
+libgcrypt >= 1.5.0-i486-1
+libgpg-error >= 1.10-i486-1
+libimobiledevice >= 1.0.7-i486-1sl
+libplist >= 1.4-i486-1
+libtasn1 >= 2.12-i486-1
+libxml2 >= 2.8.0-i486-1
+nettle >= 2.5-i486-1
+p11-kit >= 0.12-i486-1
+usbmuxd >= 1.0.7-i486-2sl
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1
