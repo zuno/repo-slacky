@@ -1,3 +1,7 @@
+Sun Nov 18 05:00:38 CET 2012
+-----------------------------
+	modified:   network/skype_static/skype_static.SlackBuild
+
 Fri Nov 16 05:06:50 CET 2012
 -----------------------------
 	modified:   graphic/rawtherapee/rawtherapee.SlackBuild

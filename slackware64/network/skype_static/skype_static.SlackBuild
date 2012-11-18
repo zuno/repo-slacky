@@ -29,17 +29,17 @@ set -e
 
 SLACK=${SLACK:-14.0}  # if do you have slackware current: SLACK=current
 PKGNAME=skype_static
-VERSION=${VERSION:-4.0.0.8}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-4.1.0.20}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE=http://download.skype.com/linux/$PKGNAME-$VERSION.tar.bz2
+SOURCE=http://download.skype.com/linux/skype-$VERSION.tar.bz2
 
 # Slackware Utah mirror is so fast ;) 
 LIBS=${LIBS:-http://slackware.cs.utah.edu/pub/slackware/slackware-$SLACK/slackware} # if do you have a slackware dvd: LIBS=/mnt/cdrom/slackware (not tested)
 
 TAR=
-DIR=${PKGNAME}QT-$VERSION
+DIR=skype-$VERSION
 
 DOCS="LICENSE  README"
 SLKFILES="libraries.txt usr-bin-skype"
