@@ -1,10 +1,10 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by miklos < ardutu at gmail dot com >
+# Written miklos <ardutu at gmail dot com>
 # 
-# Slackware build script for sylpheed
-# Official Site: http://sylpheed.good-day.net/
+# Slackware build script for psiconv
+# Official Site: http://www.frodol.dds.nl/psiconv/index.html
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 set -e
 
 # Basic information.
-PKGNAME=sylpheed
-VERSION=${VERSION:-3.3.0}
+PKGNAME=psiconv
+VERSION=${VERSION:-0.9.8}
 BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://sylpheed.sraoss.jp/sylpheed/v3.3/$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://software.frodo.looijaard.name/psiconv/files/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="ABOUT-NLS AUTHORS COPYING* ChangeLog* INSTALL* LICENSE NEWS* README* TODO*"
+DOCS="AUTHORS ChangeLog COPYING INSTALL NEWS README TODO"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -93,21 +93,17 @@ chmod -R u+w,go+r-w,a-s .
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
-	--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--docdir=/usr/doc/$PKGNAME-$VERSION \
-	--enable-gpgme \
-	--enable-jpilot \
-	--enable-ldap \
-	--program-prefix= \
-	--program-suffix= \
-	--build=$CHOST-slackware-linux
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --disable-static \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
+
+mv $PKG/etc/psiconv/psiconv.conf $PKG/etc/psiconv/psiconv.conf.new
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

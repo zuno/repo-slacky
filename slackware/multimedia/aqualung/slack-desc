@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+aqualung: Aqualung (GTK2+ Music Player)
+aqualung:
+aqualung: Aqualung is a music player for the GNU/Linux operating system. It
+aqualung: plays  audio  files  from  your filesystem and has the feature of
+aqualung: inserting no gaps between adjacent tracks.  It also supports high
+aqualung: quality sample  rate  conversion  between the file and the output
+aqualung: device when necessary.
+aqualung:
+aqualung:
+aqualung:
+aqualung:

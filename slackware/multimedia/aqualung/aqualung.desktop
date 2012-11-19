@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Aqualung
+GenericName=Music Player
+GenericName[it]=Lettore Audio
+Comment=Music player for the GNU/Linux operating system
+Comment[it]=Lettore audio per il sistema operativo GNU/Linux
+Icon=aqualung
+Exec=aqualung
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=Application;AudioVideo;

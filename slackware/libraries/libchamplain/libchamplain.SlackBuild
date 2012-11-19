@@ -1,9 +1,10 @@
 #!/bin/sh
-# Copyright Loris Vincenzi (http://www.slacky.eu)
-# All rights reserved.
-#
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://claws.sylpheed.org
+# http://projects.gnome.org/libchamplain
+# Packager Andrea Sciucca ( gohanz at infinito.it)
+# http://www.slacky.eu
+#
+#
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -21,29 +22,29 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# 
-# Required: compface, libetpan
+#
+# Required: clutter, clutter-gtk, cogl, json-glib, vala
 #
 # Exit on most errors
-set -e 
+set -e
 
 
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
-PKGNAME=claws-mail
+PKGNAME=libchamplain
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-3.9.0}
+VERSION=${VERSION:-0.12.3}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/sylpheed-claws/Claws%20Mail/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://download.gnome.org/sources/libchamplain/0.12/$PKGNAME-$VERSION.tar.xz"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.xz ]; then
 wget -c $SOURCE
 fi
 
@@ -56,36 +57,38 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
 fi
 
+
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 
+
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
+tar xvf $CWD/$PKGNAME-$VERSION.tar.xz
 
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Claws Mail |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m+-------------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild Libchamplain |\E[0;0m"
+echo -e "\E[0;32m+-------------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
 cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 
-# Building Claws Mail package
+# Building Libchamplain  package
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure	--prefix=/usr \
+./configure 	--prefix=/usr \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--docdir=/usr/doc/$PKGNAME-$VERSION \
-		--disable-static \
-		--enable-crash-dialog \
+		--enable-vala \
 		--program-prefix= \
 		--program-suffix= \
 		--build=$CHOST-slackware-linux
@@ -93,20 +96,6 @@ echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
 make $JOBS
 make install DESTDIR=$PKG
-
-
-# Build and install extra tools
-cd tools
-make $JOBS
-# All executables and .conf files ; only top directory
-find -maxdepth 1 -type f -and -perm /111 -or -name '*.conf' | while read i ; do
-install -D -m755 ${i} \
-${PKG}/usr/lib/claws-mail/tools/${i}
-done
-cd -
-
-# Just to avoid confusion about proper location of system-wide themes...
-mkdir -p $PKG/usr/share/claws-mail/themes/
 
 
 # Strip binaries and shared objects, if present
@@ -117,11 +106,9 @@ mkdir -p $PKG/usr/share/claws-mail/themes/
 )
 
 
-
-
 #Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a ABOUT-NLS AUTHORS COPYING ChangeLog* INSTALL NEWS README RELEASE_NOTES TODO $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS  COPYING ChangeLog INSTALL NEWS README $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
 
@@ -133,36 +120,12 @@ cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
 
 
-# Building some post-install execution script 	
-echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo  >> $PKG/install/doinst.sh
-
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
-
-
-
+	
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-ADD=$(ls /var/log/packages/ | sed -ne 's/\(compface\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(pyclutter-gtk\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
 # Create txz package
