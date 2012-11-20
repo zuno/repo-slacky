@@ -1,5 +1,12 @@
 Tue Nov 20 05:01:12 CET 2012
 -----------------------------
+	new file:   development/gambas2-runtime/gambas2.SlackBuild
+	new file:   development/gambas2/gambas2.SlackBuild
+	new file:   development/gambas3-runtime/gambas3.SlackBuild
+	new file:   development/gambas3/gambas3.SlackBuild
+
+Tue Nov 20 05:01:12 CET 2012
+-----------------------------
 	new file:   database/unixODBC/unixODBC.SlackBuild
 	new file:   libraries/pyclutter/pyclutter.SlackBuild
 	new file:   libraries/qt3/qt3.SlackBuild

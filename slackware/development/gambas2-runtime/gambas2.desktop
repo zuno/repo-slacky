@@ -1,0 +1,21 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Gambas2
+Name[it]=Gambas2
+GenericName=GNU/Linux Visual Basic
+GenericName[it]=Visual Basic per GNU/Linux
+Type=Application
+Comment=Free development environment based on a Basic interpreter
+Comment[it]=Ambiente di sviluppo open source, basato su interprete Basic
+Terminal=false
+Exec=gambas2
+Icon=/usr/share/pixmaps/gambas2.png
+Categories=Application;Development;
+StartupNotify=true
+
+
+
+
+
+
+

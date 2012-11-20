@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+               |-----handy-ruler------------------------------------------------------|
+gambas2-runtime: Gambas 2 (Gambas 2 Runtime Environment)
+gambas2-runtime:
+gambas2-runtime: This package provides the runtime environment for Gambas 2
+gambas2-runtime: so that  you  can execute Gambas 2 apps without needing to
+gambas2-runtime: have the IDE installed.
+gambas2-runtime:
+gambas2-runtime:
+gambas2-runtime:
+gambas2-runtime:
+gambas2-runtime:
+gambas2-runtime:
