@@ -29,11 +29,11 @@
 set -e
 
 PKGNAME=FileZilla
-VERSION=${VERSION:-3.6.0}
+VERSION=${VERSION:-3.6.0.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/3.6.0/FileZilla_3.6.0_src.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/filezilla/FileZilla_Client/3.6.0.1/FileZilla_3.6.0.1_src.tar.bz2"
 TAR=
 DIR=filezilla-$VERSION
 DOCS="AUTHORS ChangeLog COPYING README INSTALL"

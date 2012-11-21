@@ -1,3 +1,9 @@
+Wed Nov 21 05:01:04 CET 2012
+-----------------------------
+	modified:   development/fltk/fltk.SlackBuild
+	new file:   libraries/omniORB/omniORB.SlackBuild
+	modified:   network/FileZilla/FileZilla.SlackBuild
+
 Tue Nov 20 05:01:12 CET 2012
 -----------------------------
 	new file:   development/gambas2-runtime/gambas2.SlackBuild
