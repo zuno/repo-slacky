@@ -1,0 +1,12 @@
+diff -rupN bindings/Makefile.am bindings.new/Makefile.am
+--- bindings/Makefile.am	2012-11-17 23:23:21.000000000 +0100
++++ bindings.new/Makefile.am	2012-11-20 20:58:54.572456918 +0100
+@@ -48,7 +48,7 @@ perl: buildperl/Makefile
+ 
+ buildperl/Makefile: .perl-directory-stamp buildperl/Makefile.PL \
+ 	$(top_builddir)/config.status
+-	cd buildperl && @PERL@ Makefile.PL INSTALL_BASE=$(prefix) @PERL_BINDINGS_OPTIONS@
++	cd buildperl && @PERL@ Makefile.PL PREFIX=/usr INSTALLDIRS=vendor INSTALLVENDORMAN3DIR=/usr/man/man3
+ 
+ buildperl/Makefile.PL: .perl-directory-stamp $(top_builddir)/config.status
+ 

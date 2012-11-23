@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler---------------------------------------------------------|
+nut: Nut (Nutrition Software)
+nut:
+nut: I have written open-source free nutrition software, NUT, which records
+nut: what you eat and analyzes your meals for nutrient levels in terms of the
+nut: "Daily Value" or DV which is the standard for food labeling in the US.
+nut: The program uses the free food composition database from the USDA.
+nut:
+nut:
+nut:
+nut:
+nut:
