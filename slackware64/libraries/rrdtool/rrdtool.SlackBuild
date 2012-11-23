@@ -1,11 +1,10 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Loris Vincenzi (http://www.slacky.eu)
-# Last modified from miklos ( ardutu at gmail dot com )
-# 
-# Slackware build script for conky
-# Official Site: http://conky.sourceforge.net/
+# Written by miklos < ardutu at gmail dot com >
+#
+# Slackware build script for rrdtool
+# Official Site: http://oss.oetiker.ch/rrdtool/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -24,20 +23,20 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: lua, imlib2, tolua++
+# Require:
 
 set -e
 
 # Basic information.
-PKGNAME=${PKGNAME:-conky}
-VERSION=${VERSION:-1.9.0}
-BUILD=${BUILD:-2}
+PKGNAME=rrdtool
+VERSION=${VERSION:-1.4.7}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE=${SOURCE:-http://downloads.sourceforge.net/project/$PKGNAME/$PKGNAME/$VERSION/$PKGNAME-$VERSION.tar.bz2}
+SOURCE="http://oss.oetiker.ch/rrdtool/pub/${PKGNAME}-${VERSION}.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO"
+DOCS="ABOUT-NLS CHANGES CONTRIBUTORS COPYING COPYRIGHT NEWS README THREADS TODO"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -86,41 +85,38 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# Customize as you need
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
+RRDDOCDIR=/usr/doc/$PKGNAME-$VERSION \
 ./configure \
-    --enable-audacious \
-    --enable-weather-metar \
-    --enable-weather-xoap \
-    --enable-ibm \
-    --enable-hddtemp \
-    --enable-mpd \
-    --enable-xft \
-    --enable-imlib2 \
-    --enable-portmon \
-    --enable-rss \
-    --enable-alsa \
-    --enable-wlan \
-    --enable-lua \
-    --enable-lua-cairo \
-    --enable-lua-imlib2 \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --mandir=/usr/man \
-    --docdir=/usr/doc/$PKGNAME-$VERSION \
-    --enable-static=no \
-    --build=$CHOST-slackware-linux
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --enable-static=no \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --enable-python \
+  --enable-perl-site-install \
+  --with-perl-options='PREFIX=/usr INSTALLDIRS=vendor INSTALLVENDORMAN3DIR=/usr/man/man3' \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
 
-mv $PKG/etc/conky/conky.conf $PKG/etc/conky/conky.conf.new
-mv $PKG/etc/conky/conky_no_x11.conf $PKG/etc/conky/conky_no_x11.conf.new
+find $PKG -name "perllocal.pod" \
+  -o -name ".packlist" \
+  -o -name "*.bs" \
+  | xargs rm -f
+
+
+# Set correct permissions (mostly on the Perl bindings) thanks to Niels Horn
+find $PKG -perm 444 -exec chmod 0644 {} \;
+find $PKG -perm 555 -exec chmod 0755 {} \;
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
