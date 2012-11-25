@@ -1,3 +1,14 @@
+Sun Nov 25 05:01:24 CET 2012
+-----------------------------
+	new file:   libraries/libcue/libcue.SlackBuild
+	new file:   libraries/libdmapsharing/libdmapsharing.SlackBuild
+	new file:   libraries/libgnome-media-profiles/libgnome-media-profiles.SlackBuild
+	new file:   libraries/libgxps/libgxps.SlackBuild
+	new file:   libraries/libosinfo/libosinfo.SlackBuild
+	new file:   multimedia/brasero/brasero.SlackBuild
+	new file:   system/tracker/tracker.SlackBuild
+	modified:   system/wine/wine.SlackBuild
+
 Sat Nov 24 05:00:52 CET 2012
 -----------------------------
 	new file:   libraries/gnome-js-common/gnome-js-common.SlackBuild
