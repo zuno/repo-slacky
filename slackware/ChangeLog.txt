@@ -1,3 +1,9 @@
+Mon Nov 26 05:00:56 CET 2012
+-----------------------------
+	new file:   games/krepton/krepton.SlackBuild
+	modified:   multimedia/Yarock/Yarock.SlackBuild
+	modified:   utilities/peazip/peazip.SlackBuild
+
 Sun Nov 25 05:01:24 CET 2012
 -----------------------------
 	new file:   libraries/libcue/libcue.SlackBuild

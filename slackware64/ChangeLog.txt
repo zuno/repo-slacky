@@ -1,5 +1,11 @@
 Fri Nov 23 05:03:50 CET 2012
 -----------------------------
+	new file:   network/bitcoin-qt/bitcoin-qt.SlackBuild
+	new file:   network/miniupnpc/miniupnpc.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+
+Fri Nov 23 05:03:50 CET 2012
+-----------------------------
 	modified:   desktop/conky/conky.SlackBuild
 	new file:   libraries/rrdtool/rrdtool.SlackBuild
 

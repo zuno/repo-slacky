@@ -32,14 +32,14 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=Yarock
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.0.58}
+VERSION=${VERSION:-0.0.59}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 # Download sorce tarball if still not present
-SOURCE=https://launchpad.net/yarock/trunk/0.0.58/+download/$PKGNAME'_'$VERSION'_'source.tar.gz
+SOURCE=https://launchpad.net/yarock/trunk/$VERSION/+download/$PKGNAME'_'$VERSION'_'source.tar.gz
 
 if [ ! -e $CWD/$PKGNAME'_'$VERSION'_'source.tar.gz ]; then
 wget -c $SOURCE
@@ -75,7 +75,7 @@ chown -R root:root .
 
 # Building Yarock package
 # Configure:
-qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile 
+qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS -lX11" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile 
 
 
 # Build and install:

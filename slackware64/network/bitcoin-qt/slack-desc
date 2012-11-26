@@ -1,0 +1,20 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------|
+bitcoin-qt: bitcoin-qt: The QT p2p bitcoin client
+bitcoin-qt:
+bitcoin-qt: Bitcoin is an experimental new digital currency that enables 
+bitcoin-qt: instant payments to anyone, anywhere in the world. Bitcoin 
+bitcoin-qt: uses peer-to-peer technology to operate with no central 
+bitcoin-qt: authority: managing transactions and issuing money are carried 
+bitcoin-qt: out collectively by the network. 
+bitcoin-qt:
+bitcoin-qt: This packages is the QT version of the client
+bitcoin-qt:
+bitcoin-qt:
+

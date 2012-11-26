@@ -3,8 +3,8 @@
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
 # 
-# Slackware build script for nginx
-# Official Site: http://nginx.org
+# Slackware build script for bitcoin-qt
+# Official Site: http://bitcoin.org/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,21 +23,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: geoip
+# Require: miniupnpc
 
 set -e
 
 # Basic information.
-PKGNAME=nginx
-VERSION=${VERSION:-1.2.5}
+PKGNAME=bitcoin
+VERSION=${VERSION:-0.7.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://nginx.org/download/${PKGNAME}-${VERSION}.tar.gz"
+SOURCE="https://github.com/bitcoin/bitcoin/archive/v${VERSION}.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="CHANGES* LICENSE README"
-SLKFILES="config.patch rc.nginx nginx.logrotate" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="doc/ COPYING INSTALL README"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -59,10 +59,10 @@ OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
 DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
  
-if [ ! -e "$CWD/$TAR" ];then
-  wget "$SOURCE" -O "$CWD/$TAR"
+if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
+  wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
 fi
-
+ 
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -83,11 +83,9 @@ fi
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-tar xvf $CWD/$TAR
-cd $DIR
+tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
  
-#add config directory conf.d/
-patch -p0 < $CWD/config.patch
  
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
@@ -95,60 +93,12 @@ chmod -R u+w,go+r-w,a-s .
 # Customize as you need
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --sbin-path=/usr/sbin/nginx \
-  --conf-path=/etc/nginx/nginx.conf \
-  --pid-path=/var/run/nginx.pid \
-  --lock-path=/var/lock/nginx \
-  --user=${NGINXUSER:=nobody} \
-  --group=${NGINXGROUP:=nogroup} \
-  --error-log-path=/var/log/nginx/error.log \
-  --http-log-path=/var/log/nginx/access.log \
-  --with-rtsig_module \
-  --with-select_module \
-  --with-poll_module \
-  --with-http_ssl_module \
-  --with-http_realip_module \
-  --with-http_addition_module \
-  --with-http_xslt_module \
-  --with-http_sub_module \
-  --with-http_dav_module \
-  --with-http_flv_module \
-  --with-http_gzip_static_module \
-  --with-http_random_index_module \
-  --with-http_secure_link_module \
-  --with-http_stub_status_module \
-  --http-client-body-temp-path=/var/tmp/nginx_client_body_temp \
-  --http-proxy-temp-path=/var/tmp/nginx_proxy_temp \
-  --http-fastcgi-temp-path=/dev/shm \
-  --with-http_geoip_module \
-  --with-http_realip_module \
-  --with-imap \
-  --with-mail \
-  --with-imap_ssl_module  
+qmake
 make $JOBS
-make install DESTDIR=$PKG
 
-# Remove some other empty and/or unnecessary directories from the package
-eval $(perl '-V:archlib')
-rm -rf $PKG/$archlib $PKG/usr/html $PKG/var
-
-# Add an init script
-mkdir -p $PKG/etc/rc.d
-cat $CWD/rc.nginx > $PKG/etc/rc.d/rc.nginx.new
-
-mkdir -p $PKG/etc/logrotate.d
-cat $CWD/nginx.logrotate > $PKG/etc/logrotate.d/nginx.new
-
-mkdir -p $PKG/usr/man/man8
-cp man/nginx.8 $PKG/usr/man/man8/
-
-# Don't clobber config files
-for file in fastcgi_params fastcgi.conf mime.types nginx.conf \
-            koi-utf koi-win scgi_params uwsgi_params win-utf ; do
-            mv $PKG/etc/nginx/$file $PKG/etc/nginx/$file.new ;
-done
+install -Dm755 bitcoin-qt $PKG/usr/bin/bitcoin-qt
+install -Dm644 contrib/debian/bitcoin-qt.desktop $PKG/usr/share/applications/bitcoin.desktop
+install -Dm644 share/pixmaps/bitcoin80.xpm $PKG/usr/share/pixmaps/bitcoin80.xpm
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -156,7 +106,7 @@ cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+for SB in $PKGNAME-qt.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -189,13 +139,8 @@ if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
-# Create the log dir and set the permissions
-mkdir -p $PKG/var/log/nginx
-chown $NGINXUSER:$NGINXGROUP $PKG/var/log/nginx
-chmod 750 $PKG/var/log/nginx
-
 # Packaging
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-qt-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
  
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP
