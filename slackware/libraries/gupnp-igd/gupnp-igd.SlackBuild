@@ -30,12 +30,12 @@ set -e
 
 # Basic information. 
 PKGNAME=gupnp-igd
-VERSION=${VERSION:-0.2.1}
+VERSION=${VERSION:-0.2.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
 #SOURCE="http://www.gupnp.org/sites/all/files/sources/$PKGNAME-$VERSION.tar.gz"
-SOURCE="http://repository.timesys.com/buildsources/g/$PKGNAME/$PKGNAME-$VERSION/$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://ftp.gnome.org/pub/gnome/sources/gupnp-igd/0.2/$PKGNAME-$VERSION.tar.xz"
 TAR=                       # empty = auto
 DIR=                       # empty = auto
 DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO"
@@ -59,7 +59,7 @@ TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.xz|.bz2|)$//')}
 
 if [ ! -e "$CWD/$TAR" ];then
   wget "$SOURCE" -O "$CWD/$TAR"

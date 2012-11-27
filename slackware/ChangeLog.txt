@@ -1,3 +1,17 @@
+Tue Nov 27 05:01:01 CET 2012
+-----------------------------
+	new file:   games/dustrac/dustrac.SlackBuild
+	new file:   libraries/gnome-python-keyring/gnome-python-keyring.SlackBuild
+	new file:   libraries/grilo-plugins/grilo-plugins.SlackBuild
+	new file:   libraries/grilo/grilo.SlackBuild
+	modified:   libraries/gssdp/gssdp.SlackBuild
+	new file:   libraries/gupnp-av/gupnp-av.SlackBuild
+	modified:   libraries/gupnp-igd/gupnp-igd.SlackBuild
+	modified:   libraries/gupnp/gupnp.SlackBuild
+	new file:   libraries/librest/librest.SlackBuild
+	new file:   multimedia/rhythmbox/rhythmbox.SlackBuild
+	new file:   multimedia/xfburn/xfburn.SlackBuild
+
 Mon Nov 26 05:00:56 CET 2012
 -----------------------------
 	new file:   games/krepton/krepton.SlackBuild

@@ -1,6 +1,6 @@
 glib2 >= 2.32.4-i486-1
 glibc-solibs >= 2.15-i486-7
-gssdp >= 0.13.0-i486-1sl
+gssdp >= 0.13.1-i486-1sl
 libffi >= 3.0.11-i486-1
 libsoup >= 2.38.1-i486-2
 libxml2 >= 2.8.0-i486-1

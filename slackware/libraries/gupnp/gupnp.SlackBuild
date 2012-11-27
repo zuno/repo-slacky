@@ -30,7 +30,7 @@ set -e
 
 # Basic information. 
 PKGNAME=gupnp
-VERSION=${VERSION:-0.19.0}
+VERSION=${VERSION:-0.19.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
