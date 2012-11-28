@@ -1,5 +1,12 @@
 Mon Nov 26 05:04:30 CET 2012
 -----------------------------
+	modified:   desktop/obconf/obconf.SlackBuild
+	modified:   desktop/openbox/openbox.SlackBuild
+	new file:   libraries/wv/wv.SlackBuild
+	new file:   office/abiword/abiword.SlackBuild
+
+Mon Nov 26 05:04:30 CET 2012
+-----------------------------
 	new file:   database/mongodb/mongodb.SlackBuild
 
 Fri Nov 23 05:03:50 CET 2012

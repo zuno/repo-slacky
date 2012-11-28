@@ -2,10 +2,10 @@
  
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
-
-# Slackware build script for Openbox
-# Official Site: http://openbox.org/
-
+# 
+# Slackware build script for wv
+# Official Site: http://wvware.sourceforge.net/
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -23,26 +23,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Requires: imlib2
-#
-# Changelog:
-#
-# 2012-08-25	upgraded template to slacky's standard
+# Require:
 
 set -e
 
 # Basic information.
-PKGNAME=openbox
-VERSION=${VERSION:-3.5.0_20121007}
-REVISION="782b2864b1cc5ffab426dfb784a973576a98de18"
-BUILD=${BUILD:-1}
+PKGNAME=wv
+VERSION=${VERSION:-1.2.9}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://openbox.org/dist/$PKGNAME/$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://abisource.com/downloads/wv/$VERSION/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="ABOUT-NLS AUTHORS CHANGELOG COMPLIANCE COPYING README"
-SLKFILES="xinitrc*" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="INSTALL README COPYING"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -65,16 +60,7 @@ TAR=${TAR:-$(basename $SOURCE)}
 DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
  
 if [ ! -e "$CWD/$TAR" ];then
-  #wget "$SOURCE" -O "$CWD/$TAR"
-  
-  git clone git://git.openbox.org/dana/openbox $PKGNAME-$VERSION
-  (cd $PKGNAME-$VERSION
-    git checkout $REVISION
-    rm -r .git
-  )
-  tar cvzf $PKGNAME-$VERSION.tar.gz $PKGNAME-$VERSION
-  rm -rf $PKGNAME-$VERSION
-  
+  wget "$SOURCE" -O "$CWD/$TAR"
 fi
  
 CHOST="i486"
@@ -103,8 +89,7 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-./bootstrap
-
+# Customize as you need
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -113,36 +98,10 @@ CXXFLAGS="$SLKCFLAGS" \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
-  --docdir=/usr/doc/$PKGNAME-$VERSION \
-  --program-prefix= \
-  --program-suffix= \
-  --enable-static=no \
-  --enable-startup-notification \
+  --disable-static \
   --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
-
-# Add xinitrc.openbox so that openbox will show up as an option in xwmconfig
-install -D -m 0755 $CWD/xinitrc.openbox $PKG/etc/X11/xinit/xinitrc.openbox
-
-# Add xinitrc.openbox-session so that openbox-session will show up as an option in xwmconfig
-install -D -m 0755 $CWD/xinitrc.openbox-session $PKG/etc/X11/xinit/xinitrc.openbox-session
-install -D -m 0755 $CWD/xinitrc.kde-openbox $PKG/etc/X11/xinit/xinitrc.kde-openbox
-install -D -m 0755 $CWD/xinitrc.gnome-openbox $PKG/etc/X11/xinit/xinitrc.gnome-openbox
-
-# Change name of openbox.desktop KDM session file so it corresponds to openbox-session
-( cd $PKG/usr/share/xsessions
-  mv openbox.desktop openbox-session.desktop
-  sed -i "s/Name=Openbox/Name=Openbox-Session/" openbox-session.desktop
-)
-
-# Create symlinks to KDM session desktop files so KDM will use them
-mkdir -p $PKG/usr/share/apps/kdm/sessions
-( cd $PKG/usr/share/apps/kdm/sessions
-  for i in $PKG/usr/share/xsessions/openbox*.desktop ; do
-    ln -s /usr/share/xsessions/$(basename $i) $(basename $i) ;
-  done
-)
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

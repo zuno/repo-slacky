@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler---------------------------------------------------------|
+xplanet: Xplanet (Solar System Simulator)
+xplanet:
+xplanet: Xplanet was inspired by Xearth, which  renders an image of the earth
+xplanet: into the X root window. All of the major planets and most satellites
+xplanet: can be drawn, similar  to the  Solar  System  Simulator. A number of
+xplanet: different  map  projections are also  supported, including azimuthal
+xplanet: Lambert, Mercator, Mollweide, orthographic, and rectangular.
+xplanet:
+xplanet:
+xplanet:
+xplanet:

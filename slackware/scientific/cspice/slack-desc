@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler-------------------------------------------------------|
+cspice: Cspice (Professional Planetary Information System)
+cspice:
+cspice: The Navigation and  Ancillary  Information  Facility  (NAIF)  provides
+cspice: NASA planetary flight  projects and NASA funded professional planetary
+cspice: researchers an information  system named "SPICE" to  assist scientists
+cspice: in planning and  interpreting scientific observations from space-based
+cspice: instruments. SPICE is also widely used in engineering tasks associated
+cspice: with planetary missions.
+cspice:
+cspice:
+cspice:
