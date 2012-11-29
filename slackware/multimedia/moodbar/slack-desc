@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+       |----handy-ruler--------------------------------------------------|
+moodbar: Moodbar (Audio Visual Analysis)
+moodbar:
+moodbar: The  Moodbar  is   an  algorithm  for  creating  a  colorful   visual
+moodbar: representation of  the  contents of an audio file, giving an  idea of
+moodbar: its "mood" (this is a rather fanciful  term for  the simple  analysis
+moodbar: it actually does). The Moodbar was invented by Gavin  Wood  and Simon
+moodbar: O'Keefe  for  inclusion  in  the  Amarok  music player.  This package
+moodbar: contains  a  GStreamer  plugin  with  elements  that  are used in the
+moodbar: moodbar analysis, and an application that actually does the analysis.
+moodbar:
+moodbar:
