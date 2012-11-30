@@ -1,5 +1,10 @@
 Thu Nov 29 05:00:50 CET 2012
 -----------------------------
+	modified:   multimedia/smplayer/smplayer.SlackBuild
+	new file:   network/ekiga/ekiga.SlackBuild
+
+Thu Nov 29 05:00:50 CET 2012
+-----------------------------
 	new file:   multimedia/moodbar/moodbar.SlackBuild
 	modified:   utilities/kshutdown/kshutdown.SlackBuild
 
