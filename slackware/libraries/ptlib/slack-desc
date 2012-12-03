@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+ptlib: PLIB (Portable Game Libraries)
+ptlib:
+ptlib: PTLib (Portable Tools Library) is a moderately large class library
+ptlib: that has it's genesis many years ago as PWLib (portable Windows
+ptlib: Library), a method to product applications to run on both Microsoft
+ptlib: Windows and Unix systems. It has also been ported to other systems
+ptlib: such as Mac OSX, VxWorks and other embedded systems.
+ptlib:
+ptlib:
+ptlib:
+ptlib:
