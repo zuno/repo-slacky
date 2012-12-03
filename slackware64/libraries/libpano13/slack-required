@@ -1,0 +1,5 @@
+glibc-solibs >= 2.15-x86_64-7 | skype_static >= 4.0.0.8-x86_64-1sl
+libjpeg >= v8a-x86_64-1
+libpng >= 1.4.12-x86_64-1
+libtiff >= 3.9.6-x86_64-1
+zlib >= 1.2.6-x86_64-1

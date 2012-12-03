@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler-----------------------------------------------------|
+Image-ExifTool: ExifTool (Perl Meta Information Library)
+Image-ExifTool:
+Image-ExifTool: ExifTool is a  platform-independent  Perl  library plus a
+Image-ExifTool: command-line application for reading, writing and editing
+Image-ExifTool: meta information in a wide variety of files.
+Image-ExifTool:
+Image-ExifTool:
+Image-ExifTool:
+Image-ExifTool:
+Image-ExifTool:
+Image-ExifTool:
