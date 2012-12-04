@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Hugin
+GenericName=Panorama Tools
+Comment=Easy to use cross-platform GUI for Panorama Tools.
+Exec=hugin
+Type=Application
+Icon=/usr/share/pixmaps/hugin.png
+StartupNotify=true
+Terminal=false
+Categories=Application;Graphics
