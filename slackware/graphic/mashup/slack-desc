@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+mashup: Mashup (GTK2+ Image Printing Tool)
+mashup:
+mashup: Mashup is a free open source Linux program  for printing  one or more
+mashup: image files with a user-defined page layout. Images can be added to a
+mashup: layout page using the mouse to select and drop into place. Images can
+mashup: be  moved around  and resized  using the  mouse. Adding  text (titles
+mashup: notes) works the same way. Any font can be used.
+mashup:
+mashup:
+mashup:
+mashup:

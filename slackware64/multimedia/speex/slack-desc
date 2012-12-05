@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler-------------------------------------------------------|
+speex: Speex (A Free Codec For Free Speech)
+speex:
+speex: The  Speex is a patent-free, Open  Source/Free Software  voice codec
+speex: Unlike  other codecs like MP3  and Ogg Vorbis, Speex  is designed to
+speex: compress  voice   at  bitrates  in  the  2-45 kbps  range.  Possible
+speex: applications include  VoIP, internet  audio  streaming, archiving of
+speex: speech data (e.g. voice mail), and audio books. In some sense, it is
+speex: meant to be complementary to the Ogg Vorbis codec.
+speex:
+speex:
+speex:

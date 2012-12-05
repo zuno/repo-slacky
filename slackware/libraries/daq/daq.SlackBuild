@@ -1,11 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Luciano Fattore (luffatt at gmail dot com)
+# Written by Andrea Sciucca (gohanz at infinito.it)
 # Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for calibre
-# Official Site: http://calibre-ebook.com/
+# Slackware build script for daq
+# Official Site: http://www.snort.org
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=calibre
-VERSION=${VERSION:-0.9.8}
+PKGNAME=daq
+VERSION=${VERSION:-2.0.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
-ARCH=${ARCH:-i686}
-SOURCE="http://downloads.sourceforge.net/project/$PKGNAME/$VERSION/$PKGNAME-$VERSION-i686.tar.bz2"
+ARCH=${ARCH:-i486}
+SOURCE="http://www.snort.org/dl/snort-current/$PKGNAME-$VERSION.tar.gz"
 TAR=
-DIR=$PKGNAME-$VERSION-i686
-DOCS="COPYRIGHT INSTALL LICENSE.rtf Changelog.yaml LICENSE README"
+DIR=
+DOCS="COPYING ChangeLog README"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -68,39 +68,36 @@ elif [ "$ARCH" = "x86_64" ]; then
 fi
 
 rm -rf $TMP
-mkdir -p $TMP/$PKGNAME $PKG $OUTPUT
-cd $TMP/$PKGNAM
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
 tar xvf $CWD/$TAR
+cd $DIR
  
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-curl -L http://status.calibre-ebook.com/dist/src | tar xvJ 
-cd calibre*
-python setup.py install --prefix=$PKG/usr
-
-for file in $(find $PKG/usr -iname "*.recipe") ; do
-   (sed -i -e "s|/tmp/buildpkgs/calibre/package-calibre||g" $file)
-done
-for file in $(find $PKG/usr/bin/*) ; do
-   (sed -i -e "s|/tmp/buildpkgs/calibre/package-calibre||g" $file)
-done
-for file in $(find $PKG/usr -iname "*.py") ; do
-   (sed -i -e "s|/tmp/buildpkgs/calibre/package-calibre||g" $file)
-done
-mv $PKG/usr/etc $PKG/etc
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--build=$CHOST-slackware-linux
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS
+make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
-
-mkdir -p $PKG/usr/share/applications
-cp -a $CWD/*.desktop $PKG/usr/share/applications
-mkdir -p $PKG/usr/share/icons/hicolor/128x128/apps/
-cp -a $CWD/*.png $PKG/usr/share/icons/hicolor/128x128/apps/
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT calibre-gui.png calibre-viewer.png calibre-ebook-viewer.desktop calibre-gui.desktop $SLKFILES;do
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -126,16 +123,6 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(beautifulsoup4\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(Imaging\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(cssutils\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(dnspython\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(lxml\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(mechanize\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(ez_setup\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(netifaces\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(PyQt\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(python-dateutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
   requiredbuilder -y -v -s $CWD $PKG
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi

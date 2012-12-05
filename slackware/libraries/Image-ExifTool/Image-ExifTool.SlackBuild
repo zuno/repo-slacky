@@ -1,8 +1,11 @@
 #!/bin/sh
-# Heavily based on the Slackware 14.0 Slackbuild
-# http://www.sno.phy.queensu.ca/~phil/exiftool/
-# http://www.slacky.eu
-#
+ 
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Loris Vincenzi (info@slacky.it)
+# Last build from Loris Vincenzi (info@slacky.it)
+# 
+# Slackware build script for Image-ExifTool
+# Official Site: http://www.sno.phy.queensu.ca/~phil/exiftool
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -21,99 +24,110 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
-# Exit on most errors
-#set -e
+# Require:
 
+set -e
 
-
-# Set variables:
-CWD=`pwd`
-OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=Image-ExifTool
-TMP=${TMP:-/tmp/txz/$PKGNAME}
-PKG=$TMP/package
-VERSION=${VERSION:-9.03}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-9.08}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
-
+ARCH=${ARCH:-i486}
 SOURCE="http://www.sno.phy.queensu.ca/~phil/exiftool/$PKGNAME-$VERSION.tar.gz"
+TAR=
+DIR=
+DOCS="Changes MANIFEST README"
+SLKFILES=""
 
-# Download sorce tarball if still not present
-if [ ! -e $PKGNAME-$VERSION.tar.gz ]; then
-wget -c $SOURCE
+JOBS=${JOBS:--j2}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+ 
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
 fi
 
-# Create building directory
-rm -rf $PKG
-mkdir -p $TMP $PKG $OUTPUT 
-
-
-# Decompress the source tarball
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
-
-# Print some funny text
-echo -e "\E[0;32m+---------------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Image ExifTool |\E[0;0m"
-echo -e "\E[0;32m+---------------------------------+\E[0;0m"
-
-# Adjust permissions and ownerships
-cd $PKGNAME-$VERSION
+tar xvf $CWD/$TAR
+cd $DIR
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Building  Image ExifTool
-perl Makefile.PL PREFIX=/usr 
-make
+perl Makefile.PL INSTALLDIRS=vendor
 make test
-make install DESTDIR=$PKG
+make install INSTALLDIRS=vendor DESTDIR=$PKG
 
-chmod 755 $PKG/usr/bin/*
+mv $PKG/usr/share/man $PKG/usr/man
 
+find $PKG -name perllocal.pod \
+  -o -name ".packlist" \
+  -o -name "*.bs" \
+  | xargs rm -f
 
-#Add documentation files: readme, changelog and so on
+eval $(perl '-V:archlib')
+eval $(perl '-V:vendorarch')
+rmdir -p $PKG/$vendorarch/auto/Image/ExifTool $PKG/$archlib 2>/dev/null || true
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a Changes MANIFEST README $PKG/usr/doc/$PKGNAME-$VERSION
-chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
 
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
 
-# Strip binaries and shared objects, if present
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-
-
-
-# Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
-
-mv $PKG/usr/share/man $PKG/usr/man
-gzip -9 $PKG/usr/man/*/*
-rm -rf $PKG/usr/share
-
-
-
-# Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
+ 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-requiredbuilder -y -v -s  $CWD $PKG
+  requiredbuilder -y -v -s $CWD $PKG
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
-# Create txz package
+
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
-# Cleanup if enabled
+ 
 if [ "$1" = "--cleanup" ]; then
- rm -rf $TMP
+  rm -rf $TMP
 fi
-
-

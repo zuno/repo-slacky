@@ -1,5 +1,9 @@
 Tue Dec  4 05:01:48 CET 2012
 -----------------------------
+	new file:   multimedia/speex/speex.SlackBuild
+
+Tue Dec  4 05:01:48 CET 2012
+-----------------------------
 	new file:   graphic/enblend-enfuse/enblend-enfuse.SlackBuild
 	new file:   graphic/hugin/hugin.SlackBuild
 	new file:   graphic/luminance-hdr/luminance-hdr.SlackBuild

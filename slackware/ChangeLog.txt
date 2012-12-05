@@ -1,3 +1,16 @@
+Wed Dec  5 05:01:08 CET 2012
+-----------------------------
+	modified:   graphic/calibre/calibre.SlackBuild
+	new file:   graphic/fotoxx/fotoxx.SlackBuild
+	new file:   graphic/mashup/mashup.SlackBuild
+	new file:   graphic/ufraw/ufraw.SlackBuild
+	modified:   libraries/Image-ExifTool/Image-ExifTool.SlackBuild
+	new file:   libraries/daq/daq.SlackBuild
+	new file:   libraries/gtkimageview/gtkimageview.SlackBuild
+	new file:   libraries/libdnet/libdnet.SlackBuild
+	new file:   network/aria2/aria2.SlackBuild
+	new file:   network/snort/snort.SlackBuild
+
 Mon Dec  3 05:00:57 CET 2012
 -----------------------------
 	new file:   desktop/pcmanfm/pcmanfm.SlackBuild
