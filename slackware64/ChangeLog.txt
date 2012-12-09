@@ -1,3 +1,13 @@
+Sun Dec  9 05:00:14 CET 2012
+-----------------------------
+	new file:   libraries/libavc1394/libavc1394.SlackBuild
+	new file:   libraries/libconfig/libconfig.SlackBuild
+	new file:   libraries/libffado/libffado.SlackBuild
+	new file:   libraries/libiec61883/libiec61883.SlackBuild
+	new file:   libraries/libxml++/libxml++.SlackBuild
+	new file:   multimedia/jack-audio-connection-kit/jack-audio-connection-kit.SlackBuild
+	new file:   system/p7zip/p7zip.SlackBuild
+
 Tue Dec  4 05:01:48 CET 2012
 -----------------------------
 	new file:   multimedia/speex/speex.SlackBuild
