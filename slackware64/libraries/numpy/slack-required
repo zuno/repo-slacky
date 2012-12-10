@@ -1,0 +1,6 @@
+gcc >= 4.7.1-x86_64-1
+gcc-gfortran >= 4.7.1-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+glibc-solibs >= 2.15-x86_64-7 | skype_static >= 4.0.0.8-x86_64-1sl
+lapack >= 3.4.2-x86_64-1sl
+python >= 2.7.3-x86_64-2
