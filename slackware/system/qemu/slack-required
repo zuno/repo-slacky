@@ -31,6 +31,7 @@ nettle >= 2.5-i486-1
 openldap-client >= 2.4.31-i486-2
 openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
 p11-kit >= 0.12-i486-1
+pixman >= 0.26.2-i486-1
 sdl >= 1.2.14-i486-5
 sqlite >= 3.7.13-i486-1
 svgalib >= 1.9.25-i486-2
