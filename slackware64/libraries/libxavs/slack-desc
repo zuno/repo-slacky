@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+libxavs: LibXAVS (AVS Encoder and Decoder Library)
+libxavs:
+libxavs: AVS is the Audio Video Standard of China.  This project aims to
+libxavs: implement high quality AVS encoder and decoder.
+libxavs:
+libxavs:
+libxavs:
+libxavs:
+libxavs:
+libxavs:
+libxavs:
