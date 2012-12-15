@@ -30,11 +30,11 @@ set -e
 
 # Basic information. 
 PKGNAME=flash-player-plugin
-VERSION=${VERSION:-11.2.202.251}
+VERSION=${VERSION:-11.2.202.258}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://fpdownload.macromedia.com/get/flashplayer/pdc/$VERSION/install_flash_player_11_linux_$ARCH.tar.gz"
+SOURCE="http://fpdownload.macromedia.com/get/flashplayer/pdc/$VERSION/install_flash_player_11_linux.$ARCH.tar.gz"
 TAR=      # empty = auto
 DIR=.      # empty = auto
 DOCS="readme.txt"
@@ -124,6 +124,7 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
 cd $PKG
+rm -f readme.txt
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
