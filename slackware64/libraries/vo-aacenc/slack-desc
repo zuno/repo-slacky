@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+vo-aacenc: VO-AACenc (VisualOn AAC Encoder Library)
+vo-aacenc:
+vo-aacenc: This library contains an encoder implementation of the Advanced
+vo-aacenc: Audio Coding (AAC) audio codec. The library is based on a codec
+vo-aacenc: implementation by VisualOn as part of the Stagefright framework
+vo-aacenc: from the Google Android project.
+vo-aacenc:
+vo-aacenc:
+vo-aacenc:
+vo-aacenc:
+vo-aacenc:

@@ -1,12 +1,12 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
+# Written by Andrea Sciucca ( gohanz AT infinito.it )
 # Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# 
+# Slackware build script for sir
+# Official Site: http://code.google.com/p/sir/
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -29,15 +29,15 @@
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.2}
+PKGNAME=sir
+VERSION=${VERSION:-2.5.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://sir.googlecode.com/files/${PKGNAME}_${VERSION}.tar.gz"
 TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="Changelog *.txt"
+DIR=$PKGNAME      # empty = auto
+DOCS="CHANGELOG.txt INSTALL LICENSE README.txt TODO"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -86,13 +86,30 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
-make $JOBS
-make install DESTDIR=$PKG
+mkdir -p build
+( cd build
+
+  CFLAGS="${SLKCFLAGS}" \
+  CXXFLAGS="${SLKCFLAGS}" \
+  FFLAGS="${SLKCFLAGS}" \
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DOPENJPEG_INSTALL_MAN_DIR="man/" \
+    -DOPENJPEG_INSTALL_LIB_DIR="lib$LIBDIRSUFFIX" \
+    -DOPENJPEG_INSTALL_DOC_DIR="doc/$PKGNAME-$VERSION/" \
+    -DLIB_SUFFIX="$LIBDIRSUFFIX" \
+    ..
+    make $JOBS
+    make install DESTDIR=$PKG
+)
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

@@ -1,11 +1,12 @@
 #!/bin/sh
- 
-# Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
 
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
+# Heavily based on the Slackware 13.37 SlackBuild (v1)
+
+# Written by Andrea Sciucca ( gohanz AT infinito.it )
+# Last build from Savino Pio Liguori ( jimmy_page_89 AT hotmail DOT it )
+
+# Slackware build script for transmission
+# Official Site: http://www.transmissionbt.com/
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,27 +24,23 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Require:
 
 set -e
 
-# Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.2}
+PKGNAME=qtransmission
+VERSION=${VERSION:-2.75}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
-TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="Changelog *.txt"
-SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
-# An EULA for non-free packages
+SOURCE="http://download.transmissionbt.com/files/transmission-$VERSION.tar.bz2"
+TAR=
+DIR=
+
+# If EULA
 if [ -e EULA.TXT ];then
   more EULA.TXT
-  echo "Do you accept terms? (yes/[no])":
+  echo "Do you accept terms? (yes/[no])"
   read ACCEPT
   if [ "$ACCEPT" != "yes" ];then
     echo; echo "SlackBuild Aborted!!"
@@ -52,18 +49,17 @@ if [ -e EULA.TXT ];then
 fi
 
 # Does not touch following if not needed
-JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
- 
-if [ ! -e "$CWD/$TAR" ];then
-  wget "$SOURCE" -O "$CWD/$TAR"
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
+
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE
 fi
- 
+
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -80,29 +76,64 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
 
+sed -i -e 's%-g -O3 -funroll-loops %%g' configure.ac
+sed -i -e 's%-ggdb3 %%g' configure.ac
+
+# Fix hard-coded path of man file of Qt client
+sed -i "s|share/man/|man/|" qt/qtr.pro
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
-make $JOBS
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --disable-static \
+  --verbose \
+  --enable-shared \
+  --without-gtk \
+  --enable-cli \
+  --enable-daemon \
+  --enable-libnotify \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --host=$ARCH-slackware-linux \
+  --build=$CHOST-slackware-linux
+read
+make
 make install DESTDIR=$PKG
 
-# Documentations
+# build the Qt client (transmission-qt)
+( cd qt
+  qmake \
+    QMAKE_CXXFLAGS+="$SLKCFLAGS" \
+    QMAKE_CFLAGS+="$SLKCFLAGS" \
+    qtr.pro
+  sed -i -e 's% -g % %g' Makefile
+  make
+  INSTALL_ROOT=$PKG/usr make install
+)
+
+install -D -m 644 $CWD/qtransmission.png $PKG/usr/share/pixmaps/qtransmission.png 
+install -D -m 644 $CWD/qtransmission.desktop $PKG/usr/share/applications/qtransmission.desktop
+
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
-cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
- 
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
-  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
-done
+cp -r \
+  AUTHORS COPYING INSTALL NEWS README \
+  $PKG/usr/doc/$PKGNAME-$VERSION
+
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
 
 if [ -d $PKG/usr/man ]; then
     ( cd $PKG/usr/man
@@ -111,31 +142,25 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
-# Strip binary files
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-
-# Preparing to packaging
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
-[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
 cd $PKG
 chown -R root:root $PKG
- 
+
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
-  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+  requiredbuilder -y -v -s  $CWD $PKG
 fi
 
-# Packaging
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
- 
+
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP
 fi

@@ -1,3 +1,18 @@
+Mon Dec 17 05:00:44 CET 2012
+-----------------------------
+	new file:   desktop/razorqt/razorqt.SlackBuild
+	new file:   graphic/sir/sir.SlackBuild
+	new file:   libraries/frei0r/frei0r.SlackBuild
+	new file:   libraries/schroedinger/schroedinger.SlackBuild
+	new file:   libraries/vo-aacenc/vo-aacenc.SlackBuild
+	new file:   libraries/vo-amrwbenc/vo-amrwbenc.SlackBuild
+	new file:   multimedia/ffmpeg/ffmpeg.SlackBuild
+	modified:   multimedia/smplayer/smplayer.SlackBuild
+	new file:   network/qtransmission/qtransmission.SlackBuild
+	new file:   network/siege/siege.SlackBuild
+	new file:   network/transmission/transmission.SlackBuild
+	new file:   system/spacefm/spacefm.SlackBuild
+
 Sat Dec 15 05:00:16 CET 2012
 -----------------------------
 	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild

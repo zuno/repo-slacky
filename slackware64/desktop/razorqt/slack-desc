@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler---------------------------------------------------|
+razorqt: Razor-qt (QT4 Lightweight Desktop Environment)
+razorqt:
+razorqt: Razor-qt is a lightweight desktop environment for UNIX-like operating
+razorqt: systems. As mainstream  desktop environments  grows up to be more and
+razorqt: more  heavyweight  there  is  (as  we  believe)  still  place  for  a
+razorqt: lightweight but nice and powerful set of tools to make user's desktop
+razorqt: nicer and easier to use.
+razorqt:
+razorqt:
+razorqt:
+razorqt:
