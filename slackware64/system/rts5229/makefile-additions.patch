@@ -1,0 +1,27 @@
+--- a/Makefile	2012-03-21 02:40:18.000000000 +0100
++++ b/Makefile	2012-12-18 10:42:27.062936164 +0100
+@@ -22,6 +22,15 @@
+ # Makefile for the PCI-Express Card Reader drivers.
+ #
+ 
++#
++# Copyright (c) 2012, Luca De Pandis. All rights reserved.
++# Contact me: lucadepandis@gmail.com
++#
++
++DESTDIR := /
++
++INSTALL := /usr/bin/install
++
+ TARGET_MODULE := rts5229
+ 
+ EXTRA_CFLAGS := -Idrivers/scsi 
+@@ -38,7 +47,7 @@
+ 	cp -f ./define.debug ./define.h
+ 	make -C /lib/modules/$(shell uname -r)/build/ SUBDIRS=$(PWD) modules
+ install:
+-	cp $(TARGET_MODULE).ko /lib/modules/$(shell uname -r)/kernel/drivers/scsi -f
++	$(INSTALL) -Dm 0644 $(TARGET_MODULE).ko $(DESTDIR)/lib/modules/$(shell uname -r)/kernel/drivers/scsi/$(TARGET_MODULE).ko
+ clean:
+ 	rm -f *.o *.ko
+ 	rm -f $(TARGET_MODULE).mod.c
