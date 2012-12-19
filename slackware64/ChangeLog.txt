@@ -1,5 +1,9 @@
 Wed Dec 19 05:00:17 CET 2012
 -----------------------------
+	new file:   system/vice/vice.SlackBuild
+
+Wed Dec 19 05:00:17 CET 2012
+-----------------------------
 	new file:   system/rts5229/rts5229.SlackBuild
 
 Mon Dec 17 05:00:44 CET 2012

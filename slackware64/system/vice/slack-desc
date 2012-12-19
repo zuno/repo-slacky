@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler-------------------------------------------------------|
+vice: VICE (Old 8-bit Computers Emulator)
+vice:
+vice: VICE is a program that runs on a Unix, MS-DOS, Win32, OS/2, Acorn RISC
+vice: OS, QNX 6.x or BeOS machine and executes programs intended for the old
+vice: 8-bit computers. The current  version  emulates the C64, the C128, the
+vice: VIC20, all the  PET models (except the SuperPET  9000, which is out of
+vice: line anyway), the PLUS4 and the CBM-II (aka C610).
+vice:
+vice:
+vice:
+vice:
