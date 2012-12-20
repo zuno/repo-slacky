@@ -2,11 +2,11 @@
 
 # Heavily based on the Slackware 14.0 SlackBuild
 
-# Written by Loris Vincenzi (http://www.slacky.eu)
-# Last build from Luca De Pandis (lucadepandis@gmail.com)
+# Written by Gallows ( http://www.slacky.eu )
+# Last build from albatros_la aka AsPh4lTo ( albatros_la@hotmail.com )
 
-# Slackware build script for qemu
-# Official Site: http://www.qemu.org
+# Slackware build script for adesklets 
+# Official Site: http://adesklets.sourceforge.net
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -25,24 +25,22 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: 
+# Requirements: imlib2
 
 set -e
 
-# Basic information. 
-PKGNAME=qemu
-VERSION=${VERSION:-1.3.0}
-#VERSION=${VERSION:-0.15.0}
-BUILD=${BUILD:-2}
+PKGNAME=adesklets
+VERSION=${VERSION:-0.6.1}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE=http://wiki.qemu.org/download/$PKGNAME-$VERSION.tar.bz2
+SOURCE="http://downloads.sourceforge.net/project/adesklets/adesklets%20%28core%29/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+DOCSOURCE="http://downloads.sourceforge.net/project/adesklets/adesklets%20%28html%20doc%29/$VERSION/adesklets_htmldoc-$VERSION.tar.bz2"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="CODING_STYLE README COPYING* Changelog QMP HACKING MAINTAINERS LICENSE TODO VERSION"
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO adesklets_htmldoc-$VERSION"
 SLKFILES=""
 
-# If EULA
 if [ -e EULA.TXT ];then
   more EULA.TXT
   echo "Do you accept terms? (yes/[no])"
@@ -53,17 +51,21 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-# Does not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+DOCTAR=${DOCTAR:-$(basename $DOCSOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
 
 if [ ! -e $CWD/$TAR ];then
   wget $SOURCE -O "$CWD/$TAR"
+fi
+
+if [ ! -e $CWD/$DOCTAR ];then
+  wget $DOCSOURCE -O "$CWD/$DOCTAR"
 fi
 
 CHOST="i486"
@@ -82,44 +84,39 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
+tar xvf $CWD/$DOCTAR
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
+LDFLAGS="-lm" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
-  --enable-guest-base \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
   --sysconfdir=/etc \
-  --enable-kvm \
-  --enable-curses \
-  --enable-linux-user \
-  --enable-system \
-  --enable-mixemu \
-  --enable-curl \
-  --enable-bluez \
-  --enable-system \
-  --enable-docs \
-  --enable-uname-release=R
+  --localstatedir=/var \
+  --enable-editing \
+  --program-prefix= \
+  --program-suffix= \
+  --disable-static \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
 
-## Do special operations
-
-# Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
- 
+mv $PKG/usr/doc/$PKGNAME-$VERSION/adesklets_htmldoc-$VERSION \
+$PKG/usr/doc/$PKGNAME-$VERSION/htmldoc
+
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
@@ -148,7 +145,7 @@ cd $PKG
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  requiredbuilder -y -v -s $CWD $PKG
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 

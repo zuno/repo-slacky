@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+        |----handy-ruler------------------------------------------------------|
+acpitool: acpitool (Command-line frontend to the ACPI subsystem)
+acpitool:
+acpitool: AcpiTool is a Linux ACPI client. It's a small command line
+acpitool: application, intended to be a replacement for the apm tool.
+acpitool: The primary target audience are laptop users, since these people
+acpitool: are most interested in things like battery status, thermal status
+acpitool: and the ability to suspend (sleep mode). The program simply 
+acpitool: accesses the /proc/acpi or /sysfs entries to get/set acpi values.
+acpitool: Hence, a computer running a Linux kernel from the 2.4.x or 2.6.x
+acpitool: series with ACPI enabled is needed.
+acpitool:
