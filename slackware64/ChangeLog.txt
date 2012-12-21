@@ -1,3 +1,11 @@
+Fri Dec 21 05:00:13 CET 2012
+-----------------------------
+	new file:   libraries/libdca/libdca.SlackBuild
+	new file:   libraries/portaudio/portaudio.SlackBuild
+	new file:   system/ccid/ccid.SlackBuild
+	new file:   system/opensc/opensc.SlackBuild
+	new file:   system/pcsc-lite/pcsc-lite.SlackBuild
+
 Thu Dec 20 05:01:03 CET 2012
 -----------------------------
 	new file:   desktop/adesklets/adesklets.SlackBuild

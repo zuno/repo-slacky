@@ -1,0 +1,7 @@
+glibc-solibs >= 2.15-x86_64-7
+libtool >= 2.4.2-x86_64-1
+ncurses >= 5.9-x86_64-1
+openssl >= 1.0.1c-x86_64-3 | openssl-solibs >= 1.0.1c-x86_64-3
+pcsc-lite
+readline >= 5.2-x86_64-4
+zlib >= 1.2.6-x86_64-1
