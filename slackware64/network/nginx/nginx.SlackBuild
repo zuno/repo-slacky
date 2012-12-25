@@ -29,7 +29,7 @@ set -e
 
 # Basic information.
 PKGNAME=nginx
-VERSION=${VERSION:-1.2.5}
+VERSION=${VERSION:-1.2.6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
@@ -81,7 +81,7 @@ fi
 
 ### Preparing Source
 rm -rf $TMP
-mkdir -p $TMP $PKG $OUTPUT
+mkdir -p $TMP $PKG $OUTPUT $PKG/etc/nginx/conf.d/
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
@@ -124,8 +124,11 @@ CXXFLAGS="$SLKCFLAGS" \
   --http-fastcgi-temp-path=/dev/shm \
   --with-http_geoip_module \
   --with-http_realip_module \
+  --with-http_perl_module \
+  --with-http_image_filter_module \
   --with-imap \
   --with-mail \
+  --with-mail_ssl_module \
   --with-imap_ssl_module  
 make $JOBS
 make install DESTDIR=$PKG

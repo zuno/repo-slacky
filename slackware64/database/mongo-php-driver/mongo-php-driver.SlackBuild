@@ -3,8 +3,8 @@
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
 # 
-# Slackware build script for vice
-# Official Site: http://vice-emu.sourceforge.net/
+# Slackware build script for mongo-php-driver
+# Official Site: http://pecl.php.net/package/mongo
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,21 +23,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: gtkglext
+# Require:
 
 set -e
 
 # Basic information.
-PKGNAME=vice
-VERSION=${VERSION:-2.4}
-BUILD=${BUILD:-5}
+PKGNAME=mongo-php-driver
+VERSION=${VERSION:-1.3.2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/vice-emu/releases/${PKGNAME}-${VERSION}.tar.gz"
+SOURCE="https://github.com/mongodb/${PKGNAME}/archive/${VERSION}.tar.gz"
 TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="AUTHORS ChangeLog COPYING FEEDBACK INSTALL NEWS README"
-SLKFILES="config/vice.png config/x128.desktop config/x64.desktop config/x64dtv.desktop config/xcbm2.desktop config/xpet.desktop config/xplus4.desktop config/xvic.desktop" # all files needed to the slackbuild (except slack-desc etc..)
+DIR=$PKGNAME-$VERSION
+DOCS="*.md"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -89,62 +89,26 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-if [ "$ARCH" = "x86_64" ]; then
-	#fix datadir
-	sed -i 's/\/lib\/vice/\/lib64\/vice/' src/arch/sdl/archdep_unix.h
-	sed -i 's/\/lib\/vice/\/lib64\/vice/' src/arch/unix/archdep.h
-fi
+phpize
 
 # Customize as you need
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
-  --enable-fullscreen \
-  --enable-ethernet \
-  --enable-gnomeui \
-  --disable-ffmpeg \
   --build=$CHOST-slackware-linux
 make $JOBS
-make install DESTDIR=$PKG
-
-# Create link to documentation folder in the place VICE expects to find it.
-( cd $PKG/usr/lib$LIBDIRSUFFIX/$PKGNAME ; ln -s /usr/doc/$PKGNAME-$VERSION doc )
-
-# Copy the CBM.ttf font to the fonts directory
-# ('make install' spits an error on this, I haven't investigated why)
-mkdir -p $PKG/usr/share/fonts/TTF
-cp data/fonts/CBM.ttf $PKG/usr/share/fonts/TTF
-
-# Install icon and menu entries
-mkdir -p $PKG/usr/share/{applications,pixmaps}
-cp $CWD/config/*.desktop $PKG/usr/share/applications
-cp $CWD/config/vice.png $PKG/usr/share/pixmaps
-
-# Remove the documentation folder installed by "make install", which
-# is a broken mess of almost unrelated files in the wrong place
-rm -rf $PKG/usr/lib$LIBDIRSUFFIX/$PKGNAME/doc
-
-# Copy the original documentation folder to the usual place
-mkdir -p $PKG/usr/doc
-cp -a doc $PKG/usr/doc/$PKGNAME-$VERSION
-find $PKG/usr/doc/$PKGNAME-$VERSION -name "Makefile*" -exec rm -f {} \;
-find $PKG/usr/doc/$PKGNAME-$VERSION -name "tex*" -exec rm -f {} \;
-
-mv $PKG/usr/share/info $PKG/usr
-( cd $PKG/usr/info
-  find . -type f -exec gzip -9 {} \;
-  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-)
+make install INSTALL_ROOT=$PKG
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/config
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
@@ -175,6 +139,7 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  ADD=$(ls /var/log/packages/ | sed -ne 's/\(php\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi

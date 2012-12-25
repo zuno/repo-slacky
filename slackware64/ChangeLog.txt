@@ -1,3 +1,10 @@
+Tue Dec 25 05:11:17 CET 2012
+-----------------------------
+	new file:   database/mongo-php-driver/mongo-php-driver.SlackBuild
+	new file:   network/APC/APC.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+	modified:   system/vice/vice.SlackBuild
+
 Sun Dec 23 05:00:09 CET 2012
 -----------------------------
 	modified:   system/rts5229/rts5229.SlackBuild
