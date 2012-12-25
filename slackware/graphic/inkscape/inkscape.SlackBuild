@@ -31,7 +31,7 @@
 set -e
 
 PKGNAME=inkscape
-VERSION=${VERSION:-0.48.3.1}
+VERSION=${VERSION:-0.48.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
@@ -70,7 +70,7 @@ cd $TMP
 tar xvjf $CWD/$PKGNAME-$VERSION.tar.bz2
 cd $PKGNAME-$VERSION
 # patch for poppler-0.20
-patch -p1 < $CWD/poppler20.patch
+#patch -p1 < $CWD/poppler20.patch
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 

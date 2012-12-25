@@ -1,3 +1,10 @@
+Tue Dec 25 05:03:55 CET 2012
+-----------------------------
+	new file:   graphic/blender/blender.SlackBuild
+	modified:   graphic/calibre/calibre.SlackBuild
+	modified:   graphic/inkscape/inkscape.SlackBuild
+	modified:   system/wine/wine.SlackBuild
+
 Tue Dec 11 05:01:30 CET 2012
 -----------------------------
 	modified:   system/wine/wine.SlackBuild
