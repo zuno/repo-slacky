@@ -1,11 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Loris Vincenzi (http://www.slacky.eu)
-# Last build from Loris Vincenzi (http://www.slacky.eu)
+# Written by Andrea Sciucca (gohanz at infinito.it)
+# Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for libevent
-# Official Site: http://www.monkey.org/~provos/libevent/
+# Slackware build script for smb4k
+# Official Site: http://sourceforge.net/p/smb4k/home/Home/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=libevent
-VERSION=${VERSION:-2.0.21}
+PKGNAME=smb4k
+VERSION=${VERSION:-1.0.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="https://github.com/downloads/libevent/libevent/$PKGNAME-$VERSION-stable.tar.gz"
+SOURCE="http://downloads.sourceforge.net/project/smb4k/Smb4K%20%28stable%20releases%29/1.0.5/$PKGNAME-$VERSION.tar.bz2"
 TAR=
 DIR=
-DOCS="README"
+DOCS="AUTHORS BUGS COPYING ChangeLog README TODO"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -76,19 +76,21 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
---prefix=/usr \
---disable-static \
---libdir=/usr/lib$LIBDIRSUFFIX \
---sysconfdir=/etc \
---localstatedir=/var \
---mandir=/usr/man \
---docdir=/usr/doc/$PKGNAME-$VERSION \
---build=$CHOST-slackware-linux
-make $JOBS
-make install DESTDIR=$PKG
+(  mkdir -p package \
+    && cd package \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make  $JOBS \
+&& make install DESTDIR=$PKG ) 
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
@@ -113,6 +115,16 @@ fi
 )
 
 mkdir -p $PKG/install
+
+	echo "if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database 1> /dev/null &> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
+fi" >> $PKG/install/doinst.sh
+	echo "" >> $PKG/install/doinst.sh
+
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh

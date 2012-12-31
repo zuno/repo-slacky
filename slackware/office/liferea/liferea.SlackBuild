@@ -1,11 +1,11 @@
 #!/bin/sh
+ 
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://liferea.sourceforge.net
-# Packager Andrea Sciucca ( gohanz at infinito.it)
-# http://www.slacky.eu
-# Written by Andrea Sciucca ( gohanz at infinito.it)
-#
-#
+# Written by Andrea Sciucca (gohanz at infinito.it)
+# Last build from Loris Vincenzi (info@slacky.it)
+# 
+# Slackware build script for liferea
+# Official Site: http://liferea.sourceforge.net
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -24,101 +24,97 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Required: geoclue, json-glib, libunique, webkitgtk
-#
-# Exit on most errors
+# Require: geoclue, json-glib, libunique, webkitgtk
+
 set -e
 
-
-# Set variables:
-CWD=`pwd`
-OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=liferea
-TMP=${TMP:-/tmp/txz/$PKGNAME}
-PKG=$TMP/package
-VERSION=${VERSION:-1.8.9}
-ARCH=${ARCH:-i486}
-JOBS=${JOBS:--j2}
+VERSION=${VERSION:-1.8.11}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+SOURCE="http://downloads.sourceforge.net/project/liferea/Liferea%20Stable/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+TAR=
+DIR=
+DOCS="AUTHORS COPYING ChangeLog INSTALL README"
+SLKFILES=""
 
-# Download sorce tarball if still not present
-SOURCE="http://ovh.dl.sourceforge.net/sourceforge/liferea/$PKGNAME-$VERSION.tar.gz"
-
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ]; then
- wget $SOURCE
+JOBS=${JOBS:--j2}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
 fi
-
-
-# Set compiling FLAGS
+ 
+CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
 fi
 
-# Create building directory
-rm -rf $PKG
+rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
-
-
-# Decompress the source tarball
 cd $TMP
-tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
-
-echo -e "\E[0;32m+--------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Liferea |\E[0;0m"
-echo -e "\E[0;32m+--------------------------+\E[0;0m"
-
-# Adjust permissions and ownerships
-cd $PKGNAME-$VERSION
+tar xvf $CWD/$TAR
+cd $DIR
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Building Liferea package
-LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure 	--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libdir=/usr/lib${LIBDIRSUFFIX} \
-		--disable-static \
-		--mandir=/usr/man \
-		--docdir=/usr/doc/$PKGNAME-$VERSION \
-		--program-prefix= \
-		--program-suffix= \
-		--build=$CHOST-slackware-linux
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--build=$CHOST-slackware-linux
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
 make $JOBS
 make install DESTDIR=$PKG
 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
 
-# Strip binaries and shared objects, if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-
-#Add documentation files: readme, changelog and so on
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a AUTHORS COPYING ChangeLog INSTALL README $PKG/usr/doc/$PKGNAME-$VERSION
-chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
-
-
-# Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
-cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
-
-
 
 # Add schemas install to the doinst.sh if schemas are found.
 [ -d $PKG/etc/gconf/schemas ] && {
@@ -137,19 +133,6 @@ done;
 echo "fi" >> $PKG/install/doinst.sh
 }
 
-
-
-
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-    ( cd $PKG/usr/man
-      find . -type f -exec gzip -9 {} \;
-      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-    )
-fi
-
-
-# Building some post-install execution script 	
 	echo "if [ -x /usr/bin/update-desktop-database ]; then
   /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
 fi" >> $PKG/install/doinst.sh
@@ -159,20 +142,20 @@ fi" >> $PKG/install/doinst.sh
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
-# Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
-if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+ 
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
-# Create txz package
+
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
-
-# Cleanup if enabled
+ 
 if [ "$1" = "--cleanup" ]; then
- rm -rf $TMP
+  rm -rf $TMP
 fi
-
-

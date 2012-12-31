@@ -1,5 +1,5 @@
 #!/bin/sh
-# Heavily based on the Slackware 13.37 SlackBuild
+# Heavily based on the Slackware 14.0 SlackBuild
 # http://www.transmissionbt.com/
 # Packager Andrea Sciucca ( gohanz at infinito.it)
 # http://www.slacky.eu
@@ -34,7 +34,7 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=transmission
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-2.73}
+VERSION=${VERSION:-2.75}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}

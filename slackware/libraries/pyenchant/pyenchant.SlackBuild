@@ -1,11 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Loris Vincenzi (http://www.slacky.eu)
-# Last build from Loris Vincenzi (http://www.slacky.eu)
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for libevent
-# Official Site: http://www.monkey.org/~provos/libevent/
+# Slackware build script for pyenchant
+# Official Site: http://packages.python.org/pyenchant
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=libevent
-VERSION=${VERSION:-2.0.21}
-BUILD=${BUILD:-1}
+PKGNAME=pyenchant
+VERSION=${VERSION:-1.6.5}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="https://github.com/downloads/libevent/libevent/$PKGNAME-$VERSION-stable.tar.gz"
+SOURCE="http://pypi.python.org/packages/source/p/pyenchant/$PKGNAME-$VERSION.tar.gz"
 TAR=
 DIR=
-DOCS="README"
+DOCS="LICENSE.txt README.txt TODO.txt"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -76,19 +76,8 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
---prefix=/usr \
---disable-static \
---libdir=/usr/lib$LIBDIRSUFFIX \
---sysconfdir=/etc \
---localstatedir=/var \
---mandir=/usr/man \
---docdir=/usr/doc/$PKGNAME-$VERSION \
---build=$CHOST-slackware-linux
-make $JOBS
-make install DESTDIR=$PKG
+python setup.py build
+python setup.py install --root=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION

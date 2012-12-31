@@ -1,3 +1,16 @@
+Mon Dec 31 05:01:14 CET 2012
+-----------------------------
+	copied:     network/transmission/transmission.SlackBuild -> development/eric4/eric4.SlackBuild
+	copied:     network/transmission/transmission.SlackBuild -> libraries/PyXML/PyXML.SlackBuild
+	modified:   libraries/libevent/libevent.SlackBuild
+	copied:     network/transmission/transmission.SlackBuild -> libraries/pyenchant/pyenchant.SlackBuild
+	modified:   multimedia/smplayer/smplayer.SlackBuild
+	modified:   network/aria2/aria2.SlackBuild
+	modified:   network/qtransmission/qtransmission.SlackBuild
+	modified:   network/transmission/transmission.SlackBuild
+	modified:   office/liferea/liferea.SlackBuild
+	copied:     network/transmission/transmission.SlackBuild -> system/smb4k/smb4k.SlackBuild
+
 Wed Dec 26 05:00:56 CET 2012
 -----------------------------
 	modified:   network/opera/opera.SlackBuild

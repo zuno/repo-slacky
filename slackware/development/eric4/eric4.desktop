@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Eric4
+Name[it]=Eric4
+GenericName=PyQt4 Python IDE
+GenericName[it]=PyQt4 Python IDE
+Comment=Python and Ruby editor and IDE, written in Python
+Comment[it]=Editor e IDE Python e Ruby, scritto in Python
+Exec=eric4
+Type=Application
+Icon=/usr/share/pixmaps/Eric4.png 
+StartupNotify=true
+Terminal=false
+Categories=Qt;Application;Development;

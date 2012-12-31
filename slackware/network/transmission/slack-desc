@@ -5,7 +5,7 @@
 # exactly 11 lines for the formatting to be correct.  It's also customary to
 # leave one space after the ':'.
 
-            |-----handy-ruler--------------------------------------------------|
+            |-----handy-ruler------------------------------------------------------|
 transmission: Transmission (GTK+ Lightweight BitTorrent client)
 transmission:
 transmission: It  features  a  simple,  intuitive interface   on top on an  
