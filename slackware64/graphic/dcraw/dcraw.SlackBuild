@@ -2,9 +2,9 @@
  
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
-#
-# Slackware build script for mongodb
-# Official Site: http://www.mongodb.org/
+# 
+# Slackware build script for dcraw
+# Official Site: http://www.cybercom.net/~dcoffin/dcraw/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,16 +28,16 @@
 set -e
 
 # Basic information.
-PKGNAME=mongodb
-VERSION=${VERSION:-2.2.2}
+PKGNAME=dcraw
+VERSION=${VERSION:-9.17}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.mongodb.org/src/${PKGNAME}-src-r${VERSION}.tar.gz"
+SOURCE="http://www.cybercom.net/~dcoffin/dcraw/archive/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="APACHE-2.0.txt GNU-AGPL-3.0.txt README"
-SLKFILES="libdir.patch" # all files needed to the slackbuild (except slack-desc etc..)
+DIR=$PKGNAME  # empty = auto
+DOCS=""
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -79,17 +79,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-if ! grep -q "^mongodb:" /etc/group; then
-  echo "Group mongodb not found!!! You must have this group in order to build package. Try the following command"
-  echo "groupadd mongodb &>/dev/null"
-  exit 1
-fi
-if ! grep -q "^mongodb:" /etc/passwd; then
-  echo "User mongodb not found!!! You must have this user in order to build package. Try the following command"
-  echo "useradd -d /var/lib/mongodb -s /bin/false -c \"Mongodb user\" -g mongodb mongodb &>/dev/null"
-  exit 1
-fi
-
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
@@ -97,34 +86,33 @@ cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
  
+# DCRaw build flags as suggested on the author's page.
+# builds with support for jpeg, png, lcms and tiff
+DCRAW_BUILD_FLAGS="-lm -ljasper -ljpeg -llcms -lpng -ltiff"
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-patch -p0 < $CWD/libdir.patch
+# Build and install
+gcc \
+  $SLKCFLAGS -Wall -v \
+  -o dcraw dcraw.c \
+  $DCRAW_BUILD_FLAGS \
+  -DLOCALEDIR=\"/usr/share/locale/\"
+install -m 755 -p -D dcraw $PKG/usr/bin/dcraw
+install -m 644 -p -D dcraw.1 $PKG/usr/man/man1/dcraw.1
 
-#build from source
-scons --use-system-boost=yes --use-system-pcre=yes --ssl=yes --sharedclient
-scons --prefix=$PKG/usr install 
+for lang in eo ru fr it de pt es zh_TW zh_CN pl hu cs ca sv ; do
+  install -d -m 0755 $PKG/usr/man/$lang.UTF-8/man1 
+  install -m 0644 dcraw_$lang.1 $PKG/usr/man/$lang.UTF-8/man1/dcraw.1 || true
+	# Missing man page, hence the || true above #
+  install -d -m 0755 $PKG/usr/share/locale/$lang/LC_MESSAGES
+  msgfmt -o $PKG/usr/share/locale/$lang/LC_MESSAGES/dcraw.mo dcraw_$lang.po || true
+	# Missing po file for zh_CN language, hence the || above
+done
 
-#copy man pages
-mkdir -p $PKG/usr/man/man1
-cp -a debian/*.1 $PKG/usr/man/man1
-
-#copy configuration file
-mkdir -p $PKG/etc/mongodb
-cat debian/mongodb.conf > $PKG/etc/mongodb/mongodb.conf.new
-
-#copy startup script
-mkdir -p $PKG/etc/rc.d
-cat $CWD/rc.mongod > $PKG/etc/rc.d/rc.mongod.new
-
-#make database dir
-mkdir -p $PKG/var/lib/mongodb $PKG/var/log/mongodb
-chown -R mongodb.mongodb $PKG/var/lib/mongodb $PKG/var/log/mongodb
-
-# Documentations
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
-cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+# remove any empty directories
+find $PKG -depth -empty -type d -exec rmdir '{}' \;
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD

@@ -1,0 +1,7 @@
+glibc-solibs >= 2.15-x86_64-7
+jasper >= 1.900.1-x86_64-3
+lcms >= 1.19-x86_64-2
+libjpeg >= v8a-x86_64-1
+libpng >= 1.4.12-x86_64-1
+libtiff >= 3.9.6-x86_64-1
+zlib >= 1.2.6-x86_64-1
