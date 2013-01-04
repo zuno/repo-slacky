@@ -30,7 +30,7 @@ set -e
 # Basic information.
 PKGNAME=nginx
 VERSION=${VERSION:-1.2.6}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 SOURCE="http://nginx.org/download/${PKGNAME}-${VERSION}.tar.gz"
@@ -126,16 +126,18 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-http_realip_module \
   --with-http_perl_module \
   --with-http_image_filter_module \
+  --with-ipv6 \
   --with-imap \
   --with-mail \
   --with-mail_ssl_module \
   --with-imap_ssl_module  
-make $JOBS
+
+make $JOBS 
 make install DESTDIR=$PKG
 
 # Remove some other empty and/or unnecessary directories from the package
 eval $(perl '-V:archlib')
-rm -rf $PKG/$archlib $PKG/usr/html $PKG/var
+rm -rf $PKG/$archlib $PKG/usr/html $PKG/var $PKG/usr/lib64
 
 # Add an init script
 mkdir -p $PKG/etc/rc.d
