@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=LyX
+GenericName=LaTeX Frontend
+GenericName[it]=LaTeX Frontend
+Comment=Write documents in a WYSIWYM way
+Comment[it]=Scrivi documenti con interfaccia WYSIWYM
+Exec=lyx
+Icon=/usr/share/pixmaps/lyx.png
+Type=Application
+InitialPreference=15
+Terminal=false
+Categories=Qt;KDE;Office;
