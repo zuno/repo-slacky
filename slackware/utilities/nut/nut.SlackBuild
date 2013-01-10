@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=nut
-VERSION=${VERSION:-18.4}
+VERSION=${VERSION:-18.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
@@ -88,7 +88,8 @@ gzip -9 nut.1
 mv nut.1.gz $PKG/usr/man/man1
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 mkdir -p $PKG/usr/share/nut
-mv nut.xpm $PKG/usr/share/nut
+mv nut.html $PKG/usr/share/nut
+mv nuticon.png $PKG/usr/share/nut
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION

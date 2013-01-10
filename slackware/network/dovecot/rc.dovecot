@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Start script for dovecot
+
+start() {
+  dovecot
+}
+
+stop() {
+    killall dovecot
+}
+
+restart() {
+    dstop
+    sleep 5
+    dstart
+}
+
+case $1 in
+    'start')
+	start
+	;;
+    'stop')
+	stop
+	;;
+    'restart')
+	restart
+	;;
+    *)
+	echo "usage $0 start|stop|restart"
+esac
+

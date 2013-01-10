@@ -4,8 +4,8 @@
 # Written by Loris Vincenzi (info@slacky.it)
 # Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for lyx
-# Official Site: http://www.lyx.org
+# Slackware build script for dovecot
+# Official Site: http://www.dovecot.org
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=lyx
-VERSION=${VERSION:-2.0.5.1}
+PKGNAME=dovecot
+VERSION=${VERSION:-2.1.13}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="ftp://ftp.lyx.org/pub/lyx/stable/2.0.x/$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://www.dovecot.org/releases/2.1/$PKGNAME-$VERSION.tar.gz"
 TAR=
 DIR=
-DOCS="ABOUT-NLS ANNOUNCE COPYING INSTALL* NEWS README* RELEASE-NOTES UPGRADING"
+DOCS="AUTHORS COPYING COPYING.LGPL COPYING.MIT ChangeLog INSTALL NEWS README TODO doc/*"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -79,30 +79,27 @@ chmod -R u+w,go+r-w,a-s .
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure --prefix=/usr \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
 --sysconfdir=/etc \
 --localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
 --mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---with-aspell \
---with-enchant \
+--with-ldap \
+--with-mysql \
+--without-pam \
+--without-docs \
+--with-notify=inotify \
 --build=$CHOST-slackware-linux
 echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
 read
 make $JOBS
 make install DESTDIR=$PKG
 
-# Installing desktop file menu and icons
-install -m 644 -p -D $CWD/lyx.desktop  $PKG/usr/share/applications/lyx.desktop
-install -m 644 -p -D $CWD/lyx.png  $PKG/usr/share/pixmaps/lyx.png
-
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT lyx.desktop lyx.png $SLKFILES;do
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT rc.dovecot $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -123,6 +120,9 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+# Add an init script
+install -D -m 0755 $CWD/rc.dovecot $PKG/etc/rc.d/rc.dovecot.new
 
 cd $PKG
 chown -R root:root $PKG

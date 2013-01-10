@@ -5,14 +5,14 @@
 # exactly 11 lines for the formatting to be correct.  It's also customary to
 # leave one space after the ':'.
 
-   |-----handy-ruler---------------------------------------------------------|
+   |-----handy-ruler------------------------------------------------------|
 nut: Nut (Nutrition Software)
 nut:
 nut: I have written open-source free nutrition software, NUT, which records
-nut: what you eat and analyzes your meals for nutrient levels in terms of the
-nut: "Daily Value" or DV which is the standard for food labeling in the US.
-nut: The program uses the free food composition database from the USDA.
-nut:
+nut: what you eat and analyzes your meals for nutrient levels in terms of
+nut: the "Daily Value" or DV which is the standard for food labeling in
+nut: the US. The program uses the free food composition database from the
+nut: USDA.
 nut:
 nut:
 nut:
