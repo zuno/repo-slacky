@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+              |-----handy-ruler------------------------------------------------------|
+game-music-emu: Game Music Emu (Video Game Music Emulation Library)
+game-music-emu:
+game-music-emu: Game_Music_Emu is  a collection  of video game  music  file
+game-music-emu: emulators that support the following formats and systems:
+game-music-emu: AY - ZX Spectrum/Amstrad CPC, GYM - Sega Genesis/Mega Drive
+game-music-emu: HES - NEC TurboGrafx-16/PC Engine, KSS - MSX Home  Computer
+game-music-emu: NSF/NSFE  -   Nintendo  NES/Famicom,  SAP  -  Atari systems
+game-music-emu: SPC - Super Nintendo,  VGM/VGZ - Sega  Master System/MDrive
+game-music-emu:
+game-music-emu:
+game-music-emu:

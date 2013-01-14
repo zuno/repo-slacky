@@ -1,0 +1,102 @@
+#!/bin/sh
+#
+# beanstalkd - a simple, fast workqueue service
+#
+exec="/usr/bin/beanstalkd"
+prog=$(basename $exec)
+
+# default options, overruled by items in beanstalkd.conf
+BEANSTALKD_ADDR=0.0.0.0
+BEANSTALKD_PORT=11300
+BEANSTALKD_USER=beanstalkd
+
+[ -e /etc/beanstalkd.conf ] && . /etc/beanstalkd.conf
+
+pidfile=/var/run/beanstalkd.pid
+
+start() {
+    [ -x $exec ] || exit 5
+    if [ -f $pidfile ]; then
+	echo "Seems that an active process is up and running with pid $(cat $pidfile)"
+	echo "If this is not true try first to remove pidfile $pidfile"
+	exit 5
+    fi
+    echo $"Starting $prog"
+    # if not running, start it up here, usually something like "daemon $exec"
+    options="-l ${BEANSTALKD_ADDR} -p ${BEANSTALKD_PORT} -u ${BEANSTALKD_USER}"
+    if [ "${BEANSTALKD_MAX_JOB_SIZE}" != ""  ]; then
+        options="${options} -z ${BEANSTALKD_MAX_JOB_SIZE}"
+    fi
+
+    if [ "${BEANSTALKD_BINLOG_DIR}" != "" ]; then
+        if [ ! -d "${BEANSTALKD_BINLOG_DIR}" ]; then
+            echo "Creating binlog directory (${BEANSTALKD_BINLOG_DIR})"
+            mkdir -p ${BEANSTALKD_BINLOG_DIR} && chown ${BEANSTALKD_USER}:${BEANSTALKD_USER} ${BEANSTALKD_BINLOG_DIR}
+        fi
+        options="${options} -b ${BEANSTALKD_BINLOG_DIR}"
+        if [ "${BEANSTALKD_BINLOG_FSYNC_PERIOD}" != "" ]; then
+            options="${options} -f ${BEANSTALKD_BINLOG_FSYNC_PERIOD}"
+        else
+            options="${options} -F"
+        fi
+        if [ "${BEANSTALKD_BINLOG_SIZE}" != "" ]; then
+            options="${options} -s ${BEANSTALKD_BINLOG_SIZE}"
+        fi
+    fi
+
+    $exec $options &
+    echo $! > $pidfile
+}
+
+stop() {
+    if [ -e $pidfile ]; then
+        echo "Stopping $prog"
+        kill $(cat $pidfile) 2>/dev/null
+        rm $pidfile
+    fi
+}
+
+status() {
+    echo -n "$prog is "
+    CHECK=$(ps aux | grep $exec | grep -v grep)
+    STATUS=$?
+    if [ "$STATUS" == "1" ]; then
+	echo "not running"
+    else
+	echo "running"
+    fi
+
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    restart
+}
+
+force_reload() {
+    restart
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    status)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart}"
+        exit 2
+esac
+exit $?
+

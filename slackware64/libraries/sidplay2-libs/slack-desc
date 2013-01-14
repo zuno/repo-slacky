@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler----------------------------------------------------|
+sidplay2-libs: Sidplay 2 Libs (SID Player Music Library V2)
+sidplay2-libs:
+sidplay2-libs: Sidplay 2  is  the  second  in  the  Sidplay  series originally
+sidplay2-libs: developed by Michael Schwendt. This version is written by Simon
+sidplay2-libs: White  and  is cycle  accurate  for improved sound reproduction
+sidplay2-libs: Sidplay 2 is capable of playing all  C64  mono and  stereo file
+sidplay2-libs: formats.
+sidplay2-libs:
+sidplay2-libs:
+sidplay2-libs:
+sidplay2-libs:

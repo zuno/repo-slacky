@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+libtar: Libtar (TAR File C Library)
+libtar:
+libtar: Libtar offers the following features:
+libtar: * Flexible API - you can manipulate individual files or just extract
+libtar: a whole archive at once.
+libtar: * Allows user-specified read() and write() functions, such as zlib's
+libtar: gzread() and gzwrite().
+libtar: * Supports both POSIX 1003.1-1990 and GNU tar file formats.
+libtar:
+libtar:
+libtar:

@@ -1,3 +1,23 @@
+Mon Jan 14 05:00:20 CET 2013
+-----------------------------
+	new file:   graphic/fotoxx/fotoxx.SlackBuild
+	new file:   graphic/scrot/scrot.SlackBuild
+	new file:   graphic/ufraw/ufraw.SlackBuild
+	new file:   libraries/game-music-emu/game-music-emu.SlackBuild
+	new file:   libraries/giblib/giblib.SlackBuild
+	new file:   libraries/gtkimageview/gtkimageview.SlackBuild
+	new file:   libraries/libbs2b/libbs2b.SlackBuild
+	new file:   libraries/libdvdnav/libdvdnav.SlackBuild
+	new file:   libraries/libkate/libkate.SlackBuild
+	new file:   libraries/libtar/libtar.SlackBuild
+	new file:   libraries/projectM/projectM.SlackBuild
+	new file:   libraries/sidplay2-libs/sidplay2-libs.SlackBuild
+	new file:   multimedia/aften/aften.SlackBuild
+	new file:   multimedia/fluidsynth/fluidsynth.SlackBuild
+	new file:   multimedia/goom/goom.SlackBuild
+	new file:   multimedia/vamp-plugin-sdk/vamp-plugin-sdk.SlackBuild
+	new file:   system/beanstalkd/beanstalkd.SlackBuild
+
 Sun Jan 13 05:01:19 CET 2013
 -----------------------------
 	new file:   multimedia/audacity/audacity.SlackBuild
