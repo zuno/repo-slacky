@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# Heavily based on the Slackware 13.37 SlackBuild (v1)
+# Heavily based on the Slackware 14.0 SlackBuild
 
-# Written by Andrea Sciucca ( gohanz AT infinito.it )
+# Written by Andrea Sciucca ( gohanz at infinito.it)
 # Last build from 6c33c ( seic33c AT gmail DOT com )
 
-# Slackware build script for libdvdnav
-# Official Site: http://www.mplayerhq.hu/MPlayer/releases/dvdnav
+# Slackware build script for libdvbpsi
+# Official Site: http://developers.videolan.org/libdvbpsi/
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -24,18 +24,22 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Require: 
 
 set -e
 
-PKGNAME=libdvdnav
-VERSION=${VERSION:-4.2.0}
-BUILD=${BUILD:-3}
+# Basic information. 
+PKGNAME=libdvbpsi
+VERSION=${VERSION:-0.2.0}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-
-SOURCE="http://dvdnav.mplayerhq.hu/releases/$PKGNAME-$VERSION.tar.bz2"
-TAR=
-DIR=
+SOURCE="http://download.videolan.org/pub/libdvbpsi/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+TAR=      # empty = auto
+DIR=      # empty = auto
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README"
+SLKFILES="" 
 
 # If EULA
 if [ -e EULA.TXT ];then
@@ -49,15 +53,16 @@ if [ -e EULA.TXT ];then
 fi
 
 # Does not touch following if not needed
+JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
 
 if [ ! -e $CWD/$TAR ];then
-  wget $SOURCE
+  wget $SOURCE -O "$CWD/$TAR"
 fi
 
 CHOST="i486"
@@ -76,44 +81,43 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
+### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
 
-
-
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# Customize as you need
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh \
+./configure \
   --prefix=/usr \
   --libdir=/usr/lib$LIBDIRSUFFIX \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
-  --docdir=/usr/doc/$PKGNAME-$VERSION \
-  --disable-opts \
-  --disable-static \
-  --disable-strip \
-  --with-dvdread-config="pkg-config dvdread" \
+  --enable-release \
+  --program-prefix= \
+  --program-suffix= \
   --build=$CHOST-slackware-linux
-make
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS
 make install DESTDIR=$PKG
 
-mkdir -p $PKG/usr/share/aclocal
-install -p -m 644 m4/dvdnav.m4 $PKG/usr/share/aclocal/
-
+# Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
-cp -r \
-  AUTHORS COPYING README NEWS TODO \
-  $PKG/usr/doc/$PKGNAME-$VERSION
-
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
 
 if [ -d $PKG/usr/man ]; then
     ( cd $PKG/usr/man
@@ -131,12 +135,14 @@ fi
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
 cd $PKG
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v  -s $CWD $PKG
+  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}

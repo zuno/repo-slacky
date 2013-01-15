@@ -1,3 +1,9 @@
+Tue Jan 15 05:00:11 CET 2013
+-----------------------------
+	new file:   libraries/libdvbpsi/libdvbpsi.SlackBuild
+	modified:   libraries/libdvdnav/libdvdnav.SlackBuild
+	modified:   multimedia/aften/aften.SlackBuild
+
 Mon Jan 14 05:00:20 CET 2013
 -----------------------------
 	new file:   graphic/fotoxx/fotoxx.SlackBuild

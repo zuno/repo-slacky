@@ -6,15 +6,14 @@
 # leave one space after the ':'.
 
          |-----handy-ruler------------------------------------------------------|
-libdvdnav: Libdvdnav (DvD navigation library)
-libdvdnav:
-libdvdnav: Features such DvD menus, mutiangle playback and even interactive
-libdvdnav: DvD games. All this  functionality is  provided through a simple
-libdvdnav: API which  provides the DvD playback as single logical stream of
-libdvdnav: blocks, intermitted  by special DvDnav events tio report certain
-libdvdnav: conditions.
-libdvdnav:
-libdvdnav:
-libdvdnav:
-libdvdnav:
-
+libdvbpsi: Libdvbpsi (MPEG TS DVB PSI Tables Library)
+libdvbpsi:
+libdvbpsi: Libdvbpsi  is a simple  library  designed  for decoding and
+libdvbpsi: generation of MPEG TS and DVB PSI tables. -Current features-
+libdvbpsi: - Program Association Table (PAT), decoder and generator.
+libdvbpsi: - Program Map Table (PMT), decoder and generator.
+libdvbpsi: - All MPEG 2 descriptors, decoders and generators.
+libdvbpsi:
+libdvbpsi:
+libdvbpsi:
+libdvbpsi:
