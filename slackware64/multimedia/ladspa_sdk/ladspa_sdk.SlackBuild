@@ -29,7 +29,7 @@ set -e
 
 PKGNAME=ladspa_sdk
 VERSION=${VERSION:-1.13}
-BUILD=${BUILD:-6}
+BUILD=${BUILD:-7}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 

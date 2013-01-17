@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+        |-------handy-ruler---------------------------------------------------|
+unixODBC: unixODBC (GNU/Linux Open DataBase Connectivity)
+unixODBC:
+unixODBC: The unixODBC Project goals are to develop  and promote unixODBC to be
+unixODBC: the definitive  standard for ODBC on  non MS Windows  platforms. This
+unixODBC: is to include GUI  support  for both KDE  and GNOME. ODBC is  an open
+unixODBC: specification for providing application developers with a predictable
+unixODBC: API  with  which  to  access  Data  Sources. Data Sources include SQL
+unixODBC: Servers and any Data Source with an ODBC Driver.
+unixODBC:
+unixODBC:
+unixODBC:

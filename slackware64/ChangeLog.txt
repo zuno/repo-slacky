@@ -1,3 +1,11 @@
+Thu Jan 17 05:00:10 CET 2013
+-----------------------------
+	new file:   database/unixODBC/unixODBC.SlackBuild
+	modified:   libraries/sidplay2-libs/sidplay2-libs.SlackBuild
+	modified:   multimedia/audacity/audacity.SlackBuild
+	modified:   multimedia/ladspa_sdk/ladspa_sdk.SlackBuild
+	modified:   multimedia/vamp-plugin-sdk/vamp-plugin-sdk.SlackBuild
+
 Tue Jan 15 05:00:11 CET 2013
 -----------------------------
 	new file:   libraries/libdvbpsi/libdvbpsi.SlackBuild

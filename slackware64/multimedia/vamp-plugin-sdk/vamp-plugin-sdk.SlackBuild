@@ -32,7 +32,7 @@ set -e
 # Basic information. 
 PKGNAME=vamp-plugin-sdk
 VERSION=${VERSION:-2.2.1}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 SOURCE="http://downloads.sourceforge.net/project/vamp/vamp-plugin-sdk/$VERSION/$PKGNAME-$VERSION.tar.gz"
