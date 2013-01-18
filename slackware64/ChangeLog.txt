@@ -1,3 +1,8 @@
+Fri Jan 18 05:02:11 CET 2013
+-----------------------------
+	new file:   libraries/physfs/physfs.SlackBuild
+	new file:   network/Televideo/Televideo.SlackBuild
+
 Thu Jan 17 05:00:10 CET 2013
 -----------------------------
 	new file:   database/unixODBC/unixODBC.SlackBuild
