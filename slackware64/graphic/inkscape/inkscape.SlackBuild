@@ -1,12 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# Written by miklos < ardutu at gmail dot com >
+# 
+# Slackware build script for inkscape 
+# Official Site: http://www.inkscape.org 
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -24,20 +23,20 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Require: atkmm, cairomm, gc, glibmm, gsl, gtkmm, libsigc++, libwpg, lxml, numpy, pangomm 
 
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.3}
+PKGNAME=inkscape
+VERSION=${VERSION:-0.48.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/inkscape/inkscape/$VERSION/$PKGNAME-$VERSION.tar.bz2"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="Changelog *.txt"
+DOCS="AUTHORS COPYING* README.it.txt INSTALL NEWS README TRANSLATORS"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -86,11 +85,21 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
 
@@ -129,6 +138,8 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(lxml\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+-e 's/\(numpy\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi

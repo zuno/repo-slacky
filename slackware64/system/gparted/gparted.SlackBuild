@@ -30,7 +30,7 @@ set -e
 
 # Basic information.
 PKGNAME=gparted
-VERSION=${VERSION:-0.14.0}
+VERSION=${VERSION:-0.14.1}
 BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
@@ -140,7 +140,6 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(yelp\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi

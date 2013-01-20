@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+           |-----handy-ruler------------------------------------------------------|
+mate-common: mate-common (common scripts and macros to develop with MATE)
+mate-common: 
+mate-common: mate-common is an extension to autoconf, automake and libtool for the
+mate-common: MATE environment and MATE using applications.
+mate-common: 
+mate-common: 
+mate-common: 
+mate-common: 
+mate-common: 
+mate-common: 
+mate-common: 
+
+

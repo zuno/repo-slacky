@@ -1,0 +1,3 @@
+cxxlibs >= 6.0.17-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+libwpd >= 0.9.4-x86_64-1

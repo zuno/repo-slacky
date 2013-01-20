@@ -1,12 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# Written by miklos < ardutu at gmail dot com >
+# 
+# Slackware build script for libwpg
+# Official Site: http://libwpg.sourceforge.net
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -29,15 +28,15 @@
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.3}
+PKGNAME=libwpg
+VERSION=${VERSION:-0.2.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/libwpg/${PKGNAME}-${VERSION}.tar.bz2"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="Changelog *.txt"
+DOCS="AUTHORS COPYING ChangeLog README"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -86,11 +85,22 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --enable-static=no \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
 

@@ -1,3 +1,20 @@
+Sun Jan 20 05:09:57 CET 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	new file:   graphic/inkscape/inkscape.SlackBuild
+	new file:   libraries/libmatecomponent/libmatecomponent.SlackBuild
+	new file:   libraries/libmatewnck/libmatewnck.SlackBuild
+	new file:   libraries/libwpg/libwpg.SlackBuild
+	new file:   libraries/lxml/lxml.SlackBuild
+	new file:   libraries/mate-common/mate-common.SlackBuild
+	new file:   libraries/mate-conf/mate-conf.SlackBuild
+	new file:   libraries/mate-corba/mate-corba.SlackBuild
+	new file:   libraries/mate-doc-utils/mate-doc-utils.SlackBuild
+	modified:   multimedia/ffmpeg/ffmpeg.SlackBuild
+	modified:   multimedia/smplayer/smplayer.SlackBuild
+	modified:   system/gparted/gparted.SlackBuild
+	new file:   system/terminator/terminator.SlackBuild
+
 Fri Jan 18 05:02:11 CET 2013
 -----------------------------
 	new file:   libraries/gmtk/gmtk.SlackBuild

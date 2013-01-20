@@ -1,12 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# Written by miklos < ardutu at gmail dot com >
+# 
+# Slackware build script for terminator
+# Official Site: http://www.tenshu.net/terminator/
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -29,15 +28,15 @@
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.3}
+PKGNAME=terminator
+VERSION=${VERSION:-0.96}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE=http://launchpad.net/terminator/trunk/${VERSION}/+download/terminator-${VERSION}.tar.gz
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="Changelog *.txt"
+DOCS="INSTALL README ChangeLog"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -86,13 +85,13 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
-make $JOBS
-make install DESTDIR=$PKG
+./setup.py install --prefix=$PKG/usr -O2
+
+mv $PKG/usr/share/man $PKG/usr/man
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

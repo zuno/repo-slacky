@@ -7,7 +7,7 @@
 
 # Written by Eric Hameleers < alien at slackware.com >
 # Adapted to slacky's standard by miklos < ardutu at gmail dot com >
-# Last build from Matteo Rossini < zerouno at slacky dot it
+# Last build from Luca De Pandis < lucadepandis@gmail.com > 
 
 # Slackware build script for openjdk
 # Official Site: http://openjdk.java.net/
@@ -35,11 +35,11 @@ set -e
 
 # Basic information. 
 PKGNAME=openjdk
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
 SLKFILES="generate-cacerts.pl openjdk.sh openjdk.csh" #extra files to include in slackbuild distribution
-ICEDTEAVER=${ICEDTEAVER:-2.3.3}
+ICEDTEAVER=${ICEDTEAVER:-2.3.4}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
@@ -57,7 +57,7 @@ if [ -e EULA.TXT ];then
 fi
 
 # Does not touch following if not needed
-JOBS=${JOBS:-"-j2"}
+JOBS=${JOBS:-"-j4"}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
@@ -118,6 +118,10 @@ export JVMDIR=/usr/lib${LIBDIRSUFFIX}/java
 EXTRA_OPTS="--disable-bootstrap"
 
 mkdir -p bootstrap/boot/jre/lib
+
+# Adding distribution patches. Thanks to the ArchLinux community.
+cp $CWD/*.diff patches/
+export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff patches/fix_corba_cmds_path.diff patches/openjdk7_fix_jdk_cmds_path.diff patches/openjdk7_nonreparenting-wm.diff"
 
 # Customize as you need
 CFLAGS="$SLKCFLAGS" \
@@ -207,6 +211,9 @@ ln -sf /etc/java/nss.cfg $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/nss.c
 ( cd $PKG/usr/lib${LIBDIRSUFFIX}
   ln -sf ./java/jre/lib/${LIB_ARCH}/server/libjvm.so .
 )
+
+# Adding swing.properties for GTK+ integration and antialiasing
+cp $CWD/swing.properties $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/icedtea

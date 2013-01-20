@@ -1,15 +1,11 @@
-alsa-lib >= 1.0.26-x86_64-1
 atk >= 2.4.0-x86_64-1
 bzip2 >= 1.0.6-x86_64-1
 cairo >= 1.10.2-x86_64-2
-cups >= 1.5.4-x86_64-2
-cxxlibs >= 6.0.17-x86_64-1 | gcc-g++ >= 4.7.1-x86_64-1
+cxxlibs >= 6.0.17-x86_64-1
 expat >= 2.0.1-x86_64-2
 fontconfig >= 2.9.0-x86_64-1
-freetype >= 2.4.11-x86_64-1_slack14.0
-gcc >= 4.7.1-x86_64-1
+freetype >= 2.4.10-x86_64-1
 gdk-pixbuf2 >= 2.26.1-x86_64-2
-giflib >= 4.1.6-x86_64-1
 glib2 >= 2.32.4-x86_64-1
 glibc-solibs >= 2.15-x86_64-7
 gtk+2 >= 2.24.10-x86_64-2
@@ -25,12 +21,12 @@ libXi >= 1.6.1-x86_64-1
 libXinerama >= 1.1.2-x86_64-1
 libXrandr >= 1.3.2-x86_64-1
 libXrender >= 0.9.7-x86_64-1
-libXtst >= 1.2.1-x86_64-1
+libXres >= 1.0.6-x86_64-1
 libffi >= 3.0.11-x86_64-1
-libjpeg >= v8a-x86_64-1
 libpng >= 1.4.12-x86_64-1
 libxcb >= 1.8.1-x86_64-1
-openssl >= 1.0.1c-x86_64-3 | openssl-solibs >= 1.0.1c-x86_64-3
 pango >= 1.30.1-x86_64-1
 pixman >= 0.26.2-x86_64-1
+startup-notification >= 0.12-x86_64-1
+xcb-util >= 0.3.8-x86_64-1
 zlib >= 1.2.6-x86_64-1
