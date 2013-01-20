@@ -25,16 +25,15 @@
 # Exit on most errors
 set -e
 
-
 # Set variables:
 CWD=`pwd`
 OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=skype
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-4.0.0.8}
+VERSION=${VERSION:-4.1.0.20}
 ARCH=${ARCH:-i686} # Only i686
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 SOURCE="http://download.skype.com/linux/$PKGNAME-$VERSION.tar.bz2"
@@ -44,11 +43,9 @@ if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
   wget -c $SOURCE
 fi
 
-
 # Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-
 
 # Decompress the source tarball
 cd $TMP
@@ -63,7 +60,6 @@ cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 chmod 0644 sounds/*
-
 
 # Building Skype  package
 # Installing binary
@@ -94,7 +90,6 @@ mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cp -a LICENSE README $PKG/usr/doc/$PKGNAME-$VERSION
 chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
-
 # Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
@@ -112,8 +107,6 @@ fi" >> $PKG/install/doinst.sh
 fi" >> $PKG/install/doinst.sh
 	echo "" >> $PKG/install/doinst.sh
 
-
-
 # Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
@@ -128,8 +121,3 @@ fi
 if [ "$1" = "--cleanup" ]; then
  rm -rf $TMP
 fi
-
-
-
-
-

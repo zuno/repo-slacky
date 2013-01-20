@@ -4,8 +4,8 @@
 # Written by Loris Vincenzi (info@slacky.it)
 # Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for scribus
-# Official Site: http://www.scribus.org.uk/index.php
+# Slackware build script for atk
+# Official Site: http://ftp.acc.umu.se/pub/GNOME/sources/atk
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=scribus
-VERSION=${VERSION:-1.4.2}
+PKGNAME=atk
+VERSION=${VERSION:-2.7.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://downloads.sourceforge.net/project/scribus/scribus/1.4.2/$PKGNAME-$VERSION.tar.xz"
+SOURCE="http://ftp.acc.umu.se/pub/GNOME/sources/atk/2.7/$PKGNAME-$VERSION.tar.xz"
 TAR=
 DIR=
-DOCS="BUILDING COPYING ChangeLog* LINKS NEWS"
+DOCS="AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -76,35 +76,24 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-( mkdir -p build \
-    && cd build \
-      && cmake .. \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DINCLUDE_INSTALL_DIR=/usr/include \
-    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DRENDER_LIB=CAIRO \
-    -DBUILD_SHARED_LIBS:BOOL=ON \
-    && make $JOBS \
-&& make install DESTDIR=$PKG ) 
-
-# Installing desktop file menu and icons
-mkdir -p $PKG/usr/share/{applications,pixmaps}
-cat scribus.desktop > $PKG/usr/share/applications/scribus.desktop
-( cd $PKG/usr/share/pixmaps ; ln -s ../scribus/icons/scribus.png . )
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--build=$CHOST-slackware-linux
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS
+make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
-
-# Fix doc and manpage directory
-mv $PKG/usr/share/man $PKG/usr
-cp -a $PKG/usr/share/doc/$PKGNAME/* $PKG/usr/doc/$PKGNAME-$VERSION
-rm -rf $PKG/usr/share/doc
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
@@ -126,21 +115,6 @@ fi
 )
 
 mkdir -p $PKG/install
-
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh

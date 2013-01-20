@@ -1,3 +1,9 @@
+Sun Jan 20 05:02:00 CET 2013
+-----------------------------
+	modified:   graphic/scribus/scribus.SlackBuild
+	new file:   libraries/atk/atk.SlackBuild
+	modified:   network/skype/skype.SlackBuild
+
 Thu Jan 10 05:01:41 CET 2013
 -----------------------------
 	modified:   multimedia/ffmpeg/ffmpeg.SlackBuild
