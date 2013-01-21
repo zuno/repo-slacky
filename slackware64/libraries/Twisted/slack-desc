@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler--------------------------------------------------|
+Twisted: Twisted (Python Networking Framework)
+Twisted:
+Twisted: Twisted is an  event-driven networking framework written in
+Twisted: Python and licensed  under  the  MIT  license. See  the  FAQ
+Twisted: for commonly asked questions  about  Twisted. Twisted projects
+Twisted: variously support TCP, UDP SSL/TLS,  multicast,  Unix   sockets,
+Twisted: a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC,
+Twisted: FTP, and others), and much more.
+Twisted:
+Twisted:
+Twisted:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+dnspython: dnspython (DNS Python API)
+dnspython:
+dnspython: dnspython is a DNS toolkit for Python. It supports almost all
+dnspython: record types. It  can  be  used  for  queries, zone  transfers,
+dnspython: and dynamic updates. It supports TSIG authenticated messages
+dnspython: and EDNS0.
+dnspython:
+dnspython:
+dnspython:
+dnspython:
+dnspython:

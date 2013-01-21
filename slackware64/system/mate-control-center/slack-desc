@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+                   |-----handy-ruler------------------------------------------------------|
+mate-control-center: mate-control-center (utilities to configure the MATE desktop)
+mate-control-center: 
+mate-control-center: This package contains configuration applets for the MATE desktop,
+mate-control-center: allowing to set accessibility configuration, desktop fonts, keyboard
+mate-control-center: and mouse properties, sound setup, desktop theme and background, user
+mate-control-center: interface properties, screen resolution, and other MATE parameters.
+mate-control-center: 
+mate-control-center: 
+mate-control-center: 
+mate-control-center: 
+mate-control-center: 
+
+

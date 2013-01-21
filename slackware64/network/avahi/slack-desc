@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+avahi: Avahi (Network Service Discovery)
+avahi:
+avahi: This means that you can plug your laptop or computer into a network
+avahi: and instantly  be able  to view  other people who you can chat with
+avahi: find printers to print to or find  files being shared. This kind of
+avahi: technology  is already found  in  Apple MacOS X (branded Rendezvous
+avahi: Bonjour and sometimes Zeroconf) and is very convenient.
+avahi:
+avahi:
+avahi:
+avahi:

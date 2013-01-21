@@ -1,0 +1,84 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 13.37 SlackBuild
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from 6c33c (seic33c AT gmail DOT com)
+
+# Slackware build script for python-dateutil
+# Official Site: http://www.labix.org/python-dateutil
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+set -e
+
+PKGNAME=python-dateutil
+VERSION=${VERSION:-1.5}
+BUILD=${BUILD:-3}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-x86_64} # i686 or x86_64
+SOURCE="http://www.labix.org/download/python-dateutil/$PKGNAME-$VERSION.tar.gz"
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ];then
+  wget $SOURCE
+fi
+
+
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+
+cd $TMP
+tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
+
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+python setup.py build
+python setup.py install --root=$PKG
+
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a \
+  LICENSE NEWS README \
+  $PKG/usr/doc/$PKGNAME-$VERSION
+
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+
+
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+chown -R root:root $PKG
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+fi
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP
+fi

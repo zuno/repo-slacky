@@ -1,0 +1,11 @@
+diff -Naur mate-terminal-1.2.1-old//src/terminal-app.c mate-terminal-1.2.1/src/terminal-app.c
+--- mate-terminal-1.2.1-old//src/terminal-app.c	2012-03-14 10:30:09.000000000 +0200
++++ mate-terminal-1.2.1/src/terminal-app.c	2012-04-02 16:16:38.676251942 +0300
+@@ -1459,7 +1459,6 @@
+ 
+ 	/* Ensure we have valid settings */
+ 	g_assert (app->default_profile_id != NULL);
+-	g_assert (app->system_font_desc != NULL);
+ 
+ 	terminal_accels_init ();
+ 

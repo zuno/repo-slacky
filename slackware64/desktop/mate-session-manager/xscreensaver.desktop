@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Screensaver
+TryExec=xscreensaver
+Exec=xscreensaver -nosplash
+Icon=xscreensaver
+Terminal=false
+Comment=Start screensaver
+Type=Application
+OnlyShowIn=MATE;
