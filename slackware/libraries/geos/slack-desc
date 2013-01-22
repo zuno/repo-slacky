@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+geos: Geos (Geometry Engine - Open Source)
+geos:
+geos: Geos is a C++  port of the Java  Topology Suite (JTS). As such, it
+geos: aims  to  contain  the  complete functionality of JTS in C++. This
+geos: includes  all  the  OpenGIS  "Simple  Features  for  SQL"  spatial
+geos: predicate functions and spatial operators, as well as specific JTS
+geos: topology functions such as IsValid().
+geos:
+geos:
+geos:
+geos:

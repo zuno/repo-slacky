@@ -1,3 +1,8 @@
+Tue Jan 22 05:05:44 CET 2013
+-----------------------------
+	new file:   desktop/mate-panel/mate-panel.SlackBuild
+	new file:   development/setuptools/setuptools.SlackBuild
+
 Mon Jan 21 05:01:50 CET 2013
 -----------------------------
 	new file:   desktop/gtk-engines/gtk-engines.SlackBuild
