@@ -1,3 +1,15 @@
+Wed Jan 23 05:00:38 CET 2013
+-----------------------------
+	new file:   desktop/mate-document-viewer/mate-document-viewer.SlackBuild
+	new file:   desktop/mate-file-manager-sendto/mate-file-manager-sendto.SlackBuild
+	new file:   desktop/mate-utils/mate-utils.SlackBuild
+	new file:   libraries/utvideo/utvideo.SlackBuild
+	new file:   multimedia/kaffeine/kaffeine.SlackBuild
+	new file:   multimedia/mate-media/mate-media.SlackBuild
+	new file:   system/mate-bluetooth/mate-bluetooth.SlackBuild
+	new file:   system/mate-power-manager/mate-power-manager.SlackBuild
+	new file:   system/mate-system-monitor/mate-system-monitor.SlackBuild
+
 Tue Jan 22 05:05:44 CET 2013
 -----------------------------
 	new file:   desktop/mate-panel/mate-panel.SlackBuild

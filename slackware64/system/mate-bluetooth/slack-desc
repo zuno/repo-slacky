@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+              |-----handy-ruler------------------------------------------------------|
+mate-bluetooth: mate-bluetooth fork of gnome-bluetooth
+mate-bluetooth: 
+mate-bluetooth: mate-bluetooth is a fork of gnome-bluetooth (and it is a fork of
+mate-bluetooth: bluez-gnome) focused on integration with the MATE desktop environment
+mate-bluetooth: mate-bluetooth is the historical name of the first MATE focused
+mate-bluetooth: Bluetooth effort for Linux. As such, when the need came to name
+mate-bluetooth: this project, we selected something that was still in the people's
+mate-bluetooth: minds.
+mate-bluetooth: 
+mate-bluetooth: mate-bluetooth does not include the bluez-mate analyzer, or the
+mate-bluetooth: proximity tool.

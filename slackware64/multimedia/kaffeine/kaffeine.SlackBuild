@@ -1,0 +1,150 @@
+#!/bin/sh
+# Heavily based on the Slackware64 14.0 SlackBuild
+#
+# Slackware build script for kaffeine (http://kaffeine.kde.org)
+#
+# Copyright 2009 Corrado Franco (http://conraid.net)
+# All rights reserved.
+# Last build 6c33c (seic33c At gmail DOT com)
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Exit on most errors
+set -e
+
+# Set variables:
+CWD=$(pwd)
+OUTPUT=${OUTPUT:-$CWD}
+PRGNAME=${PRGNAME:-kaffeine}
+PKGNAME=${PKGNAME:-$PRGNAME}
+VERSION=${VERSION:-1.2.2}
+PKGVERSION=$(echo $VERSION | tr - _)
+ARCH=${ARCH:-x86_64}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+TMP=${TMP:-/tmp/pkg}
+JOBS=${JOBS:--j2}
+SOURCE="http://garr.dl.sourceforge.net/sourceforge/kaffeine/kaffeine-${VERSION}.tar.gz"
+PKG=$TMP/package-$PKGNAME
+DOCS="$PKG/usr/doc/$PKGNAME-$VERSION"
+
+# Insert document files in this variable
+DOCFILES="AUTHORS COPYING COPYING-DOCS Changelog INSTALL NOTES TODO"
+
+# Set compiling FLAGS
+case "$ARCH" in
+    i486)
+	SLKCFLAGS="-O2 -march=i486 -mtune=i686"; CHOST="i486"
+	SLKLDFLAGS=""; LIBDIRSUFFIX=""
+        ;;
+    i686)
+	SLKCFLAGS="-O2 -march=i686 -pipe -fomit-frame-pointer"; CHOST="i486"
+	SLKLDFLAGS=""; LIBDIRSUFFIX=""
+        ;;
+    x86_64)
+	SLKCFLAGS="-O2 -fPIC -pipe -fomit-frame-pointer"; CHOST="x86_64"
+	SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+        ;;
+esac
+
+# Download source, if not exist
+if ! [ -e $(basename $SOURCE) ]; then
+    wget $SOURCE
+fi
+
+# Extract source and prepare:
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAME-$VERSION
+
+tar xzvf $CWD/$PRGNAME-$VERSION.tar.gz
+cd $PRGNAME-$VERSION
+
+patch -p1 < $CWD/kaffeine.diff
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Configure
+mkdir build
+cd build
+cmake \
+-DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+-DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+-DCMAKE_LD_FLAGS:STRING="$SLKLDFLAGS" \
+-DCMAKE_BUILD_TYPE=none \
+-DCMAKE_INSTALL_PREFIX=/usr \
+-DMAN_INSTALL_DIR=/usr/man \
+-DSYSCONF_INSTALL_DIR=/etc \
+..
+
+# Build and install:
+make $JOBS
+make DESTDIR=$PKG install/strip
+cd ..
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \;
+  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+)
+fi
+
+# Add a documentation directory:
+mkdir -p ${DOCS}
+for i in ${DOCFILES}; do
+    if [ -e ${i} ]; then
+        if ! [ -L ${i} ]; then
+	    cp -a ${i} ${DOCS}
+	else
+	    cp -LRp ${i} ${DOCS}
+        fi
+    fi;
+done
+
+# Add a slackbuild script:
+cat $CWD/$PKGNAME.SlackBuild > $DOCS/$PKGNAME.SlackBuild
+
+# Add slack-desc
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Add a doinst.sh, if any
+if [ -f $CWD/doinst.sh.gz ]; then
+    zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+elif [ -f $CWD/doinst.sh ]; then
+    cat $CWD/doinst.sh > $PKG/install/doinst.sh
+fi
+
+# Create package:
+cd $PKG
+chown -R root:root $PKG
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+requiredbuilder -y -v -s  $CWD $PKG
+fi
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Clean file, if option is set: 
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP/$PRGNAME-$VERSION
+  rm -rf $PKG
+fi

@@ -1,0 +1,22 @@
+--- GNUmakefile	2011-11-08 03:18:38.000000000 +0100
++++ GNUmakefile_new	2012-10-21 01:27:53.744559725 +0200
+@@ -8,8 +8,8 @@
+ 
+ DESTDIR=
+ 
+-prefix=/usr/local
+-libdir=$(DESTDIR)$(prefix)/lib
++prefix=/usr
++libdir=$(DESTDIR)$(prefix)/lib64
+ includedir=$(DESTDIR)$(prefix)/include
+ 
+ CROSS_PREFIX=
+@@ -19,7 +19,7 @@
+ 
+ UTV_CORE_DIR=utv_core
+ 
+-CXXFLAGS=-g -O2 -Wall -Wextra -Wno-multichar -Wno-unused-parameter -Wno-sign-compare
++CXXFLAGS=-g -O2 -fPIC -Wall -Wextra -Wno-multichar -Wno-unused-parameter -Wno-sign-compare
+ 
+ # on MinGW env, uncomment following lines and set proper value to WINSDK_ROOT.
+ #WINSDK_ROOT="/c/Program Files/Microsoft SDKs/Windows/v6.1"
