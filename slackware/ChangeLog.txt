@@ -1,3 +1,12 @@
+Thu Jan 24 05:00:47 CET 2013
+-----------------------------
+	new file:   graphic/mirage/mirage.SlackBuild
+	new file:   multimedia/dvdwizard/dvdwizard.SlackBuild
+	new file:   scientific/ngspice/ngspice.SlackBuild
+	new file:   system/Louie/Louie.SlackBuild
+	new file:   system/audit/audit.SlackBuild
+	new file:   utilities/archivemail/archivemail.SlackBuild
+
 Tue Jan 22 05:01:30 CET 2013
 -----------------------------
 	new file:   libraries/geos/geos.SlackBuild

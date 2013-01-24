@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+audit: Audit (Security Auditing Library)
+audit:
+audit: The audit-libs-devel package contains the static libraries and header
+audit: files needed for developing  applications  that need to use the audit
+audit: framework libraries.
+audit:
+audit:
+audit:
+audit:
+audit:
+audit:
