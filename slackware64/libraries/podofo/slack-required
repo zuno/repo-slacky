@@ -1,0 +1,13 @@
+bzip2 >= 1.0.6-x86_64-1
+cxxlibs >= 6.0.17-x86_64-1
+expat >= 2.0.1-x86_64-2
+fontconfig >= 2.9.0-x86_64-1
+freetype >= 2.4.11-x86_64-1_slack14.0
+glibc-solibs >= 2.15-x86_64-7
+libjpeg >= v8a-x86_64-1
+libpng >= 1.4.12-x86_64-1
+libtiff >= 3.9.6-x86_64-1
+lua >= 5.1.5-x86_64-3sl
+ncurses >= 5.9-x86_64-1
+readline >= 5.2-x86_64-4
+zlib >= 1.2.6-x86_64-1

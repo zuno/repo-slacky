@@ -1,3 +1,15 @@
+Fri Jan 25 05:00:20 CET 2013
+-----------------------------
+	new file:   desktop/mate-calc/mate-calc.SlackBuild
+	new file:   libraries/beautifulsoup4/beautifulsoup4.SlackBuild
+	new file:   libraries/libgksu/libgksu.SlackBuild
+	new file:   libraries/mechanize/mechanize.SlackBuild
+	new file:   libraries/netifaces/netifaces.SlackBuild
+	new file:   libraries/podofo/podofo.SlackBuild
+	new file:   system/mate-conf-editor/mate-conf-editor.SlackBuild
+	new file:   system/mate-file-manager-gksu/mate-file-manager-gksu.SlackBuild
+	new file:   system/mate-file-manager-open-terminal/mate-file-manager-open-terminal.SlackBuild
+
 Wed Jan 23 05:00:38 CET 2013
 -----------------------------
 	new file:   desktop/mate-document-viewer/mate-document-viewer.SlackBuild
