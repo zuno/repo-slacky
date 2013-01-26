@@ -1,3 +1,10 @@
+Sat Jan 26 05:03:56 CET 2013
+-----------------------------
+	new file:   desktop/mate-file-archiver/mate-file-archiver.SlackBuild
+	new file:   desktop/mate-menu-editor/mate-menu-editor.SlackBuild
+	new file:   graphic/mate-image-viewer/mate-image-viewer.SlackBuild
+	new file:   system/mate-netspeed/mate-netspeed.SlackBuild
+
 Fri Jan 25 05:00:20 CET 2013
 -----------------------------
 	new file:   desktop/mate-calc/mate-calc.SlackBuild

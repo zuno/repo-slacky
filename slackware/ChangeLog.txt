@@ -1,3 +1,9 @@
+Sat Jan 26 05:00:57 CET 2013
+-----------------------------
+	new file:   desktop/tint2/tint2.SlackBuild
+	new file:   network/nginx/nginx.SlackBuild
+	new file:   system/beanstalkd/beanstalkd.SlackBuild
+
 Thu Jan 24 05:00:47 CET 2013
 -----------------------------
 	new file:   graphic/mirage/mirage.SlackBuild

@@ -1,0 +1,9 @@
+--- conf/nginx.conf	2011-06-27 17:47:51.000000000 +0200
++++ conf/nginx.conf.new	2012-08-14 17:18:42.456004003 +0200
+@@ -115,4 +115,6 @@ http {
+     #    }
+     #}
+ 
++    include /etc/nginx/conf.d/*.conf;
++
+ }
