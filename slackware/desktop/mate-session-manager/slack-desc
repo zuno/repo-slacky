@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+                    |-----handy-ruler------------------------------------------------------|
+mate-session-manager: mate-session-manager (The GNOME Session Manager)
+mate-session-manager: 
+mate-session-manager: This package contains an X11-compliant session manager (similar to
+mate-session-manager: xsm) with MATE extensions. When you log out, the session manager will
+mate-session-manager: save the state of all your MATE apps. When you log back in, the
+mate-session-manager: session manager will restore your session.
+mate-session-manager: 
+mate-session-manager: 
+mate-session-manager: 
+mate-session-manager: 
+mate-session-manager: 
+
+

@@ -1,0 +1,22 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+                |-----handy-ruler------------------------------------------------------|
+mate-text-editor: mate-text-editor (Pluma text editor for the MATE desktop)
+mate-text-editor: 
+mate-text-editor: pluma is a small and lightweight UTF-8 text editor for the MATE
+mate-text-editor: environment. Based on gedit, the text editor for the GNOME2 environment.
+mate-text-editor: 
+mate-text-editor: pluma is part of MATE and uses the latest GTK+ and MATE libraries.
+mate-text-editor: Complete MATE integration is featured, with support for Drag and Drop 
+mate-text-editor: from Caja (the MATE file manager), the use of the MATE help system,
+mate-text-editor: Mthe MATE Virtual File System and the MATE print framework.
+mate-text-editor: 
+mate-text-editor: 
+
+
+

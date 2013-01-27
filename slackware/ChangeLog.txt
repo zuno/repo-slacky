@@ -1,3 +1,28 @@
+Sun Jan 27 05:04:27 CET 2013
+-----------------------------
+	new file:   database/mongodb/mongodb.SlackBuild
+	new file:   desktop/gtk-engines/gtk-engines.SlackBuild
+	new file:   desktop/mate-backgrounds/mate-backgrounds.SlackBuild
+	new file:   desktop/mate-calc/mate-calc.SlackBuild
+	new file:   desktop/mate-desktop/mate-desktop.SlackBuild
+	new file:   desktop/mate-dialogs/mate-dialogs.SlackBuild
+	new file:   desktop/mate-document-viewer/mate-document-viewer.SlackBuild
+	new file:   desktop/mate-file-archiver/mate-file-archiver.SlackBuild
+	new file:   desktop/mate-file-manager-sendto/mate-file-manager-sendto.SlackBuild
+	new file:   desktop/mate-file-manager/mate-file-manager.SlackBuild
+	new file:   desktop/mate-icon-theme/mate-icon-theme.SlackBuild
+	new file:   desktop/mate-menu-editor/mate-menu-editor.SlackBuild
+	new file:   desktop/mate-menus/mate-menus.SlackBuild
+	new file:   desktop/mate-notification-daemon/mate-notification-daemon.SlackBuild
+	new file:   desktop/mate-panel/mate-panel.SlackBuild
+	new file:   desktop/mate-session-manager/mate-session-manager.SlackBuild
+	new file:   desktop/mate-text-editor/mate-text-editor.SlackBuild
+	new file:   desktop/mate-themes/mate-themes.SlackBuild
+	new file:   desktop/mate-utils/mate-utils.SlackBuild
+	new file:   desktop/mate-window-manager/mate-window-manager.SlackBuild
+	new file:   libraries/rrdtool/rrdtool.SlackBuild
+	new file:   system/collectd/collectd.SlackBuild
+
 Sat Jan 26 05:00:57 CET 2013
 -----------------------------
 	new file:   desktop/tint2/tint2.SlackBuild
