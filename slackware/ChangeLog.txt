@@ -1,3 +1,36 @@
+Mon Jan 28 05:01:49 CET 2013
+-----------------------------
+	new file:   graphic/mate-image-viewer/mate-image-viewer.SlackBuild
+	new file:   libraries/libmate/libmate.SlackBuild
+	new file:   libraries/libmatecanvas/libmatecanvas.SlackBuild
+	new file:   libraries/libmatecomponent/libmatecomponent.SlackBuild
+	new file:   libraries/libmatecomponentui/libmatecomponentui.SlackBuild
+	new file:   libraries/libmatekbd/libmatekbd.SlackBuild
+	new file:   libraries/libmatekeyring/libmatekeyring.SlackBuild
+	new file:   libraries/libmatenotify/libmatenotify.SlackBuild
+	new file:   libraries/libmateui/libmateui.SlackBuild
+	new file:   libraries/libmateweather/libmateweather.SlackBuild
+	new file:   libraries/libmatewnck/libmatewnck.SlackBuild
+	new file:   libraries/mate-common/mate-common.SlackBuild
+	new file:   libraries/mate-conf/mate-conf.SlackBuild
+	new file:   libraries/mate-corba/mate-corba.SlackBuild
+	new file:   libraries/mate-doc-utils/mate-doc-utils.SlackBuild
+	new file:   libraries/mate-mime-data/mate-mime-data.SlackBuild
+	new file:   libraries/mate-vfs/mate-vfs.SlackBuild
+	new file:   multimedia/mate-media/mate-media.SlackBuild
+	new file:   system/mate-bluetooth/mate-bluetooth.SlackBuild
+	new file:   system/mate-conf-editor/mate-conf-editor.SlackBuild
+	new file:   system/mate-control-center/mate-control-center.SlackBuild
+	new file:   system/mate-file-manager-gksu/mate-file-manager-gksu.SlackBuild
+	new file:   system/mate-file-manager-open-terminal/mate-file-manager-open-terminal.SlackBuild
+	new file:   system/mate-keyring/mate-keyring.SlackBuild
+	new file:   system/mate-netspeed/mate-netspeed.SlackBuild
+	new file:   system/mate-polkit/mate-polkit.SlackBuild
+	new file:   system/mate-power-manager/mate-power-manager.SlackBuild
+	new file:   system/mate-settings-daemon/mate-settings-daemon.SlackBuild
+	new file:   system/mate-system-monitor/mate-system-monitor.SlackBuild
+	new file:   system/mate-terminal/mate-terminal.SlackBuild
+
 Sun Jan 27 05:04:27 CET 2013
 -----------------------------
 	new file:   database/mongodb/mongodb.SlackBuild

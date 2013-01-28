@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+                  |-----handy-ruler------------------------------------------------------|
+libmatecomponentui: libmatecomponentui (The Component UI library)
+libmatecomponentui: 
+libmatecomponentui: The bonobo library supports independant CORBA interfaces for creating
+libmatecomponentui: reusable components.  It provides MATE with a framework for handling
+libmatecomponentui: compound documents, such as embedding a spreadsheet in a word
+libmatecomponentui: processor document.
+libmatecomponentui: 
+libmatecomponentui: 
+libmatecomponentui: 
+libmatecomponentui: 
+libmatecomponentui: 
+
+

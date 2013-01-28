@@ -1,0 +1,22 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+                  |-----handy-ruler------------------------------------------------------|
+mate-power-manager: mate-power-manager (A power manager for the MATE desktop)
+mate-power-manager: 
+mate-power-manager: Mate Power Manager is a mate session daemon that acts as a policy
+mate-power-manager: agent on top of the Project Utopia stack, which includes the kernel,
+mate-power-manager: hotplug, udev, and HAL. Mate Power Manager listens for HAL events and
+mate-power-manager: responds with user-configurable reactions. Currently it supports
+mate-power-manager: UPS's, laptop batteries and AC adapters. Its goal is to be
+mate-power-manager: architecture neutral and free of polling and other hacks.
+mate-power-manager: 
+mate-power-manager: 
+mate-power-manager: 
+
+
+

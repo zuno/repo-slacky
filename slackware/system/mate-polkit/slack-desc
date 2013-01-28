@@ -1,0 +1,35 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+           |-----handy-ruler------------------------------------------------------|
+mate-polkit: mate-polkit (The Component UI library)
+mate-polkit: 
+mate-polkit: PolicyKit-mate provides an Authentication Agent for PolicyKit that
+mate-polkit: integrates well with the MATE desktop environment
+mate-polkit: See http://www.freedesktop.org/wiki/Software/PolicyKit for lots of
+mate-polkit: documentation, mailing lists, etc. about PolicyKit.
+mate-polkit: 
+mate-polkit: MATE polkit is a fork of GNOME polkit.
+mate-polkit: 
+mate-polkit: 
+mate-polkit: 
+
+
+
+
+
+
+
+
+See also the file HACKING for notes of interest to developers working
+on PolicyKit-mate.
+
+Report bugs against PolicyKit-mate at github
+
+ https://github.com/mate-desktop/mate-polkit/issues
+
+
