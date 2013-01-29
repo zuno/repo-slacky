@@ -1,3 +1,8 @@
+Tue Jan 29 05:01:04 CET 2013
+-----------------------------
+	modified:   office/tellico/tellico.SlackBuild
+	modified:   system/tracker/tracker.SlackBuild
+
 Mon Jan 28 05:01:49 CET 2013
 -----------------------------
 	new file:   graphic/mate-image-viewer/mate-image-viewer.SlackBuild
