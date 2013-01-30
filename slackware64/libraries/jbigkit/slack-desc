@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+jbigkit: JBIG-KIT (Free JBIG Encoder and Decoder)
+jbigkit:
+jbigkit: JBIG-KIT implements a highly effective data compression algorithm for
+jbigkit: bi-level  high-resolution  images  such  as  fax  pages  or   scanned
+jbigkit: documents.
+jbigkit:
+jbigkit:
+jbigkit:
+jbigkit:
+jbigkit:
+jbigkit:

@@ -1,3 +1,10 @@
+Wed Jan 30 05:01:28 CET 2013
+-----------------------------
+	new file:   development/GraphicsMagick/GraphicsMagick.SlackBuild
+	new file:   graphic/scribus/scribus.SlackBuild
+	new file:   libraries/jbigkit/jbigkit.SlackBuild
+	new file:   libraries/libfpx/libfpx.SlackBuild
+
 Sat Jan 26 05:03:56 CET 2013
 -----------------------------
 	new file:   desktop/mate-file-archiver/mate-file-archiver.SlackBuild
