@@ -1,3 +1,7 @@
+Fri Feb  1 06:39:27 CET 2013
+-----------------------------
+	new file:   system/cdrkit/cdrkit.SlackBuild
+
 Wed Jan 30 05:01:28 CET 2013
 -----------------------------
 	new file:   development/GraphicsMagick/GraphicsMagick.SlackBuild

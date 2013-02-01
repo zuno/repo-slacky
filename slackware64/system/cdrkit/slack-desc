@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+cdrkit: CdrKit (Command-line CD/DVD Recorder)
+cdrkit:
+cdrkit: CdrKit is a suite of  programs for  recording CDs  and DVDs, blanking
+cdrkit: CD-RW media, creating  ISO-9660  filesystem images, extracting  audio
+cdrkit: CD data, and  more. The programs included in  the cdrkit package were
+cdrkit: originally derived from several sources, most notably mkisofs by Eric
+cdrkit: Youngdale and others, cdda2wav  by  Heiko Eissfeldt, and  cdrecord by
+cdrkit: Jörg Schilling. However, cdrkit is  not affiliated with any  of these
+cdrkit: authors; it is now an independent project.
+cdrkit:
+cdrkit:
