@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+bzr: BZR (Bazaar Revision Control System)
+bzr:
+bzr: Bazaar-NG (or bzr) is a project of Canonical to develop an open
+bzr: source distributed  version control system  that  is  powerful,
+bzr: friendly, and scalable. Version  control means a system that keeps
+bzr: track of previous revisions of software  source code  or  similar
+bzr: information and helps people work on it in teams.
+bzr:
+bzr:
+bzr:
+bzr:

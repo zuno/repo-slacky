@@ -1,3 +1,9 @@
+Fri Feb  1 05:01:07 CET 2013
+-----------------------------
+	new file:   development/bzr/bzr.SlackBuild
+	new file:   system/bogofilter/bogofilter.SlackBuild
+	new file:   utilities/Xdialog/Xdialog.SlackBuild
+
 Tue Jan 29 05:01:04 CET 2013
 -----------------------------
 	modified:   office/tellico/tellico.SlackBuild
