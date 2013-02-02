@@ -1,0 +1,24 @@
+diff -up koverartist-0.7.6/cddbquery.cpp.gcc47 koverartist-0.7.6/cddbquery.cpp
+--- koverartist-0.7.6/cddbquery.cpp.gcc47	2012-03-21 12:31:32.061443845 -0400
++++ koverartist-0.7.6/cddbquery.cpp	2012-03-21 12:31:49.000301192 -0400
+@@ -35,7 +35,7 @@
+ 
+ #include <errno.h>
+ #include <string.h>
+-
++#include <stdlib.h>
+ 
+ 
+ #ifdef ENABLE_AUDIOCD
+diff -up koverartist-0.7.6/cdinfo.cpp.gcc47 koverartist-0.7.6/cdinfo.cpp
+--- koverartist-0.7.6/cdinfo.cpp.gcc47	2012-03-21 12:32:03.524179032 -0400
++++ koverartist-0.7.6/cdinfo.cpp	2012-03-21 12:32:10.900117040 -0400
+@@ -28,6 +28,7 @@
+ #include <iostream>
+ #include <stdlib.h>
+ #include <string.h>
++#include <unistd.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+ 

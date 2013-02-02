@@ -1,3 +1,8 @@
+Sat Feb  2 05:00:13 CET 2013
+-----------------------------
+	new file:   multimedia/koverartist/koverartist.SlackBuild
+	new file:   utilities/kshutdown/kshutdown.SlackBuild
+
 Fri Feb  1 06:39:27 CET 2013
 -----------------------------
 	new file:   system/cdrkit/cdrkit.SlackBuild
