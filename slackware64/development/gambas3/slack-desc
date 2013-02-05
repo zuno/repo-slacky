@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+gambas3: Gambas 3 (GNU/Linux BASIC IDE)
+gambas3:
+gambas3: Gambas is a free development environment based on a Basic
+gambas3: interpreter with object extensions, like Visual Basic(TM)
+gambas3: (but it is NOT a clone ).
+gambas3:
+gambas3:
+gambas3:
+gambas3:
+gambas3:
+gambas3:

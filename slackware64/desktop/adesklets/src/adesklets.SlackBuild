@@ -1,12 +1,13 @@
 #!/bin/sh
- 
+
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca ( gohanz at infinito.it)
-# Last build from miklos < ardutu at gmail dot com >
-# 
-# Slackware build script for mkvtoolnix
-# Official Site: http://www.bunkus.org/videotools/mkvtoolnix/
-#
+
+# Written by Gallows ( http://www.slacky.eu )
+# Last build from albatros_la aka AsPh4lTo ( albatros_la@hotmail.com )
+
+# Slackware build script for adesklets 
+# Official Site: http://adesklets.sourceforge.net
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -24,27 +25,25 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: libmatroska wxGTK
+# Requirements: imlib2
 
 set -e
 
-# Basic information.
-PKGNAME=mkvtoolnix-gtk
-SRCNAME=mkvtoolnix
-VERSION=${VERSION:-6.0.0}
+PKGNAME=adesklets
+VERSION=${VERSION:-0.6.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://www.bunkus.org/videotools/mkvtoolnix/sources/$SRCNAME-$VERSION.tar.xz"
+SOURCE="http://downloads.sourceforge.net/project/adesklets/adesklets%20%28core%29/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+DOCSOURCE="http://downloads.sourceforge.net/project/adesklets/adesklets%20%28html%20doc%29/$VERSION/adesklets_htmldoc-$VERSION.tar.bz2"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO"
-SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO adesklets_htmldoc-$VERSION"
+SLKFILES=""
 
-# An EULA for non-free packages
 if [ -e EULA.TXT ];then
   more EULA.TXT
-  echo "Do you accept terms? (yes/[no])":
+  echo "Do you accept terms? (yes/[no])"
   read ACCEPT
   if [ "$ACCEPT" != "yes" ];then
     echo; echo "SlackBuild Aborted!!"
@@ -52,19 +51,23 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-# Does not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
- 
-if [ ! -e "$CWD/$TAR" ];then
-  wget "$SOURCE" -O "$CWD/$TAR"
+DOCTAR=${DOCTAR:-$(basename $DOCSOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
+
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE -O "$CWD/$TAR"
 fi
- 
+
+if [ ! -e $CWD/$DOCTAR ];then
+  wget $DOCSOURCE -O "$CWD/$DOCTAR"
+fi
+
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -81,17 +84,17 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
- 
+tar xvf $CWD/$DOCTAR
+
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
+LDFLAGS="-lm" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -99,18 +102,21 @@ CXXFLAGS="$SLKCFLAGS" \
   --libdir=/usr/lib$LIBDIRSUFFIX \
   --sysconfdir=/etc \
   --localstatedir=/var \
+  --enable-editing \
+  --program-prefix= \
+  --program-suffix= \
+  --disable-static \
+  --infodir=/usr/info \
   --mandir=/usr/man \
-  --enable-gui \
-  --enable-wxwidgets \
-  --with-boost \
   --build=$CHOST-slackware-linux
-./drake pkgdatadir=/usr/doc/$PKGNAME-$VERSION
-./drake pkgdatadir=/usr/doc/$PKGNAME-$VERSION install DESTDIR=$PKG
+make $JOBS
+make install DESTDIR=$PKG
 
-# Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
- 
+mv $PKG/usr/doc/$PKGNAME-$VERSION/adesklets_htmldoc-$VERSION \
+$PKG/usr/doc/$PKGNAME-$VERSION/htmldoc
+
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
@@ -124,15 +130,12 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
-# Strip binary files
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-
-# Preparing to packaging
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
@@ -140,18 +143,14 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
 chown -R root:root $PKG
- 
+
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  requiredbuilder -y -v -s $CWD $PKG
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
-  cat > install/slack-conflicts << EOF
-mkvtoolnix-qt
-EOF
 fi
 
-# Packaging
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
- 
+
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP
 fi
