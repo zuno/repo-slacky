@@ -1,5 +1,12 @@
 Mon Feb  4 05:00:31 CET 2013
 -----------------------------
+	deleted:    database/mongodb/src/mongodb.SlackBuild
+	deleted:    database/unixODBC/src/unixODBC.SlackBuild
+	deleted:    desktop/adesklets/src/adesklets.SlackBuild
+	deleted:    desktop/conky/src/conky.SlackBuild
+
+Mon Feb  4 05:00:31 CET 2013
+-----------------------------
 	new file:   database/mongodb/src/mongodb.SlackBuild
 	new file:   database/unixODBC/src/unixODBC.SlackBuild
 	new file:   desktop/adesklets/src/adesklets.SlackBuild

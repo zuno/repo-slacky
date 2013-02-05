@@ -1,4 +1,0 @@
-glibc-solibs >= 2.15-x86_64-7
-libtool >= 2.4.2-x86_64-1
-ncurses >= 5.9-x86_64-1
-readline >= 5.2-x86_64-4
