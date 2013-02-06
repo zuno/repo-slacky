@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=dovecot
-VERSION=${VERSION:-2.1.13}
+VERSION=${VERSION:-2.1.14}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}

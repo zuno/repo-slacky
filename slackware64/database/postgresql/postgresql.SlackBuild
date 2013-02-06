@@ -1,0 +1,200 @@
+#!/bin/sh
+ 
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Loris Vincenzi (http://www.slacky.eu)
+# Last build 6c33c (seic33c AT gmail DOT com)
+# 
+# Slackware build script for postgresql
+# Official Site: http://www.postgresql.org
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Require:
+
+###
+# Create postgres user:group if they don't exist.
+###
+
+group_exists=`grep ^postgres /etc/group`
+if [[ "${group_exists}" == "" ]]; then
+	groupadd -g 209 postgres
+fi
+user_exists=`grep ^postgres /etc/passwd`
+if [[ "${user_exists}" == "" ]]; then
+	useradd -c "PostgreSQL ORDBMS" -d /var/lib/pgsql -u 209 -g 209 -s "/bin/false" postgres
+fi
+
+
+# Set variables:
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+PKGNAME=postgresql
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+VERSION=${VERSION:-9.2.1}
+ARCH=${ARCH:-x86_64}
+JOBS=${JOBS:--j2}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+
+SOURCE="ftp://ftp.postgresql.org/pub/source/v$VERSION/$PKGNAME-$VERSION.tar.bz2"
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
+wget -c $SOURCE
+fi
+
+
+# Set compiling FLAGS
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+# Decompress the source tarball
+cd $TMP
+tar xjvf $CWD/$PKGNAME-$VERSION.tar.bz2 || exit 1
+
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild PostgreSQL |\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+cd $PKGNAME-$VERSION
+chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
+
+
+# Building PostgreSQL package
+LDFLAGS="$SLKLDFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc/ \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--mandir=/usr/man \
+		--docdir=/usr/doc/$PKGNAME-$VERSION \
+		--with-openssl \
+		--with-tcl \
+		--with-perl \
+		--with-python \
+		--with-ldap \
+		--with-libxml \
+		--with-libxslt \
+		--enable-thread-safety \
+		--build=$CHOST-slackware-linux
+make $JOBS || exit 1
+make install DESTDIR=$PKG
+make install-docs DESTDIR=$PKG
+
+# Some interesting additional modules:
+#   http://www.postgresql.org/docs/9.0/static/contrib.html
+#
+#  adminpack - helper extension for pgAdmin
+#  pgcrypto - extension for some business applications
+#  hstore, ltree, xml2 - useful extensions for developers
+#  pg_archivecleanup, pg_standby - high availability helpers
+#  pg_upgrade - online upgrade between postgresql versions
+
+PG_EXTENSIONS="adminpack pgcrypto hstore ltree xml2 pg_archivecleanup pg_standby pg_upgrade"
+
+for ext in $PG_EXTENSIONS; do
+  cd $TMP/$PKGNAME-$VERSION/contrib/$ext
+  make
+  make install-strip DESTDIR=$PKG
+done
+cd $TMP/$PKGNAME-$VERSION
+
+# Strip binaries and shared objects, if present
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+#Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+
+( cd $CWD
+  for SB in $PKGNAME.SlackBuild slack-desc doinst.sh postgresql.logrotate rc.postgresql setup.postgresql;do
+    [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+  done
+)
+
+cp -a COPYRIGHT HISTORY README doc/* $PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+# Install logrotate script
+mkdir -p $PKG/etc/logrotate.d
+cat $CWD/postgresql.logrotate > $PKG/etc/logrotate.d/postgresql.new
+
+mkdir -p $PKG/var/log/setup
+sed -e "s%@UID@%$PG_UID%" -e "s%@GID@%$PG_GID%" $CWD/setup.$PKGNAME \
+  > $PKG/var/log/setup/setup.$PKGNAME
+chmod 755 $PKG/var/log/setup/setup.$PKGNAME
+
+# Install init script
+mkdir -p $PKG/etc/rc.d
+cat $CWD/rc.postgresql > $PKG/etc/rc.d/rc.postgresql.new
+chmod 0755 $PKG/etc/rc.d/rc.postgresql.new
+
+# Install base database directory
+mkdir -p $PKG/var/lib/pgsql/data
+chown -R postgres:postgres $PKG/var/lib/pgsql
+chmod 700 $PKG/var/lib/pgsql
+chmod 700 $PKG/var/lib/pgsql/data
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+if [ -x /usr/bin/requiredbuilder ];then
+requiredbuilder -y -v -s  $CWD $PKG
+fi
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
+
+
+

@@ -1,3 +1,8 @@
+Wed Feb  6 05:01:09 CET 2013
+-----------------------------
+	modified:   network/dovecot/dovecot.SlackBuild
+	modified:   network/opera/opera.SlackBuild
+
 Fri Feb  1 05:01:07 CET 2013
 -----------------------------
 	new file:   development/bzr/bzr.SlackBuild
