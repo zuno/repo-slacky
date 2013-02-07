@@ -1,3 +1,9 @@
+Thu Feb  7 05:00:34 CET 2013
+-----------------------------
+	new file:   development/gambas3-runtime/gambas3-runtime.SlackBuild
+	new file:   libraries/qt3/qt3.SlackBuild
+	modified:   network/weechat/weechat.SlackBuild
+
 Wed Feb  6 05:05:24 CET 2013
 -----------------------------
 	new file:   database/postgresql/postgresql.SlackBuild
