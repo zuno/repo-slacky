@@ -1,3 +1,9 @@
+Sat Feb  9 05:00:56 CET 2013
+-----------------------------
+	new file:   multimedia/gnomad2/gnomad2.SlackBuild
+	new file:   office/codice_fiscale/codice_fiscale.SlackBuild
+	new file:   utilities/youtube-dl/youtube-dl.SlackBuild
+
 Wed Feb  6 05:01:09 CET 2013
 -----------------------------
 	modified:   network/dovecot/dovecot.SlackBuild

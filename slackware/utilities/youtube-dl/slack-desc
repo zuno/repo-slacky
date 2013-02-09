@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+youtube-dl: YouTube-DL (YouTube.com Videos Downloader)
+youtube-dl:
+youtube-dl: YouTube-DL is a small command-line program to download videos from
+youtube-dl: YouTube.com. It  requires the  Python  interpreter, version 2.4 or
+youtube-dl: later, and it's not platform specific.
+youtube-dl: Use youtube-dl followed by a video URL or identifier.
+youtube-dl: Example: youtube-dl "http://www.youtube.com/watch?v=foobar". The
+youtube-dl: video will be saved to the file foobar.flv in that example.
+youtube-dl:
+youtube-dl:
+youtube-dl:

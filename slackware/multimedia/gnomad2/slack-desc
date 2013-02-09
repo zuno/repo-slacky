@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+gnomad2: Gnomad2 (GTK+2 Creative NOMAD/Zen Explorer)
+gnomad2:
+gnomad2: Gnomad2 is a GTK+ music manager and swiss army knife for the Creative
+gnomad2: Labs NOMAD and Zen  range plus the Dell DJ devices using the Portable
+gnomad2: Digital Entertainment (PDE) protocol. It was created by Linus Walleij
+gnomad2: on a rainy day and has evolved a bit since.
+gnomad2:
+gnomad2:
+gnomad2:
+gnomad2:
+gnomad2:
