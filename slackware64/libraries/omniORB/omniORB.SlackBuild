@@ -2,11 +2,12 @@
 
 # Heavily based on the Slackware 14.0 SlackBuild
 
-# Written by 6c33c ( seic33c at gmail dot com )
-# Last build from 6c33c
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from 6c33c (seic33c AT gmail DOT com)
 
-# Slackware build script for unetbootin
-# Official Site: http://unetbootin.sourceforge.net/
+# Slackware build script for omniIRB
+# Official Site: http://omniorb.sourceforge.net
+# Patches from ...
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -25,23 +26,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: p7zip
+# Requirements:
 
 set -e
 
-
-# Basic information. 
-PKGNAME=unetbootin
-VERSION=${VERSION:-583}
-BUILD=${BUILD:-2}
+# Basic information.
+PKGNAME=omniORB
+VERSION=${VERSION:-4.1.6}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://sourceforge.net/projects/unetbootin/files/UNetbootin/$VERSION/$PKGNAME-source-$VERSION.tar.gz"
+SOURCE="http://prdownloads.sourceforge.net/omniorb/$PKGNAME-$VERSION.tar.bz2"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="INSTALL README*"
-SLKFILES="doinst.sh" 
-REQUIRED_ADD="p7zip >= 9.20.1-x86_64-1sl"
+DOCS="COPYING* CREDITS *.txt"
+SLKFILES=""
 
 # If EULA
 if [ -e EULA.TXT ];then
@@ -54,63 +53,81 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-# Does not touch following if not needed
+# Do not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$PKGNAME-$VERSION}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
 
 if [ ! -e $CWD/$TAR ];then
   wget $SOURCE -O "$CWD/$TAR"
 fi
 
-
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
+fi
 
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-mkdir $DIR
-cd $DIR
 tar xvf $CWD/$TAR
+cd $DIR
 
+# Adjust permissions and ownerships
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
-sed -i '/^RESOURCES/d' unetbootin.pro
-lupdate unetbootin.pro
-lrelease unetbootin.pro
-qmake "DEFINES += NOSTATIC" "RESOURCES -= unetbootin.qrc"
+# Building omniORB  package
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure 	--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--disable-static \
+		--mandir=/usr/man \
+		--with-omniORB-config=/etc/omniorb/omniORB.cfg \
+		--with-omniNames-logdir=/var/log/omniORB \
+		--program-prefix= \
+		--program-suffix= \
+		--build=$CHOST-slackware-linux
 make $JOBS
+make install DESTDIR=$PKG
 
-mkdir -p $PKG/usr/bin
-install -m 0755  unetbootin $PKG/usr/bin/unetbootin
-mkdir -p $PKG/usr/share/{$PKGNAME,applications,pixmaps,icons/hicolor}
-install -m 0644 unetbootin_*.qm $PKG/usr/share/$PKGNAME
-install -m 0644 unetbootin.desktop $PKG/usr/share/applications
-install -m 0644  unetbootin_48.png  $PKG/usr/share/pixmaps/unetbootin.png
+# Strip binaries and shared objects, if present
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
 
-for res in 16 22 24 32 48 64 128 256 ;do
-  dir=${PKG}/usr/share/icons/hicolor/${res}x${res}/apps
-  mkdir -p ${dir}
-  install -m 0644 unetbootin_${res}.png ${dir}/${PKGNAME}.png
-done
+chmod 755 $PKG/{usr,usr/bin,usr/lib${LIBDIRSUFFIX},usr/share,usr/include,usr/share/idl,usr/lib${LIBDIRSUFFIX}/pkgconfig,usr/lib${LIBDIRSUFFIX}/python2.7,usr/lib${LIBDIRSUFFIX}/python2.7/site-packages}
 
-# Documentations
+# Documentation
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
- 
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
-  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
-done
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
 
-
+# Compress the man pages if present
+for i in man/man1/*.1; do
+install -D -m 644 $i $PKG/usr/$i
+done 
 if [ -d $PKG/usr/man ]; then
     ( cd $PKG/usr/man
       find . -type f -exec gzip -9 {} \;
@@ -118,11 +135,12 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
-( cd $PKG
-  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-)
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
@@ -133,8 +151,7 @@ cd $PKG
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$REQUIRED_ADD \
-  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+   EXCLUDE="gcc, gcc-g++" requiredbuilder -y -v -s $CWD $PKG # add "-c -b" if you have binary files in /usr/share
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 

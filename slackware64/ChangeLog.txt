@@ -1,3 +1,11 @@
+Mon Feb 11 05:00:35 CET 2013
+-----------------------------
+	new file:   libraries/omniORB/omniORB.SlackBuild
+	modified:   multimedia/avidemux-gtk/avidemux-gtk.SlackBuild
+	modified:   multimedia/avidemux-qt4/avidemux-qt4.SlackBuild
+	modified:   system/unetbootin/unetbootin.SlackBuild
+	modified:   utilities/kshutdown/kshutdown.SlackBuild
+
 Thu Feb  7 05:00:34 CET 2013
 -----------------------------
 	new file:   development/gambas3-runtime/gambas3-runtime.SlackBuild
