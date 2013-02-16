@@ -39,7 +39,7 @@ BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
 SLKFILES="generate-cacerts.pl openjdk.sh openjdk.csh" #extra files to include in slackbuild distribution
-ICEDTEAVER=${ICEDTEAVER:-2.3.4}
+ICEDTEAVER=${ICEDTEAVER:-2.3.6}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
@@ -99,7 +99,7 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-VERSION=7u$(cat Makefile.in | grep ^JDK_UPDATE_VERSION | sed -r 's/^.* 0+//')_$(cat Makefile.in | grep ^OPENJDK_VERSION | sed -r 's/^.* //')
+VERSION=7u$(cat Makefile.in | grep ^JDK_UPDATE_VERSION | sed -r 's/^.* //')_$(cat Makefile.in | grep ^OPENJDK_VERSION | sed -r 's/^.* //')
 
 unset CLASSPATH
 unset JAVA_HOME
@@ -144,7 +144,7 @@ CXXFLAGS="$SLKCFLAGS" \
 make VERBOSE=TRUE
 
 # Move the generated jre and sdk images to the respective packages:
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
 cp -a openjdk.build/j2sdk-image/ \
   $PKG/usr/lib${LIBDIRSUFFIX}/jdk${VERSION}/
 
