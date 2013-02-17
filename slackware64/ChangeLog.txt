@@ -1,3 +1,9 @@
+Sun Feb 17 05:07:20 CET 2013
+-----------------------------
+	new file:   desktop/mate-applets/mate-applets.SlackBuild
+	new file:   desktop/mate-screensaver/mate-screensaver.SlackBuild
+	new file:   system/mate-sensors-applet/mate-sensors-applet.SlackBuild
+
 Sat Feb 16 05:02:13 CET 2013
 -----------------------------
 	modified:   development/openjdk/openjdk.SlackBuild
