@@ -1,3 +1,7 @@
+Mon Feb 18 05:00:47 CET 2013
+-----------------------------
+	modified:   libraries/icedtea-web/icedtea-web.SlackBuild
+
 Sun Feb 17 05:02:01 CET 2013
 -----------------------------
 	new file:   multimedia/google-talkplugin/google-talkplugin.SlackBuild

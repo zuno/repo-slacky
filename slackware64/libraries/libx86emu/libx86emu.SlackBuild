@@ -2,11 +2,12 @@
 
 # Heavily based on the Slackware 14.0 SlackBuild
 
-# Written by Matteo Rossini ( zerouno [at] slacky.it )
-# Last build from Matteo Rossini ( zerouno [at] slacky.it )
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from 6c33c (seic33c AT gmail DOT com)
 
-# Slackware build script for icedtea-web
-# Official Site: http://icedtea.classpath.org/wiki/IcedTea-Web
+# Slackware build script for libx86emu
+# Official Site: https://gitorious.org/x86emu/libx86emu
+# Patches from ...
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -25,20 +26,20 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: 
+# Requirements:
 
 set -e
 
-# Basic information. 
-PKGNAME=icedtea-web
-VERSION=${VERSION:-1.3.1}
+# Basic information.
+PKGNAME=libx86emu
+VERSION=${VERSION:-1.3}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://icedtea.classpath.org/download/source/icedtea-web-$VERSION.tar.gz"
+SOURCE="http://www.liwjatan.at/files/src/hwinfo/$PKGNAME-$VERSION.tar.xz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="AUTHORS COPYING ChangeLog NEWS README"
+DOCS="changelog LICENSE README VERSION"
 SLKFILES=""
 
 # If EULA
@@ -52,17 +53,17 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-# Does not touch following if not needed
+# Do not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
 
 if [ ! -e $CWD/$TAR ];then
-  wget $SOURCE # -O "$CWD/$TAR"
+  wget $SOURCE -O "$CWD/$TAR"
 fi
 
 CHOST="i486"
@@ -88,49 +89,21 @@ cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
 
-
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
-[ ! -x configure  ] && ./autogen.sh
-sed -i -e 's/mozilla-plugin/seamonkey-plugin/g' configure
+make \
+  LIBDIR=/usr/lib$LIBDIRSUFFIX
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/$PKGNAME-$VERSION \
-  --with-jdk-home=/usr/lib${LIBDIRSUFFIX}/java \
-  --with-jre-home=/usr/lib${LIBDIRSUFFIX}/java/jre \
-  --with-pkgversion=$(cat /etc/slackware-version |tr ' ' '-')-$ARCH \
-  --disable-docs \
-  --with-gtk=2 \
-  --build=$CHOST-slackware-linux
-make $JOBS
-make install DESTDIR=$PKG
+make \
+  LIBDIR=/usr/lib$LIBDIRSUFFIX \
+  DESTDIR=$PKG \
+  install
 
-## Do special operations
-
-#sed -i -e "s,java/jre/bin,java/bin,g" $PKG/usr/bin/javaws
-#sed -i -e "s,java/jre/bin,java/bin,g" $PKG/usr/bin/itweb-settings
-
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
-ln -sf /usr/lib${LIBDIRSUFFIX}/IcedTeaPlugin.so $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
-mkdir -p $PKG/usr/share/{applications,pixmaps}
-cp javaws.png $PKG/usr/share/pixmaps/
-install -m 0644 javaws.desktop $PKG/usr/share/applications/
-install -m 0644 itweb-settings.desktop $PKG/usr/share/applications/
-
-
-# Documentations
+# Documentation
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
- 
+
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
@@ -159,8 +132,8 @@ cd $PKG
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
-  cat $CWD/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+  requiredbuilder -y -v -s $CWD $PKG # add "-c -b" if you have binary files in /usr/share
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}

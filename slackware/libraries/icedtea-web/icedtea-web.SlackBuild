@@ -31,7 +31,7 @@ set -e
 
 # Basic information. 
 PKGNAME=icedtea-web
-VERSION=${VERSION:-1.3}
+VERSION=${VERSION:-1.3.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i686}
@@ -109,6 +109,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-jre-home=/usr/lib${LIBDIRSUFFIX}/java/jre \
   --with-pkgversion=$(cat /etc/slackware-version |tr ' ' '-')-$ARCH \
   --disable-docs \
+  --with-gtk=2 \
   --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG

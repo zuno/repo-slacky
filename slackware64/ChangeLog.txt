@@ -1,3 +1,9 @@
+Mon Feb 18 05:03:59 CET 2013
+-----------------------------
+	new file:   hardware/hwinfo/hwinfo.SlackBuild
+	modified:   libraries/icedtea-web/icedtea-web.SlackBuild
+	new file:   libraries/libx86emu/libx86emu.SlackBuild
+
 Sun Feb 17 05:07:20 CET 2013
 -----------------------------
 	new file:   desktop/mate-applets/mate-applets.SlackBuild
