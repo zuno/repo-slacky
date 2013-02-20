@@ -3,8 +3,8 @@
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
 # 
-# Slackware build script for nginx
-# Official Site: http://nginx.org
+# Slackware build script for CImg
+# Official Site: http://cimg.sourceforge.net/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,21 +23,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: geoip
+# Require:
 
 set -e
 
 # Basic information.
-PKGNAME=nginx
-VERSION=${VERSION:-1.2.7}
+PKGNAME=CImg
+VERSION=${VERSION:-1.5.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://nginx.org/download/${PKGNAME}-${VERSION}.tar.gz"
+SOURCE="http://downloads.sourceforge.net/cimg/$PKGNAME-$VERSION.zip"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="CHANGES* LICENSE README"
-SLKFILES="config.patch rc.nginx nginx.logrotate" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="*.txt"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -62,7 +62,7 @@ DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
 if [ ! -e "$CWD/$TAR" ];then
   wget "$SOURCE" -O "$CWD/$TAR"
 fi
-
+ 
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -81,79 +81,23 @@ fi
 
 ### Preparing Source
 rm -rf $TMP
-mkdir -p $TMP $PKG $OUTPUT $PKG/etc/nginx/conf.d/
+mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-tar xvf $CWD/$TAR
-cd $DIR
- 
-#add config directory conf.d/
-patch -p0 < $CWD/config.patch
+unzip -o $CWD/$PKGNAME-$VERSION.zip
+cd $PKGNAME-$VERSION
  
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --sbin-path=/usr/sbin/nginx \
-  --conf-path=/etc/nginx/nginx.conf \
-  --pid-path=/var/run/nginx.pid \
-  --lock-path=/var/lock/nginx \
-  --user=${NGINXUSER:=nobody} \
-  --group=${NGINXGROUP:=nogroup} \
-  --error-log-path=/var/log/nginx/error.log \
-  --http-log-path=/var/log/nginx/access.log \
-  --with-rtsig_module \
-  --with-select_module \
-  --with-poll_module \
-  --with-http_ssl_module \
-  --with-http_realip_module \
-  --with-http_addition_module \
-  --with-http_xslt_module \
-  --with-http_sub_module \
-  --with-http_dav_module \
-  --with-http_flv_module \
-  --with-http_gzip_static_module \
-  --with-http_random_index_module \
-  --with-http_secure_link_module \
-  --with-http_stub_status_module \
-  --http-client-body-temp-path=/var/tmp/nginx_client_body_temp \
-  --http-proxy-temp-path=/var/tmp/nginx_proxy_temp \
-  --http-fastcgi-temp-path=/dev/shm \
-  --with-http_geoip_module \
-  --with-http_realip_module \
-  --with-http_perl_module \
-  --with-http_image_filter_module \
-  --with-ipv6 \
-  --with-imap \
-  --with-mail \
-  --with-mail_ssl_module \
-  --with-imap_ssl_module  
+# Building CImg package
+mkdir -p $PKG/usr/include/CImg
+mkdir -p $PKG/usr/share/CImg
+cp -a CImg.h $PKG/usr/include/CImg/
+cp -ar plugins/ $PKG/usr/share/CImg
+cd $PKG/usr/include/
+ln -sf /usr/include/CImg/CImg.h .
+cd -
 
-make $JOBS 
-make install DESTDIR=$PKG
-
-# Remove some other empty and/or unnecessary directories from the package
-eval $(perl '-V:archlib')
-rm -rf $PKG/$archlib $PKG/usr/html $PKG/var $PKG/usr/lib64
-
-# Add an init script
-mkdir -p $PKG/etc/rc.d
-cat $CWD/rc.nginx > $PKG/etc/rc.d/rc.nginx.new
-
-mkdir -p $PKG/etc/logrotate.d
-cat $CWD/nginx.logrotate > $PKG/etc/logrotate.d/nginx.new
-
-mkdir -p $PKG/usr/man/man8
-cp man/nginx.8 $PKG/usr/man/man8/
-
-# Don't clobber config files
-for file in fastcgi_params fastcgi.conf mime.types nginx.conf \
-            koi-utf koi-win scgi_params uwsgi_params win-utf ; do
-            mv $PKG/etc/nginx/$file $PKG/etc/nginx/$file.new ;
-done
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -193,11 +137,6 @@ if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
-
-# Create the log dir and set the permissions
-mkdir -p $PKG/var/log/nginx
-chown $NGINXUSER:$NGINXGROUP $PKG/var/log/nginx
-chmod 750 $PKG/var/log/nginx
 
 # Packaging
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}

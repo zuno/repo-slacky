@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+    |----handy-ruler----------------------------------------------------------|
+CImg: CImg (Cool Image Library)
+CImg:
+CImg: The CImg  Library is an open source C++ toolkit for image processing
+CImg: CImg stands for "Cool Image" : It is easy to use and efficient. It's
+CImg: a very pleasant  toolbox to code image processing stuffs in C++, and
+CImg: potentially  covers  a  wide range of  image processing applications
+CImg: In  the  CImg  package, a  lot  of examples are provided to help the
+CImg: developper in its first steps.
+CImg:
+CImg:
+CImg:

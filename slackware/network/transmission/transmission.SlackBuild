@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=transmission
-VERSION=${VERSION:-2.75}
+VERSION=${VERSION:-2.77}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
