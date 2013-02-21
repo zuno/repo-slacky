@@ -1,0 +1,4 @@
+glibc-solibs >= 2.15-i486-7
+ncurses >= 5.9-i486-1
+openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+readline >= 5.2-i486-4

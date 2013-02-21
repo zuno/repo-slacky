@@ -1,13 +1,11 @@
 #!/bin/sh
-
+ 
 # Heavily based on the Slackware 14.0 SlackBuild
+# Written by miklos < ardutu at gmail dot com>
 
-# Written by Andrea Sciucca  (gohanz at infinito.it)
-# Last build from albatros_la aka AsPh4lTo ( albatros_la@hotmail.com )
-
-# Slackware build script for hugin 
-# Official Site: http://hugin.sourceforge.net/
-
+# Slackware build script for dmenu-xft
+# Official Site: http://tools.suckless.org/dmenu
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -25,24 +23,26 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Requires: wxwidgets, lensfun, libmspack, libpano13, libxmi, enblend-enfuse, lapack, Image-ExifTool, tclap
+# Require:
 
 set -e
 
-PKGNAME=hugin
-VERSION=${VERSION:-2012.0.0}
-BUILD=${BUILD:-2}
+# Basic information.
+PKGNAME=dmenu
+VERSION=${VERSION:-4.5}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
-ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/$PKGNAME/$PKGNAME/$PKGNAME-${VERSION/0.0/0}/$PKGNAME-$VERSION.tar.bz2"
+ARCH=${ARCH:-i486}
+SOURCE="http://dl.suckless.org/tools/${PKGNAME}-${VERSION}.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="AUTHORS COPYING ChangeLog LICENCE* README* TODO"
-SLKFILES="hugin.desktop" 
+DOCS="LICENSE README"
+SLKFILES="dmenu-4.5-xft.diff" # all files needed to the slackbuild (except slack-desc etc..)
 
+# An EULA for non-free packages
 if [ -e EULA.TXT ];then
   more EULA.TXT
-  echo "Do you accept terms? (yes/[no])"
+  echo "Do you accept terms? (yes/[no])":
   read ACCEPT
   if [ "$ACCEPT" != "yes" ];then
     echo; echo "SlackBuild Aborted!!"
@@ -50,18 +50,19 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-JOBS=${JOBS:--j1}
+# Does not touch following if not needed
+JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
 DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
-
-if [ ! -e $CWD/$TAR ];then
-  wget $SOURCE -O "$CWD/$TAR"
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
 fi
-
+ 
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -78,37 +79,35 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
+### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
+# Xft patch
+patch -p1 < $CWD/dmenu-4.5-xft.diff
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-( mkdir -p build
-cd build
-cmake .. \
-  -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-  -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-  -DENABLE_LAPACK=YES \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DMAN_INSTALL_DIR=/usr/man \
-  -DSYSCONF_INSTALL_DIR=/etc \
-  -DLIB_SUFFIX=${LIBDIRSUFFIX} 
-make $JOBS
-make install DESTDIR=$PKG )
+make install \
+  OPTS="$SLKCFLAGS" \
+  PREFIX=/usr \
+  LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+  MANPREFIX=/usr/man \
+  X11INC=/usr/include \
+  X11LIB=/usr/lib${LIBDIRSUFFIX}/X11 \
+  DESTDIR=$PKG
 
-mkdir -p $PKG/usr/man/man1
-cp -a $PKG/usr/share/man/man1/* $PKG/usr/man/man1
-rm -rf $PKG/usr/share/man
-mkdir -p $PKG/usr/share/applications
-cp -a $CWD/$PKGNAME.desktop $PKG/usr/share/applications
+# Documentations
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+for SB in $PKGNAME-xft.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -119,12 +118,15 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
+# Strip binary files
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
+
+# Preparing to packaging
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
@@ -132,17 +134,15 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
 chown -R root:root $PKG
-
+ 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(Image-ExifTool\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(enblend-enfuse\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
-  EXCLUDE="gcc, gcc-g++, gcc-gfortran" \
-  requiredbuilder -y -v -s $CWD $PKG
+  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
+# Packaging
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-xft-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+ 
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP
 fi

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+dmenu-xft: dmenu-xft (dynamic menu for X) with xft
+dmenu-xft:
+dmenu-xft: dmenu is a generic and efficient menu for X.
+dmenu-xft:
+dmenu-xft: Homepage: http://tools.suckless.org/dmenu
+dmenu-xft:
+dmenu-xft: This version is patched to support xft
+dmenu-xft: http://aur.archlinux.org/packages.php?ID=28745
+dmenu-xft:
+dmenu-xft:
+dmenu-xft:

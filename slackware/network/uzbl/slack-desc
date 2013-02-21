@@ -1,0 +1,30 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+uzbl: uzbl - web interface tools which adhere to the unix philosophy.
+uzbl:
+uzbl: Any program can only be really useful if it complies with the Unix
+uzbl: philosophy. Web browsers are frequent violators of this principle.
+uzbl: * They build in way too much things into one (complex) program, 
+uzbl:   dramatically decreasing the options to do things the way you want.
+uzbl: * They store things in way too fancy formats (XML, RDF, SQLite, etc.) 
+uzbl:   which are hard to store under version control, reuse in other 
+uzbl:   scripts, and so on.
+uzbl: 
+uzbl: The Uzbl project was started as an attempt to resolve this.
+
+
+
+
+
+
+
+  
+
+  
+
