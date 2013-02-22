@@ -1,3 +1,8 @@
+Fri Feb 22 05:09:39 CET 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	new file:   libraries/openjre/openjre.SlackBuild
+
 Thu Feb 21 05:04:36 CET 2013
 -----------------------------
 	modified:   graphic/hugin/hugin.SlackBuild
