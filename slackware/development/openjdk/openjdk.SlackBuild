@@ -35,11 +35,11 @@ set -e
 
 # Basic information. 
 PKGNAME=openjdk
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
 SLKFILES="generate-cacerts.pl openjdk.sh openjdk.csh *.diff swing.properties" #extra files to include in slackbuild distribution
-ICEDTEAVER=${ICEDTEAVER:-2.3.6}
+ICEDTEAVER=${ICEDTEAVER:-2.3.7}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto

@@ -1,3 +1,8 @@
+Sat Feb 23 05:05:20 CET 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	new file:   system/anacron/anacron.SlackBuild
+
 Fri Feb 22 05:01:14 CET 2013
 -----------------------------
 	modified:   multimedia/ffmpeg/ffmpeg.SlackBuild
