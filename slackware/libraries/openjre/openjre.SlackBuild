@@ -1,0 +1,259 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+# Copyright 2009, 2010, 2011, 2012  Eric Hameleers, Eindhoven, NL
+# Copyright 2009, 2010, 2011, 2012  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+
+# Written by Eric Hameleers < alien at slackware.com >
+# Adapted to slacky's standard by miklos < ardutu at gmail dot com >
+
+# Slackware build script for openjre
+# Official Site: http://openjre.java.net/
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+set -e
+
+# Basic information. 
+PKGNAME=openjre
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+JOBS=${JOBS:-"-j2"}
+ARCH=${ARCH:-i486}
+DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
+SLKFILES="doinst.sh generate-cacerts.pl openjre.sh openjre.csh *.diff swing.properties" #extra files to include in slackbuild distribution
+ICEDTEAVER=${ICEDTEAVER:-2.3.7}
+SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
+TAR=      # empty = auto
+DIR=      # empty = auto
+
+# If EULA
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])"
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
+fi
+
+# Does not touch following if not needed
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.xz|.gz|.bz2|)$//')}
+
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE
+fi
+
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+  LIB_ARCH=i386
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+  LIB_ARCH=i386
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+  LIB_ARCH=i386
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
+  LIB_ARCH=amd64
+fi
+
+### Preparing Source
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+tar xvf $CWD/$TAR
+cd $DIR
+
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+VERSION=7u$(cat Makefile.in | grep ^JDK_UPDATE_VERSION | sed -r 's/^.* //')_$(cat Makefile.in | grep ^OPENJDK_VERSION | sed -r 's/^.* //')
+
+unset CLASSPATH
+unset JAVA_HOME
+unset MAKEFLAGS
+
+export ANT_HOME=/usr/share/ant
+export ALT_FREETYPE_LIB_PATH=/usr/lib${LIBDIRSUFFIX}
+export ALT_PARALLEL_COMPILE_JOBS="${JOBS/-j}"
+export BUILD_NUMBER=$JAVABLD
+export HOTSPOT_BUILD_JOBS="${ALT_PARALLEL_COMPILE_JOBS}"
+export LANG=C
+export OS_VARIANT_NAME="Slackware"
+export OS_VARIANT_VERSION=$(cat /etc/slackware-version | cut -f2 -d' ')
+
+export JVMDIR=/usr/lib${LIBDIRSUFFIX}/java
+EXTRA_OPTS="--disable-bootstrap"
+
+mkdir -p bootstrap/boot/jre/lib
+
+# Adding distribution patches. Thanks to the ArchLinux community.
+cp $CWD/*.diff patches/
+export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff patches/fix_corba_cmds_path.diff patches/openjdk7_fix_jdk_cmds_path.diff patches/openjdk7_nonreparenting-wm.diff"
+
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  $SRCOPTS \
+  --with-abs-install-dir=/usr/lib${LIBDIRSUFFIX}/java \
+  --with-pkgversion=Slackware \
+  --with-parallel-jobs=${HOTSPOT_BUILD_JOBS} \
+  --with-jdk-home=${JVMDIR} \
+  --disable-docs \
+  --disable-jamvm \
+  --disable-jdk-tests \
+  --disable-langtools-tests \
+  --disable-system-lcms \
+  --enable-nss \
+  $EXTRA_OPTS \
+  --build=$CHOST-slackware-linux
+sed -i -e 's/-o native-ecj/-lgcj -o native-ecj/' Makefile
+make VERBOSE=TRUE
+
+# Move the generated jre and sdk images to the respective packages:
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/
+cp -a openjdk.build/j2re-image/ \
+  $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/
+
+# Generate a cacerts file from the certificates installed through our
+# ca-certificates package - the "cacerts" in the OpenJDK sources is empty.
+# This will only work if we already have a proper JDK/JRE installed:
+if which keytool 1>/dev/null 2>&1 ; then
+  mkdir certgen
+  ( cd certgen
+    cp $CWD/generate-cacerts.pl .
+    for cert in /usr/share/ca-certificates/*/*.crt; do
+      openssl x509 -text -in "${cert}" >> all.crt
+    done
+    perl generate-cacerts.pl keytool all.crt
+    install -p -m0644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/lib/security
+  )
+else
+  echo "** Not installing a proper cacerts file !"
+  echo "** Missing keytool program (do you really have a Java installed?)"
+fi
+
+# Symlinks are present in Slackware historically:
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf jre${VERSION} java
+) || exit 1
+
+# Add the profile scripts:
+mkdir -p $PKG/etc/profile.d
+for file in $CWD/openjre.sh $CWD/openjre.csh ; do
+  cat $file | sed -e "s#lib/java#lib${LIBDIRSUFFIX}/java#" \
+    > $PKG/etc/profile.d/$(basename $file)
+done
+chmod 755 $PKG/etc/profile.d/*
+
+
+# Add menu entries and icons:
+for i in 16 24 32 48 ; do
+  mkdir -p ${PKG}/usr/share/icons/hicolor/${i}x${i}/apps
+  install -m644 openjdk/jdk/src/solaris/classes/sun/awt/X11/java-icon${i}.png \
+  ${PKG}/usr/share/icons/hicolor/${i}x${i}/apps/java.png 
+done
+mkdir -p ${PKG}/usr/share/applications
+install -m644 *.desktop ${PKG}/usr/share/applications/
+# We do not create symlinks for binaries in /usr/bin , instead we add the
+# Java directory to the $PATH :
+for FILE in ${PKG}/usr/share/applications/*.desktop ; do
+  sed -i -e "s,^Exec=/usr/bin/,Exec=," $FILE
+done
+
+# User-modifiable configuration files go to /etc :
+mkdir -p $PKG/etc/java
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/${LIB_ARCH}/jvm.cfg $PKG/etc/java/jvm.cfg.new
+ln -sf /etc/java/jvm.cfg $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/${LIB_ARCH}/jvm.cfg
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.policy $PKG/etc/java/java.policy.new
+ln -sf /etc/java/java.policy $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.policy
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.security $PKG/etc/java/java.security.new
+ln -sf /etc/java/java.security $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.security
+
+# NOTE:
+# The openjdk does not build a mozilla plugin: install icedtea-web instead.
+
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf ./java/lib/${LIB_ARCH}/server/libjvm.so .
+)
+
+# Adding swing.properties for GTK+ integration and antialiasing
+cp $CWD/swing.properties $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/
+
+# Documentations
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/icedtea
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION/icedtea
+cd openjdk
+cp -a ASSEMBLY_EXCEPTION LICENSE README* THIRD_PARTY_README $PKG/usr/doc/$PKGNAME-$VERSION/
+chmod -R 644 $PKG/usr/doc/$PKGNAME-$VERSION/
+
+# SlackBuild
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+if [ "$SLKFILES" != "" ]; then
+	for file in $SLKFILES; do
+		cp -r $CWD/$file $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+    done
+fi
+
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+chown -R root:root $PKG
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  EXCLUDE="openjdk, jdk" requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+fi
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP
+fi

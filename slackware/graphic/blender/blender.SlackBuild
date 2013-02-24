@@ -34,15 +34,15 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=/blender
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-2.65a}
+VERSION=${VERSION:-2.66}
 ARCH=${ARCH:-i686} #i686 or x86_64
 BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
-SOURCE="http://download.blender.org/release/Blender2.65/blender-2.65a-linux-glibc27-i686.tar.bz2"
+SOURCE="http://download.blender.org/release/Blender2.66/blender-2.66-linux-glibc211-i686.tar.bz2"
 
 # Download sorce tarball if still not present
-if [ ! -e $CWD/blender-$VERSION-linux-glibc27-$ARCH.tar.bz2 ]; then
+if [ ! -e $CWD/blender-$VERSION-linux-glibc211-$ARCH.tar.bz2 ]; then
 wget -c $SOURCE
 fi
 
@@ -62,14 +62,14 @@ mkdir -p $TMP $PKG $OUTPUT
 
 # Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/blender-$VERSION-linux-glibc27-$ARCH.tar.bz2
+tar xvjf $CWD/blender-$VERSION-linux-glibc211-$ARCH.tar.bz2
 
 echo -e "\E[0;32m+--------------------------+\E[0;0m"
 echo -e "\E[0;32m| Start SlackBuild Blender |\E[0;0m"
 echo -e "\E[0;32m+--------------------------+\E[0;0m"
 
 # Adjust permissions and ownerships
-cd blender-$VERSION-linux-glibc27-$ARCH
+cd blender-$VERSION-linux-glibc211-$ARCH
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 
