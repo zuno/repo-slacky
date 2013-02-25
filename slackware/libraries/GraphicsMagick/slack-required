@@ -1,0 +1,24 @@
+bzip2 >= 1.0.6-i486-1
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+freetype >= 2.4.11-i486-1_slack14.0
+gcc >= 4.7.1-i486-1
+glibc-solibs >= 2.15-i486-7
+jasper >= 1.900.1-i486-3
+jbigkit >= 2.0-i486-6sl
+lcms2 >= 2.3-i486-1
+libICE >= 1.0.8-i486-1
+libSM >= 1.2.1-i486-1
+libX11 >= 1.5.0-i486-1
+libXau >= 1.0.7-i486-1
+libXdmcp >= 1.1.1-i486-1
+libXext >= 1.3.1-i486-1
+libfpx >= 1.3.1.2-i486-1sl
+libjpeg >= v8a-i486-1
+libpng >= 1.4.12-i486-1
+libtiff >= 3.9.6-i486-1
+libwmf >= 0.2.8.4-i486-5
+libxcb >= 1.8.1-i486-1
+libxml2 >= 2.8.0-i486-2_slack14.0
+util-linux >= 2.21.2-i486-5
+xz >= 5.0.4-i486-1
+zlib >= 1.2.6-i486-1

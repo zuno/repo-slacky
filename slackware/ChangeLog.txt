@@ -1,3 +1,11 @@
+Mon Feb 25 05:01:02 CET 2013
+-----------------------------
+	new file:   games/tubularix/tubularix.SlackBuild
+	new file:   libraries/GraphicsMagick/GraphicsMagick.SlackBuild
+	new file:   libraries/jbigkit/jbigkit.SlackBuild
+	new file:   libraries/libfpx/libfpx.SlackBuild
+	new file:   network/putty/putty.SlackBuild
+
 Sun Feb 24 05:03:21 CET 2013
 -----------------------------
 	modified:   graphic/blender/blender.SlackBuild

@@ -1,3 +1,9 @@
+Mon Feb 25 05:07:19 CET 2013
+-----------------------------
+	new file:   development/mono/mono.SlackBuild
+	new file:   libraries/libgdiplus/libgdiplus.SlackBuild
+	modified:   network/chromium/chromium.SlackBuild
+
 Fri Feb 22 05:09:39 CET 2013
 -----------------------------
 	deleted:    desktop/icewm/icewm.SlackBuild
