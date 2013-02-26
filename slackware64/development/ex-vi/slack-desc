@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+     |----handy-ruler---------------------------------------------------------|
+ex-vi: ex-vi (The Traditional Vi)
+ex-vi:
+ex-vi: The vi editor is one of the most common text editors on Unix. It was
+ex-vi: developed starting around 1976 by Bill Joy at UCB, who was tired of
+ex-vi: the ed editor. But since he used ed as a code base, access to the
+ex-vi: original sources has required a commercial Unix Source Code License
+ex-vi: for more than twenty years.
+ex-vi:
+ex-vi:
+ex-vi:
+ex-vi:

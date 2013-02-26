@@ -1,3 +1,9 @@
+Tue Feb 26 05:05:15 CET 2013
+-----------------------------
+	new file:   development/ex-vi/ex-vi.SlackBuild
+	new file:   development/ocaml/ocaml.SlackBuild
+	new file:   libraries/mono-zeroconf/mono-zeroconf.SlackBuild
+
 Mon Feb 25 05:07:19 CET 2013
 -----------------------------
 	new file:   development/mono/mono.SlackBuild
