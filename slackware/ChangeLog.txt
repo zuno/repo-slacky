@@ -1,3 +1,11 @@
+Sat Mar  2 05:01:44 CET 2013
+-----------------------------
+	new file:   desktop/mate-screensaver/mate-screensaver.SlackBuild
+	new file:   games/assaultcube/assaultcube.SlackBuild
+	modified:   network/deluge/deluge.SlackBuild
+	new file:   system/mate-sensors-applet/mate-sensors-applet.SlackBuild
+	new file:   utilities/zile/zile.SlackBuild
+
 Tue Feb 26 05:01:06 CET 2013
 -----------------------------
 	modified:   network/nginx/nginx.SlackBuild
