@@ -1,3 +1,8 @@
+Sat Mar  2 06:43:15 CET 2013
+-----------------------------
+	new file:   development/codeblocks/codeblocks.SlackBuild
+	new file:   system/squashfs-tools/squashfs-tools.SlackBuild
+
 Tue Feb 26 05:05:15 CET 2013
 -----------------------------
 	new file:   development/ex-vi/ex-vi.SlackBuild
