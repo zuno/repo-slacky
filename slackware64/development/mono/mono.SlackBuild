@@ -1,12 +1,13 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
+
 # Written by Andrea Sciucca (gohanz at infinito.it)
 # Last build from Luca De Pandis (lucadepandis@gmail.com)
-# 
+ 
 # Slackware build script for mono
 # Official Site: http://www.mono-project.com
-#
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -23,13 +24,11 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Require:
 
 set -e
 
 PKGNAME=mono
-VERSION=${VERSION:-3.0.4}
+VERSION=${VERSION:-3.0.6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
@@ -78,18 +77,19 @@ chmod -R u+w,go+r-w,a-s .
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---mandir=/usr/man \
---docdir=/usr/doc/$PKGNAME-$VERSION \
---program-prefix= \
---program-suffix= \
---enable-shared \
---disable-static \
---build=$CHOST-slackware-linux
-make
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/man \
+    --docdir=/usr/doc/$PKGNAME-$VERSION \
+    --enable-shared \
+    --disable-static \
+    --build=$CHOST-slackware-linux
+
+# Increase make verbosity
+make V=1 $JOBS
 make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
