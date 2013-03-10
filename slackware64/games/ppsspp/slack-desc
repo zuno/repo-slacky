@@ -1,0 +1,23 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+ppsspp: PPSSPP PSP emulator written in C++
+ppsspp:
+ppsspp: PPSSPP is a PSP emulator written in C++, and translates PSP CPU 
+ppsspp: instructions directly into optimized x86, x64 and ARM machine code, 
+ppsspp: using efficient JIT dynamic recompilers (dynarecs).
+ppsspp:
+ppsspp: PPSSPP can thus run on quite low-spec hardware, including stronger 
+ppsspp: Android phones and tablets, as long as there's support for 
+ppsspp: OpenGL ES 2.0.
+ppsspp: 
+ppsspp: Homepage: http://www.ppsspp.org/
+
+
+
+
