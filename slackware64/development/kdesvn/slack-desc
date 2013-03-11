@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+kdesvn: KDESvn (KDE4 Subversion GUI)
+kdesvn:
+kdesvn: KDESvn is a frontend to the  subversion  vcs. In difference to  most
+kdesvn: other tools it  uses the subversion C-Api direct  via a c++  wrapper
+kdesvn: made by  Rapid SVN  and doesn't parse the  output of  the subversion
+kdesvn: client. So it is a real client  itself instead of a frontend to  the
+kdesvn: command  line  tool. The  origin  wrapper  is  meanwhile  ported  to
+kdesvn: Qt-toolkit and may used in other projects wanting a pure qt-wrapper.
+kdesvn:
+kdesvn:
+kdesvn:
