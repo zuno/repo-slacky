@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PPSSPP
+Type=Application
+Exec=PPSSPPSDL
+Categories=Game
+Encoding=UTF-8
+GenericName=PSP Emulator
+Terminal=false
+Icon=ppsspp

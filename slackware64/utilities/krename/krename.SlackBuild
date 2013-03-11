@@ -2,11 +2,12 @@
 
 # Heavily based on the Slackware 14.0 SlackBuild
 
-# Written by Matteo Rossini ( zerouno @ slacky.it )
-# Last build from 6c33c ( seic33c [at] gmail [dot] com)
+# Written by Vincenzi Loris - slacky@slacky.it
+# Last build 6c33c ( seic33c [at] gmail [dot] com )
 
-# Slackware build script for flash-player-plugin
-# Official Site: http://get.adobe.com/it/flashplayer/
+# Slackware build script for krename
+# Official Site: http://www.krename.net
+# Patches from ...
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -24,20 +25,22 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Requirements:
 
 set -e
 
 
-# Basic information. 
-PKGNAME=flash-player-plugin
-VERSION=${VERSION:-11.2.202.273}
+# Basic information.
+PKGNAME=krename
+VERSION=${VERSION:-4.0.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://fpdownload.macromedia.com/get/flashplayer/pdc/$VERSION/install_flash_player_11_linux.$ARCH.tar.gz"
+SOURCE="http://downloads.sourceforge.net/project/krename/KDE4%20krename-stable/$VERSION/$PKGNAME-$VERSION.tar.bz2"
 TAR=      # empty = auto
-DIR=.      # empty = auto
-DOCS="readme.txt"
+DIR=      # empty = auto
+DOCS="AUTHORS COPYING INSTALL README TODO"
 SLKFILES=""
 
 # If EULA
@@ -51,17 +54,17 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-# Does not touch following if not needed
+# Do not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
 
-if [ ! -e "$CWD/$TAR" ];then
-  wget "$SOURCE" -O "$CWD/$TAR"
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE -O "$CWD/$TAR"
 fi
 
 CHOST="i486"
@@ -83,22 +86,34 @@ fi
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
-cd $PKG
+cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
 # Customize as you need
-mkdir -p usr/lib$LIBDIRSUFFIX/mozilla/plugins
-mv libflashplayer.so usr/lib$LIBDIRSUFFIX/mozilla/plugins
+( mkdir -p build \
+    && cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make $JOBS \
+&& make install DESTDIR=$PKG ) 
 
-# Documentations
+# Documentation
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
- 
+
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
@@ -124,11 +139,10 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
 cd $PKG
-rm -f readme.txt
 chown -R root:root $PKG
 
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  requiredbuilder -y -v -s $CWD $PKG # add "-c -b" if you have binary files in /usr/share
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 

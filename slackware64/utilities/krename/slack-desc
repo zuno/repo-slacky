@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+krename: Krename (KDE4 Batch Renamer)
+krename:
+krename: Krename offers you an easy way to rename hundreds of files in one go
+krename: giving you as much freedom you need.
+krename: You can use parts of the old filename,files information like date or
+krename: even an mp3 tag or the colour depth of an image.
+krename: Krename integrates into the Konqueror or Krusader filemanager!
+krename:
+krename:
+krename:
+krename:

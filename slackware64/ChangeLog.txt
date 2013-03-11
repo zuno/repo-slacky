@@ -1,5 +1,10 @@
 Sun Mar 10 05:00:18 CET 2013
 -----------------------------
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+	new file:   utilities/krename/krename.SlackBuild
+
+Sun Mar 10 05:00:18 CET 2013
+-----------------------------
 	new file:   games/ppsspp/ppsspp.SlackBuild
 
 Fri Mar  8 05:01:25 CET 2013
