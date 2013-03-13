@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# Heavily based on the Slackware 13.37 SlackBuild (v1)
+# Heavily based on the Slackware 14.0 SlackBuild
 # Copyright 2009, 2010, 2011, 2012  Eric Hameleers, Eindhoven, NL
 # Copyright 2009, 2010, 2011, 2012  Patrick J. Volkerding, Sebeka, MN, USA
 # All rights reserved.
 
 # Written by Eric Hameleers < alien at slackware.com >
 # Adapted to slacky's standard by miklos < ardutu at gmail dot com >
-# Last build from Matteo Rossini < zerouno at slacky it >
+# Last build from Luca De Pandis < lucadepandis@gmail.com >
 
 # Slackware build script for apache-ant
 # Official Site: http://ant.apache.org/
@@ -35,8 +35,8 @@ set -e
 
 # Basic information. 
 PKGNAME=apache-ant
-VERSION=${VERSION:-1.8.4}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-1.9.0}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 DOCS="INSTALL KEYS NOTICE README WHATSNEW manual/" #list of docs to include
@@ -57,7 +57,7 @@ if [ -e EULA.TXT ];then
 fi
 
 # Does not touch following if not needed
-JOBS=${JOBS:--j2}
+JOBS=${JOBS:--j4}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
