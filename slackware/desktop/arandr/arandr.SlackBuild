@@ -29,8 +29,8 @@
 set -e
 
 PKGNAME=arandr
-VERSION=${VERSION:-0.1.6}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-0.1.7}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
 SOURCE="http://christian.amsuess.com/tools/$PKGNAME/files/$PKGNAME-$VERSION.tar.gz"

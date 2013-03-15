@@ -6,14 +6,14 @@
 # leave one space after the ':'.
 
      |-----handy-ruler------------------------------------------------------|
-numpy: Numpy (Numerical Python)
-numpy:
-numpy: Numerical Python adds a fast and sophisticated array facility  to the
-numpy: Python language. NumPy is the most recent and most actively supported
-numpy: package. Numarray  is supported  by STSCI for a  time. Numeric is not
-numpy: supported.
-numpy:
-numpy:
-numpy:
-numpy:
-numpy:
+vigra: VIGRA (Vision with Generic Algorithms)
+vigra:
+vigra: It's a novel computer vision library that puts its main  emphasize on
+vigra: customizable  algorithms  and  data  structures.  By  using  template
+vigra: techniques similar to those in the C++ Standard Template Library, you
+vigra: can easily adapt any VIGRA component to the needs of your application
+vigra: without thereby giving up execution speed.
+vigra:
+vigra:
+vigra:
+vigra:

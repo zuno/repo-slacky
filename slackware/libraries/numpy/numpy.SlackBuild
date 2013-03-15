@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=numpy
-VERSION=${VERSION:-1.6.2}
+VERSION=${VERSION:-1.7.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}

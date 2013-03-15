@@ -1,12 +1,12 @@
 #!/bin/sh
-
+ 
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by Andrea Sciucca  (gohanz at infinito.it)
-
-
-# Slackware build script for enblend-enfuse 
+# Last build from Loris Vincenzi (info@slacky.it)
+# 
+# Slackware build script for enblend-enfuse
 # Official Site: http://enblend.sourceforge.net
-
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -23,25 +23,34 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Require:
 
 set -e
 
 PKGNAME=enblend-enfuse
-VERSION=${VERSION:-4.0}
-BUILD=${BUILD:-7}
+VERSION=${VERSION:-4.1.1}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
 SOURCE="http://switch.dl.sourceforge.net/sourceforge/enblend/$PKGNAME-$VERSION.tar.gz"
+TAR=
+DIR=
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README*"
+SLKFILES=""
 
+JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
-
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ];then
-  wget $SOURCE
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
 fi
-
+ 
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -60,37 +69,38 @@ fi
 
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
-
 cd $TMP
-tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
-cd $PKGNAME-$VERSION-*
-
-gzip -cd $CWD/libpng-1.4.2_vigrapatch.diff.gz |patch -p1
-
+tar xvf $CWD/$TAR
+cd $DIR
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX \
-  --infodir=/usr/info \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/$PKGNAME-$VERSION \
-  --build=$CHOST-slackware-linux
-make
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--mandir=/usr/man \
+--infodir=/usr/info \
+--program-prefix= \
+--program-suffix= \
+--build=$CHOST-slackware-linux
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS
 make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
-cp -a \
-  AUTHORS COPYING ChangeLog INSTALL NEWS README* VIGRA_LICENSE $CWD/enblend_4.0.pdf  $CWD/enfuse_4.0.pdf \
-  $PKG/usr/doc/$PKGNAME-$VERSION
-
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a $CWD/enblend_4.1.pdf $CWD/enfuse_4.1.pdf $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
 
 if [ -d $PKG/usr/man ]; then
     ( cd $PKG/usr/man
@@ -98,6 +108,8 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+rm $PKG/usr/info/dir
 
 if [ -d $PKG/usr/info ]; then
     ( cd $PKG/usr/info
@@ -114,19 +126,19 @@ fi
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
-
-# Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
-if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+ 
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
-# Create txz package
+
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
-
-# Cleanup if enabled
+ 
 if [ "$1" = "--cleanup" ]; then
- rm -rf $TMP
+  rm -rf $TMP
 fi

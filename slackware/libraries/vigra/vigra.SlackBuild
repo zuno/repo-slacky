@@ -1,11 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Loris Vincenzi (info@slacky.it)
+# Written by Andrea Sciucca (gohanz at infinito.it)
 # Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for Image-ExifTool
-# Official Site: http://www.sno.phy.queensu.ca/~phil/exiftool
+# Slackware build script for vigra
+# Official Site: http://hci.iwr.uni-heidelberg.de/vigra/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=Image-ExifTool
-VERSION=${VERSION:-9.23}
+PKGNAME=vigra
+VERSION=${VERSION:-1.9.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://www.sno.phy.queensu.ca/~phil/exiftool/$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://hci.iwr.uni-heidelberg.de/vigra/$PKGNAME-$VERSION-src.tar.gz"
 TAR=
-DIR=
-DOCS="Changes MANIFEST README"
+DIR=vigra-1.9.0
+DOCS="LICENSE.txt README.txt"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -76,23 +76,27 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-perl Makefile.PL INSTALLDIRS=vendor
-make test
-make install INSTALLDIRS=vendor DESTDIR=$PKG
-
-mv $PKG/usr/share/man $PKG/usr/man
-
-find $PKG -name perllocal.pod \
-  -o -name ".packlist" \
-  -o -name "*.bs" \
-  | xargs rm -f
-
-eval $(perl '-V:archlib')
-eval $(perl '-V:vendorarch')
-rmdir -p $PKG/$vendorarch/auto/Image/ExifTool $PKG/$archlib 2>/dev/null || true
+( mkdir -p build \
+    && cd build \
+      && cmake .. \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DINCLUDE_INSTALL_DIR=/usr/include \
+    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
+    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    && make  $JOBS \
+&& make install DESTDIR=$PKG ) 
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+
+mv $PKG/usr/doc/vigra $PKG/usr/doc/$PKGNAME-$VERSION/doc
+mv $PKG/usr/doc/vigranumpy $PKG/usr/doc/$PKGNAME-$VERSION/vigranumpy
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD

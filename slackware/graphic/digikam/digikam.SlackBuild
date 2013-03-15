@@ -1,9 +1,11 @@
 #!/bin/sh
+ 
 # Heavily based on the Slackware 14.0 SlackBuild
-# Slackware build script for digikam (http://www.digikam.org)
-#
-# Copyright 2008,2009 Corrado Franco (http://conraid.net)
-# All rights reserved.
+# Written by Corrado Franco (http://conraid.net)
+# Last build from Loris Vincenzi (info@slacky.it)
+# 
+# Slackware build script for digikam
+# Official Site: http://www.digikam.org
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -21,59 +23,56 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Require:
 
-# Exit on most errors
 set -e
 
-# Set variables:
-CWD=$(pwd)
-
-PRGNAME=${PRGNAME:-digikam}
+PKGNAME=digikam
 VERSION=${VERSION:-2.9.0}
-PKGVERSION=$(echo $VERSION | tr - _)
-ARCH=${ARCH:-i486}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
-TMP=${TMP:-/tmp/pkg}
+ARCH=${ARCH:-i486}
+SOURCE="http://download.kde.org/stable/digikam/$PKGNAME-$VERSION.tar.bz2"
+TAR=
+DIR=
+DOCS="COPYING NEWS README"
+SLKFILES=""
+
 JOBS=${JOBS:--j2}
-SOURCE="http://garr.dl.sourceforge.net/sourceforge/digikam/digikam-${VERSION}.tar.bz2"
-PKG=$TMP/package-$PRGNAME
-DOCS="$PKG/usr/doc/$PRGNAME-$VERSION"
-
-# Insert document files in this variable
-DOCFILES="AUTHORS COPYING* COPYRIGHT ChangeLog DESIGN INSTALL NEWS README TODO CONTEXTMENU-PORT HACKING"
-
-# Set compiling FLAGS
-case "$ARCH" in
-    i486)
-	SLKCFLAGS="-O2 -march=i486 -mtune=i686"; CHOST="i486"
-	SLKLDFLAGS=""; LIBDIRSUFFIX=""
-        ;;
-    i686)
-	SLKCFLAGS="-O2 -march=i686 -pipe -fomit-frame-pointer"; CHOST="i486"
-	SLKLDFLAGS=""; LIBDIRSUFFIX=""
-        ;;
-    x86_64)
-	SLKCFLAGS="-O2 -fPIC -pipe -fomit-frame-pointer"; CHOST="x86_64"
-	SLKLDFLAGS=""; LIBDIRSUFFIX="64"
-        ;;
-esac
-
-# Download source, if not exist
-if ! [ -e $(basename $SOURCE) ]; then
-    wget $SOURCE
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+ 
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
 fi
 
-# Extract source and prepare:
-rm -rf $PKG
-mkdir -p $TMP $PKG
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAME-$VERSION
-
-tar xjvf $CWD/$PRGNAME-$VERSION.tar.bz2
-cd $PRGNAME-$VERSION
+tar xvf $CWD/$TAR
+cd $DIR
  
-# Make sure ownerships and permissions are sane:
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
@@ -91,59 +90,49 @@ cmake .. \
 -DENABLE_MARBLEWIDGET=yes \
 -DWITH_MarbleWidget=yes 
 
-
 # Build and install:
 read
 make $JOBS
 make install/strip DESTDIR=${PKG}
 cd ..
 
-# Compress and link manpages, if any:
-if [ -d $PKG/usr/man ]; then
-( cd $PKG/usr/man
-  find . -type f -exec gzip -9 {} \;
-  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-)
-fi
-
-# Add a documentation directory:
-mkdir -p ${DOCS}
-for i in ${DOCFILES}; do
-    if [ -e ${i} ]; then
-        if ! [ -L ${i} ]; then
-	    cp -a ${i} ${DOCS}
-	else
-	    cp -LRp ${i} ${DOCS}
-        fi
-    fi;
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
-# Add a slackbuild script:
-cat $CWD/$PRGNAME.SlackBuild > $DOCS/$PRGNAME.SlackBuild
-
-# Add slack-desc
-mkdir -p $PKG/install
-cat $CWD/slack-desc > $PKG/install/slack-desc
-
-# Add a doinst.sh, if any
-if [ -f $CWD/doinst.sh.gz ]; then
-    zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
-elif [ -f $CWD/doinst.sh ]; then
-    cat $CWD/doinst.sh > $PKG/install/doinst.sh
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
 fi
 
-# Create slack-required file:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+chown -R root:root $PKG
+
 if [ -x /usr/bin/requiredbuilder ]; then
 ADD=$(ls /var/log/packages/ | sed -ne 's/\(kipi-plugins\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi
-
-# Create package:
-cd $PKG
-/sbin/makepkg -l y -c n $CWD/$PRGNAME-$PKGVERSION-$ARCH-${BUILD}${TAG}.txz
-
-# Clean file, if option is set:
+ 
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+ 
 if [ "$1" = "--cleanup" ]; then
-  rm -rf ${TMP}/${PRGNAME}-${VERSION}
-  rm -rf $PKG
+  rm -rf $TMP
 fi

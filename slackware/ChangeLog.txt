@@ -1,3 +1,16 @@
+Fri Mar 15 05:05:13 CET 2013
+-----------------------------
+	modified:   desktop/arandr/arandr.SlackBuild
+	modified:   development/openjdk/openjdk.SlackBuild
+	copied:     graphic/enblend-enfuse/enblend-enfuse.SlackBuild -> graphic/digikam/digikam.SlackBuild
+	modified:   graphic/enblend-enfuse/enblend-enfuse.SlackBuild
+	modified:   graphic/hugin/hugin.SlackBuild
+	modified:   libraries/Image-ExifTool/Image-ExifTool.SlackBuild
+	modified:   libraries/OpenCV/OpenCV.SlackBuild
+	copied:     graphic/enblend-enfuse/enblend-enfuse.SlackBuild -> libraries/lensfun/lensfun.SlackBuild
+	modified:   libraries/numpy/numpy.SlackBuild
+	copied:     graphic/enblend-enfuse/enblend-enfuse.SlackBuild -> libraries/vigra/vigra.SlackBuild
+
 Mon Mar 11 05:00:52 CET 2013
 -----------------------------
 	new file:   games/ppsspp/ppsspp.SlackBuild
