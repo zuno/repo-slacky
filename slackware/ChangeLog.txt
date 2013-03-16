@@ -1,3 +1,12 @@
+Sat Mar 16 05:01:39 CET 2013
+-----------------------------
+	new file:   libraries/zvbi/zvbi.SlackBuild
+	modified:   multimedia/soundkonverter/soundkonverter.SlackBuild
+	modified:   office/texmaker/texmaker.SlackBuild
+	modified:   system/clamav/clamav.SlackBuild
+	modified:   utilities/peazip/peazip.SlackBuild
+	new file:   utilities/xbindkeys/xbindkeys.SlackBuild
+
 Fri Mar 15 05:05:13 CET 2013
 -----------------------------
 	modified:   desktop/arandr/arandr.SlackBuild

@@ -1,11 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca (gohanz at infinito.it)
+# Written by Loris Vincenzi (info@slacky.it)
 # Last build from Loris Vincenzi (info@slacky.it)
 # 
-# Slackware build script for soundkonverter
-# Official Site: http://www.kde-apps.org/content/show.php?content=29024
+# Slackware build script for zvbi
+# Official Site: http://zapping.sourceforge.net/cgi-bin/view/ZVBI/WebHome
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +28,15 @@
 
 set -e
 
-PKGNAME=soundkonverter
-VERSION=${VERSION:-2.0.0}
-BUILD=${BUILD:-1}
+PKGNAME=zvbi
+VERSION=${VERSION:-0.2.33}
+BUILD=${BUILD:-8}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://kde-apps.org/CONTENT/content-files/29024-$PKGNAME-$VERSION.tar.gz"
+SOURCE="http://kent.dl.sourceforge.net/sourceforge/zapping/$PKGNAME-$VERSION.tar.bz2"
 TAR=
-DIR=soundkonverter-2.0.0
-DOCS="CHANGELOG  INSTALL README"
+DIR=
+DOCS="AUTHORS BUGS COPYING ChangeLog INSTALL NEWS README TODO"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}
@@ -73,32 +73,32 @@ cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
  
+patch -p1 < $CWD/stath.patch
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Building soundKonverter package
-( mkdir -p build \
-    && cd build \
-     &&  cmake .. \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DINCLUDE_INSTALL_DIR=/usr/include \
-    -DLIB_SUFFIX:STRING=${LIBDIRSUFFIX} \
-    -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
-    -DBUILD_SHARED_LIBS:BOOL=ON \
-    && make $JOBS \
-&& make install DESTDIR=$PKG ) 
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--build=$CHOST-slackware-linux
+echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
+read
+make $JOBS
+make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT stath.patch $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -116,17 +116,6 @@ fi
 )
 
 mkdir -p $PKG/install
-
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-
 cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 [ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh

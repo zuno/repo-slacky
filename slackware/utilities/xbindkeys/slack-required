@@ -1,0 +1,8 @@
+glibc-solibs >= 2.15-i486-7
+gmp >= 5.0.5-i486-1
+guile >= 1.8.8-i486-1
+libX11 >= 1.5.0-i486-1
+libXau >= 1.0.7-i486-1
+libXdmcp >= 1.1.1-i486-1
+libtool >= 2.4.2-i486-1
+libxcb >= 1.8.1-i486-1

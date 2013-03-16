@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+xbindkeys: XBindKeys (Keyboard Command Launcher)
+xbindkeys:
+xbindkeys: XBindKeys is a program that allows you to launch shell commands with
+xbindkeys: your  keyboard  or your mouse  under  X Window. It links commands to
+xbindkeys: keys or mouse buttons, using a configuration  file. It's independant
+xbindkeys: of   the   window  manager   and  can   capture  all  keyboard  keys
+xbindkeys: (ex: Power, Wake...).
+xbindkeys:
+xbindkeys:
+xbindkeys:
+xbindkeys:

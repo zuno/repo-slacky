@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+zvbi: ZVBI (Television Vertical Blanking Interval)
+zvbi:
+zvbi: The vertical blanking interval (VBI) is an interval in a television
+zvbi: signal that temporarily suspends transmission of the signal for the
+zvbi: electron gun to move back up to the first line of the television
+zvbi: screen to trace the next screen field. The vertical blanking interval
+zvbi: can be used to carry data, since anything sent during the VBI would
+zvbi: naturally not be displayed; various test signals, closed captioning,
+zvbi: and other digital data can be sent during this time period.
+zvbi:
+zvbi:

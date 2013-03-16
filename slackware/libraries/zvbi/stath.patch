@@ -1,0 +1,39 @@
+diff -crB a/contrib/ntsc-cc.c b/contrib/ntsc-cc.c
+*** a/contrib/ntsc-cc.c	Tue Nov 27 18:39:34 2007
+--- b/contrib/ntsc-cc.c	Fri Aug 20 15:15:15 2010
+***************
+*** 32,37 ****
+--- 32,38 ----
+  #include <fcntl.h>
+  #include <errno.h>
+  #include <locale.h>
++ #include <sys/stat.h>
+  #include <sys/ioctl.h>
+  #include <sys/types.h>
+  #include <sys/time.h>
+diff -crB a/src/io-dvb.c b/src/io-dvb.c
+*** a/src/io-dvb.c	Sun Feb 24 15:18:21 2008
+--- b/src/io-dvb.c	Fri Aug 20 15:15:48 2010
+***************
+*** 27,32 ****
+--- 27,33 ----
+  
+  #include <unistd.h>		/* read() */
+  #include <errno.h>
++ #include <sys/stat.h>
+  #include <sys/select.h>
+  #include <sys/ioctl.h>
+  
+diff -crB a/src/io-v4l.c b/src/io-v4l.c
+*** a/src/io-v4l.c	Sun Feb 24 15:17:28 2008
+--- b/src/io-v4l.c	Fri Aug 20 15:17:05 2010
+***************
+*** 40,45 ****
+--- 40,46 ----
+  #include <errno.h>
+  #include <unistd.h>		/* read(), dup2(), getuid() */
+  #include <assert.h>
++ #include <sys/stat.h>
+  #include <sys/time.h>		/* timeval */
+  #include <sys/types.h>		/* fd_set, uid_t */
+  #include <sys/ioctl.h>		/* for (_)videodev.h */
