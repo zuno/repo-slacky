@@ -30,8 +30,8 @@
 set -e 
 
 PKGNAME=${PKGNAME:-geany}
-VERSION=${VERSION:-1.22}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-1.23}
+ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 JOBS=${JOBS:--j2}
 TAG=${TAG:-sl}
@@ -92,7 +92,7 @@ make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT tags $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
