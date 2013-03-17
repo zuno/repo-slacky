@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+amoebax: Amoebax (SDL Action-Puzzle Game)
+amoebax:
+amoebax: Amoebax is a cute and addictive action-puzzle game. Due an awful
+amoebax: mutation, some amoeba's  species  have started to multiply until
+amoebax: they  take  the world if you  can't stop  them. Fortunately  the
+amoebax: mutation made then too unstable and  lining up four or more will
+amoebax: make them disappear.
+amoebax:
+amoebax:
+amoebax:
+amoebax:
