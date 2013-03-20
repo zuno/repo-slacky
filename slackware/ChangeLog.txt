@@ -1,3 +1,7 @@
+Wed Mar 20 05:01:38 CET 2013
+-----------------------------
+	new file:   development/wxsvg/wxsvg.SlackBuild
+
 Mon Mar 18 05:01:09 CET 2013
 -----------------------------
 	modified:   multimedia/kdenlive/kdenlive.SlackBuild
