@@ -1,6 +1,6 @@
-diff -urN opal-3.10.9/plugins/video/H.263-1998/h263-1998.cxx opal-3.10.9.orig/plugins/video/H.263-1998/h263-1998.cxx
---- opal-3.10.9/plugins/video/H.263-1998/h263-1998.cxx	2012-11-26 11:48:25.000000000 +0100
-+++ opal-3.10.9.orig/plugins/video/H.263-1998/h263-1998.cxx	2012-11-29 17:53:25.302067958 +0100
+diff -urN opal-3.10.10/plugins/video/H.263-1998/h263-1998.cxx opal-3.10.10.src/plugins/video/H.263-1998/h263-1998.cxx
+--- opal-3.10.10/plugins/video/H.263-1998/h263-1998.cxx	2013-02-20 03:18:03.000000000 +0100
++++ opal-3.10.10.src/plugins/video/H.263-1998/h263-1998.cxx	2013-03-21 18:52:00.138007100 +0100
 @@ -48,6 +48,7 @@
  #endif
  
@@ -14,7 +14,7 @@ diff -urN opal-3.10.9/plugins/video/H.263-1998/h263-1998.cxx opal-3.10.9.orig/pl
      // works with eyeBeam, signaled via  non-standard "D"
      if (atoi(value) == 1)
 -      m_context->flags |= CODEC_FLAG_H263P_UMV; 
-+      av_opt_set_int(m_context->priv_data, "umv", 1, 0); 
++      av_opt_set_int(m_context->priv_data, "umv", 1, 0);
      else
 -      m_context->flags &= ~CODEC_FLAG_H263P_UMV; 
 +      av_opt_set_int(m_context->priv_data, "umv", 0, 0); 
@@ -26,7 +26,7 @@ diff -urN opal-3.10.9/plugins/video/H.263-1998/h263-1998.cxx opal-3.10.9.orig/pl
      // does not work with eyeBeam
      if (atoi(value) == 1)
 -      m_context->flags |= CODEC_FLAG_OBMC; 
-+      av_opt_set_int(m_context->priv_data, "obmc", 1, 0);
++      av_opt_set_int(m_context->priv_data, "obmc", 1, 0); 
      else
 -      m_context->flags &= ~CODEC_FLAG_OBMC; 
 +      av_opt_set_int(m_context->priv_data, "obmc", 0, 0); 
@@ -101,9 +101,9 @@ diff -urN opal-3.10.9/plugins/video/H.263-1998/h263-1998.cxx opal-3.10.9.orig/pl
  
    return true;
  }
-diff -urN opal-3.10.9/plugins/video/H.264/h264-x264.cxx opal-3.10.9.orig/plugins/video/H.264/h264-x264.cxx
---- opal-3.10.9/plugins/video/H.264/h264-x264.cxx	2012-11-26 11:48:24.000000000 +0100
-+++ opal-3.10.9.orig/plugins/video/H.264/h264-x264.cxx	2012-11-29 17:54:53.471068187 +0100
+diff -urN opal-3.10.10/plugins/video/H.264/h264-x264.cxx opal-3.10.10.src/plugins/video/H.264/h264-x264.cxx
+--- opal-3.10.10/plugins/video/H.264/h264-x264.cxx	2013-02-20 03:18:02.000000000 +0100
++++ opal-3.10.10.src/plugins/video/H.264/h264-x264.cxx	2013-03-21 18:53:30.762007336 +0100
 @@ -1071,13 +1071,10 @@
          return false;
  
@@ -119,9 +119,9 @@ diff -urN opal-3.10.9/plugins/video/H.264/h264-x264.cxx opal-3.10.9.orig/plugins
                            CODEC_FLAG2_SKIP_RD |
                            CODEC_FLAG2_CHUNKS;
  
-diff -urN opal-3.10.9/plugins/video/MPEG4-ffmpeg/mpeg4.cxx opal-3.10.9.orig/plugins/video/MPEG4-ffmpeg/mpeg4.cxx
---- opal-3.10.9/plugins/video/MPEG4-ffmpeg/mpeg4.cxx	2012-11-26 11:48:28.000000000 +0100
-+++ opal-3.10.9.orig/plugins/video/MPEG4-ffmpeg/mpeg4.cxx	2012-11-29 17:57:26.845068588 +0100
+diff -urN opal-3.10.10/plugins/video/MPEG4-ffmpeg/mpeg4.cxx opal-3.10.10.src/plugins/video/MPEG4-ffmpeg/mpeg4.cxx
+--- opal-3.10.10/plugins/video/MPEG4-ffmpeg/mpeg4.cxx	2013-02-20 03:18:07.000000000 +0100
++++ opal-3.10.10.src/plugins/video/MPEG4-ffmpeg/mpeg4.cxx	2013-03-21 18:55:15.786007611 +0100
 @@ -589,17 +589,17 @@
      m_avpicture->quality = m_videoQMin;
  
@@ -161,9 +161,9 @@ diff -urN opal-3.10.9/plugins/video/MPEG4-ffmpeg/mpeg4.cxx opal-3.10.9.orig/plug
      m_avcontext->workaround_bugs = 0; // no workaround for buggy implementations
  }
  
-diff -urN opal-3.10.9/plugins/video/common/ffmpeg.h opal-3.10.9.orig/plugins/video/common/ffmpeg.h
---- opal-3.10.9/plugins/video/common/ffmpeg.h	2012-11-26 11:48:26.000000000 +0100
-+++ opal-3.10.9.orig/plugins/video/common/ffmpeg.h	2012-11-29 17:58:08.337068696 +0100
+diff -urN opal-3.10.10/plugins/video/common/ffmpeg.h opal-3.10.10.src/plugins/video/common/ffmpeg.h
+--- opal-3.10.10/plugins/video/common/ffmpeg.h	2013-02-20 03:18:05.000000000 +0100
++++ opal-3.10.10.src/plugins/video/common/ffmpeg.h	2013-03-21 18:55:55.677007716 +0100
 @@ -46,6 +46,7 @@
  #include "platform.h"
  

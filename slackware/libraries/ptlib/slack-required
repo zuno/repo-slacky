@@ -13,7 +13,7 @@ libXrender >= 0.9.7-i486-1
 libjpeg >= v8a-i486-1
 libxcb >= 1.8.1-i486-1
 openldap-client >= 2.4.31-i486-2
-openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
-sdl >= 1.2.14-i486-5
+openssl >= 1.0.1e-i486-1_slack14.0 | openssl-solibs >= 1.0.1e-i486-1_slack14.0
+sdl >= 1.2.14-i486-6_slack14.0
 svgalib >= 1.9.25-i486-2
 v4l-utils >= 0.8.8-i486-2

@@ -29,14 +29,14 @@
 set -e
 
 PKGNAME=opal
-VERSION=${VERSION:-3.10.9}
+VERSION=${VERSION:-3.10.10}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://downloads.sourceforge.net/project/opalvoip/v3.10%20Luyten/Stable%209/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://ftp.gnome.org/pub/gnome/sources/opal/3.10/$PKGNAME-$VERSION.tar.xz"
 TAR=
 DIR=
-DOCS="docs/* *.txt *.htm"
+DOCS="docs/*"
 SLKFILES=""
 
 JOBS=${JOBS:--j2}

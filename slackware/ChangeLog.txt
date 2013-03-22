@@ -1,3 +1,10 @@
+Fri Mar 22 05:02:25 CET 2013
+-----------------------------
+	modified:   graphic/gtkrawgallery/gtkrawgallery.SlackBuild
+	modified:   libraries/opal/opal.SlackBuild
+	modified:   libraries/ptlib/ptlib.SlackBuild
+	modified:   network/ekiga/ekiga.SlackBuild
+
 Wed Mar 20 05:01:38 CET 2013
 -----------------------------
 	new file:   development/wxsvg/wxsvg.SlackBuild

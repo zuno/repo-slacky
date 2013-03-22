@@ -1,6 +1,6 @@
-Image-ExifTool >= 9.03-i686-1sl
+Image-ExifTool >= 9.23-i486-1sl
 Imaging >= 1.1.7-i686-3sl
 dcraw >= 9.16-i486-1sl
 libkdcraw >= 4.8.5-i486-1
-numpy >= 1.6.2-i486-1sl
+numpy >= 1.7.0-i486-1sl
 python >= 2.7.3-i486-2

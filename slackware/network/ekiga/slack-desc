@@ -8,11 +8,11 @@
      |-----handy-ruler------------------------------------------------------|
 ekiga: Ekiga (GNOME VoIP Conferencing Application)
 ekiga:
-ekiga: Ekiga (formely known as GnomeMeeting) is an open source VoIP and video
-ekiga: conferencing application for GNOME. Ekiga  uses both the H.323 and SIP
-ekiga: protocols.  It   supports   many  audio   and  video  codecs,  and  is
-ekiga: interoperable with other SIP compliant software   also  with Microsoft
-ekiga: NetMeeting.
+ekiga: Ekiga (formely known as GnomeMeeting) is an open source VoIP and
+ekiga: video conferencing application for GNOME. Ekiga  uses both the
+ekiga: H.323 and SIP protocols. It supports many audio and video codecs,
+ekiga: and is interoperable with other SIP compliant software also
+ekiga: with Microsoft NetMeeting.
 ekiga:
 ekiga:
 ekiga:
