@@ -1,3 +1,11 @@
+Sun Mar 24 05:04:51 CET 2013
+-----------------------------
+	new file:   development/xdelta3/xdelta3.SlackBuild
+	new file:   games/SecondLife/SecondLife.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+	new file:   multimedia/devede/devede.SlackBuild
+	new file:   system/gigolo/gigolo.SlackBuild
+
 Fri Mar 22 05:02:25 CET 2013
 -----------------------------
 	modified:   graphic/gtkrawgallery/gtkrawgallery.SlackBuild
