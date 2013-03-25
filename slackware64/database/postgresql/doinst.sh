@@ -13,6 +13,11 @@ config() {
 config etc/rc.d/rc.postgresql.new
 
 
+###
+# Create postgres home
+###
+mkdir -p /var/lib/pgsql/data
+
 
 ###
 # Create postgres user:group if they don't exist.
@@ -23,8 +28,9 @@ if [[ "${group_exists}" == "" ]]; then
 fi
 user_exists=`grep ^postgres etc/passwd`
 if [[ "${user_exists}" == "" ]]; then
-	useradd -c "PostgreSQL ORDBMS" -d /var/lib/pgsql -u 209 -g 209 -s "/bin/false" postgres
+	useradd -c "PostgreSQL ORDBMS" -d /var/lib/pgsql -u 209 -g 209 -s "/bin/bash" postgres
 fi
 
-
+chown -R postgres:postgres /var/lib/pgsql
+chmod -R 700 /var/lib/pgsql
 

@@ -1,0 +1,48 @@
+diff -rupN clamav-0.97.7/etc/clamav-milter.conf clamav-0.97.7-new/etc/clamav-milter.conf
+--- clamav-0.97.7/etc/clamav-milter.conf	2013-03-11 16:23:20.000000000 +0100
++++ clamav-0.97.7-new/etc/clamav-milter.conf	2013-03-24 16:20:53.916135662 +0100
+@@ -1,12 +1,4 @@
+ ##
+-## Example config file for clamav-milter
+-##
+-
+-# Comment or remove the line below.
+-Example
+-
+-
+-##
+ ## Main options
+ ##
+ 
+diff -rupN clamav-0.97.7/etc/clamd.conf clamav-0.97.7-new/etc/clamd.conf
+--- clamav-0.97.7/etc/clamd.conf	2013-03-11 16:23:20.000000000 +0100
++++ clamav-0.97.7-new/etc/clamd.conf	2013-03-24 16:21:07.597107154 +0100
+@@ -1,12 +1,3 @@
+-##
+-## Example config file for the Clam AV daemon
+-## Please read the clamd.conf(5) manual before editing this file.
+-##
+-
+-
+-# Comment or remove the line below.
+-Example
+-
+ # Uncomment this option to enable logging.
+ # LogFile must be writable for the user running daemon.
+ # A full path is required.
+diff -rupN clamav-0.97.7/etc/freshclam.conf clamav-0.97.7-new/etc/freshclam.conf
+--- clamav-0.97.7/etc/freshclam.conf	2013-03-11 16:23:20.000000000 +0100
++++ clamav-0.97.7-new/etc/freshclam.conf	2013-03-24 16:21:12.889108222 +0100
+@@ -1,12 +1,3 @@
+-##
+-## Example config file for freshclam
+-## Please read the freshclam.conf(5) manual before editing this file.
+-##
+-
+-
+-# Comment or remove the line below.
+-Example
+-
+ # Path to the database directory.
+ # WARNING: It must match clamd.conf's directive!
+ # Default: hardcoded (depends on installation options)

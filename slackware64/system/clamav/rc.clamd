@@ -1,0 +1,45 @@
+#!/bin/sh
+# Start/Stop/Restart the clam antivirus daemon.
+
+CLAMAV_MILTER=0
+
+# Start
+clamav_start() {
+  if [ -x /usr/sbin/clamd ]; then
+    echo -n "Starting clamd"
+    /usr/sbin/clamd
+    echo -n "Starting freshclam"
+    /usr/bin/freshclam -d -l /var/log/freshclam.log
+    if [ "$CLAMAV_MILTER" == "1" ]; then
+    echo -n "Starting clamav-milter"
+    /usr/sbin/clamav-milter -dblo --max-children=2 local:/var/run/clamav/clmilter.sock
+    fi
+  fi
+}
+
+# Stop
+clamav_stop() {
+  kill `cat /var/run/clamav/clamd.pid`
+  kill `cat /var/run/clamav/freshclam.pid`
+  [ "$CLAMAV_MILTER" == "1" ] && killall clamav-milter
+}
+
+# Restart
+clamav_restart() {
+  clamav_stop
+  clamav_start
+}
+
+case "$1" in
+'start')
+  clamav_start
+  ;;
+'stop')
+  clamav_stop
+  ;;
+'restart')
+  clamav_restart
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

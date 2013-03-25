@@ -2,9 +2,9 @@
  
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
-#
-# Slackware build script for mongodb
-# Official Site: http://www.mongodb.org/
+# 
+# Slackware build script for clamav
+# Official Site: http://www.clamav.net/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,16 +28,27 @@
 set -e
 
 # Basic information.
-PKGNAME=mongodb
-VERSION=${VERSION:-2.4.1}
-BUILD=${BUILD:-1}
+PKGNAME=clamav
+VERSION=${VERSION:-0.97.7}
+BUILD=${BUILD:-4}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.mongodb.org/src/${PKGNAME}-src-r${VERSION}.tar.gz"
+SOURCE="http://downloads.sourceforge.net/project/clamav/clamav/$VERSION/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="APACHE-2.0.txt GNU-AGPL-3.0.txt README"
-SLKFILES="libdir.patch" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="AUTHORS BUGS COPYING* ChangeLog FAQ INSTALL NEWS README UPGRADE docs/html docs/*.pdf"
+SLKFILES="fix_config_files.patch rc.clamd" # all files needed to the slackbuild (except slack-desc etc..)
+
+if ! grep -q "^clamav:" /etc/group; then
+  echo "Group clamav not found!!! You must have this group in order to build package. Try the following command"
+  echo "groupadd clamav &>/dev/null"
+  exit 1
+fi
+if ! grep -q "^clamav:" /etc/passwd; then
+  echo "User clamav not found!!! You must have this user in order to build package. Try the following command"
+  echo "useradd -d /dev/null -s /bin/false -c \"Clamav Antivirus user\" -g clamav clamav &>/dev/null"
+  exit 1
+fi
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -79,17 +90,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-if ! grep -q "^mongodb:" /etc/group; then
-  echo "Group mongodb not found!!! You must have this group in order to build package. Try the following command"
-  echo "groupadd mongodb &>/dev/null"
-  exit 1
-fi
-if ! grep -q "^mongodb:" /etc/passwd; then
-  echo "User mongodb not found!!! You must have this user in order to build package. Try the following command"
-  echo "useradd -d /var/lib/mongodb -s /bin/false -c \"Mongodb user\" -g mongodb mongodb &>/dev/null"
-  exit 1
-fi
-
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
@@ -100,27 +100,38 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-patch -p0 < $CWD/libdir.patch
+patch -p1 < $CWD/fix_config_files.patch
 
-#build from source
-scons --use-system-boost=yes --use-system-pcre=yes --ssl=yes --sharedclient
-scons --prefix=$PKG/usr install 
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --with-dbdir=/var/lib/clamav \
+  --with-user=clamav \
+  --with-group=clamav \
+  --enable-milter \
+  --enable-id-check \
+  --build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
-#copy man pages
-mkdir -p $PKG/usr/man/man1
-cp -a debian/*.1 $PKG/usr/man/man1
+mv $PKG/etc/clamd.conf $PKG/etc/clamd.conf.new
+mv $PKG/etc/freshclam.conf $PKG/etc/freshclam.conf.new
+mv $PKG/etc/clamav-milter.conf $PKG/etc/clamav-milter.conf.new
 
-#copy configuration file
-mkdir -p $PKG/etc/mongodb
-cat debian/mongodb.conf > $PKG/etc/mongodb/mongodb.conf.new
+# Make runtime directory
+mkdir -p $PKG/var/run/clamav
+mkdir -p $PKG/var/lib/clamav
 
-#copy startup script
+# Installing startup script
 mkdir -p $PKG/etc/rc.d
-cat $CWD/rc.mongod > $PKG/etc/rc.d/rc.mongod.new
-
-#make database dir
-mkdir -p $PKG/var/lib/mongodb $PKG/var/log/mongodb
-chown -R mongodb.mongodb $PKG/var/lib/mongodb $PKG/var/log/mongodb
+cat $CWD/rc.clamd > $PKG/etc/rc.d/rc.clamd
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION

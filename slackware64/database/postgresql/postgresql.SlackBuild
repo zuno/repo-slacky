@@ -37,7 +37,7 @@ if [[ "${group_exists}" == "" ]]; then
 fi
 user_exists=`grep ^postgres /etc/passwd`
 if [[ "${user_exists}" == "" ]]; then
-	useradd -c "PostgreSQL ORDBMS" -d /var/lib/pgsql -u 209 -g 209 -s "/bin/false" postgres
+	useradd -c "PostgreSQL ORDBMS" -d /var/lib/pgsql -u 209 -g 209 -s "/bin/bash" postgres
 fi
 
 
@@ -50,7 +50,7 @@ PKG=$TMP/package
 VERSION=${VERSION:-9.2.3}
 ARCH=${ARCH:-x86_64}
 JOBS=${JOBS:--j4}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
 
 SOURCE="ftp://ftp.postgresql.org/pub/source/v$VERSION/$PKGNAME-$VERSION.tar.bz2"
@@ -160,12 +160,6 @@ chmod 755 $PKG/var/log/setup/setup.$PKGNAME
 mkdir -p $PKG/etc/rc.d
 cat $CWD/rc.postgresql > $PKG/etc/rc.d/rc.postgresql.new
 chmod 0755 $PKG/etc/rc.d/rc.postgresql.new
-
-# Install base database directory
-mkdir -p $PKG/var/lib/pgsql/data
-chown -R postgres:postgres $PKG/var/lib/pgsql
-chmod 700 $PKG/var/lib/pgsql
-chmod 700 $PKG/var/lib/pgsql/data
 
 # Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install

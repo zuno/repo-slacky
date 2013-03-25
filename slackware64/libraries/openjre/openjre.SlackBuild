@@ -7,7 +7,6 @@
 
 # Written by Eric Hameleers < alien at slackware.com >
 # Adapted to slacky's standard by miklos < ardutu at gmail dot com >
-# Last build from Luca De Pandis < lucadepandis@gmail.com >
 
 # Slackware build script for openjre
 # Official Site: http://openjre.java.net/
@@ -33,9 +32,9 @@ set -e
 
 # Basic information. 
 PKGNAME=openjre
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
-JOBS=${JOBS:-"-j4"}
+JOBS=${JOBS:-"-j2"}
 ARCH=${ARCH:-x86_64}
 DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
 SLKFILES="doinst.sh generate-cacerts.pl openjre.sh openjre.csh *.diff swing.properties" #extra files to include in slackbuild distribution
@@ -142,9 +141,9 @@ sed -i -e 's/-o native-ecj/-lgcj -o native-ecj/' Makefile
 make VERBOSE=TRUE
 
 # Move the generated jre and sdk images to the respective packages:
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/
-cp -a openjdk.build/j2re-image/ \
-  $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/jre/
+cp -a openjdk.build/j2re-image/* \
+  $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/jre/
 
 # Generate a cacerts file from the certificates installed through our
 # ca-certificates package - the "cacerts" in the OpenJDK sources is empty.
@@ -157,7 +156,7 @@ if which keytool 1>/dev/null 2>&1 ; then
       openssl x509 -text -in "${cert}" >> all.crt
     done
     perl generate-cacerts.pl keytool all.crt
-    install -p -m0644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/lib/security
+    install -p -m0644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/jre${VERSION}/jre/lib/security
   )
 else
   echo "** Not installing a proper cacerts file !"
@@ -194,22 +193,22 @@ done
 
 # User-modifiable configuration files go to /etc :
 mkdir -p $PKG/etc/java
-mv $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/${LIB_ARCH}/jvm.cfg $PKG/etc/java/jvm.cfg.new
-ln -sf /etc/java/jvm.cfg $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/${LIB_ARCH}/jvm.cfg
-mv $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.policy $PKG/etc/java/java.policy.new
-ln -sf /etc/java/java.policy $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.policy
-mv $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.security $PKG/etc/java/java.security.new
-ln -sf /etc/java/java.security $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/security/java.security
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/${LIB_ARCH}/jvm.cfg $PKG/etc/java/jvm.cfg.new
+ln -sf /etc/java/jvm.cfg $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/${LIB_ARCH}/jvm.cfg
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.policy $PKG/etc/java/java.policy.new
+ln -sf /etc/java/java.policy $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.policy
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.security $PKG/etc/java/java.security.new
+ln -sf /etc/java/java.security $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.security
 
 # NOTE:
 # The openjdk does not build a mozilla plugin: install icedtea-web instead.
 
 ( cd $PKG/usr/lib${LIBDIRSUFFIX}
-  ln -sf ./java/lib/${LIB_ARCH}/server/libjvm.so .
+  ln -sf ./java/jre/lib/${LIB_ARCH}/server/libjvm.so .
 )
 
 # Adding swing.properties for GTK+ integration and antialiasing
-cp $CWD/swing.properties $PKG/usr/lib${LIBDIRSUFFIX}/java/lib/
+cp $CWD/swing.properties $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/icedtea
