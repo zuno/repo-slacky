@@ -1,0 +1,5 @@
+cxxlibs >= 6.0.17-x86_64-1 | gcc-g++ >= 4.7.1-x86_64-1
+gcc >= 4.7.1-x86_64-1
+glibc-solibs >= 2.15-x86_64-7 | skype_static >= 4.0.0.8-x86_64-1sl
+libsigc++ >= 2.2.11-x86_64-1sl
+openssl >= 1.0.1e-x86_64-1_slack14.0 | openssl-solibs >= 1.0.1e-x86_64-1_slack14.0

@@ -1,0 +1,18 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+        |-----handy-ruler------------------------------------------------------|
+rtorrent: rTorrent (curses frontend for libtorrent)
+rtorrent:
+rtorrent: rTorrent is a console-based BitTorrent client. 
+rtorrent: It aims to be a fully-featured and efficient client with the ability
+rtorrent: to run in the background using screen.
+rtorrent: It supports fast-resume and session management.
+rtorrent:
+rtorrent:
+rtorrent:
+rtorrent:
+rtorrent:

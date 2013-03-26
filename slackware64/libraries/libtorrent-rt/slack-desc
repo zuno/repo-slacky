@@ -1,0 +1,18 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+             |-----handy-ruler------------------------------------------------------|
+libtorrent-rt: LibTorrent
+libtorrent-rt:
+libtorrent-rt: LibTorrent is a BitTorrent library written in C++ for *nix,
+libtorrent-rt: with a focus on high performance and good code.
+libtorrent-rt: The library differentiates itself from other implementations
+libtorrent-rt: by transfering directly from file pages to the network stack.
+libtorrent-rt: On high-bandwidth connections it is able to seed at 3 times
+libtorrent-rt: the speed of the official client.
+libtorrent-rt:
+libtorrent-rt:
+libtorrent-rt:
