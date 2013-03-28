@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+ocrad: GNU Ocrad is an OCR (Optical Character Recognition) program
+ocrad: implemented as a filter and based on a feature extraction method.
+ocrad: It reads a bitmap image in pbm or pgm format and produces text in
+ocrad: byte (8-bit) or UTF-8 formats.
+ocrad:
+ocrad: Also includes a layout analyser able to separate the columns or
+ocrad: blocks of text normally found on printed pages.
+ocrad:
+ocrad: Ocrad can be used as a stand-alone console application, or as a
+ocrad: backendto other programs.
+ocrad:

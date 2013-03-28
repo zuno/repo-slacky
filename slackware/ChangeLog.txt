@@ -1,3 +1,8 @@
+Thu Mar 28 05:01:35 CET 2013
+-----------------------------
+	new file:   graphic/evolvotron/evolvotron.SlackBuild
+	new file:   graphic/ocrad/ocrad.SlackBuild
+
 Sun Mar 24 05:04:51 CET 2013
 -----------------------------
 	new file:   development/xdelta3/xdelta3.SlackBuild
