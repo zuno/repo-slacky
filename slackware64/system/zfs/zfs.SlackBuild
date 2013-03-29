@@ -1,0 +1,124 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+
+# Copyright (c) 2013, Luca De Pandis. All rights reserved.
+# Contact me: lucadepandis@gmail.com
+
+# Slackware build script for Zettabyte File System
+# Official Site: http://zfsonlinux.org
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+set -e
+
+PKGNAME=zfs
+VERSION=${VERSION:-0.6.1}
+KERNVER=$(uname -r)
+ARCH=x86_64  # Using it on a 32-bits architecture is strongly unrecommended.
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+PKGTYPE=${PKGTYPE:-txz}
+SOURCE="http://archive.zfsonlinux.org/downloads/zfsonlinux/$PKGNAME/$PKGNAME-$VERSION.tar.gz"
+
+JOBS=${JOBS:--j4}
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+
+if [ ! -e $PKGNAME-$VERSION.tar.gz ]; then
+    wget $SOURCE
+fi
+
+# Since 32-bits is not recommended, this SlackBuild will use only a 64-bits configuration
+# for SLKCFLAGS and LIBDIRSUFFIX variables and there will be no more difference between
+# CHOST and ARCH.
+SLKCFLAGS="-O2 -fPIC"
+LIBDIRSUFFIX="64"
+
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+
+cd $TMP
+tar xzvf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# ZFS should not be installed on /usr, but in / to avoid any issues with a separate /usr
+# partition
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/lib${LIBDIRSUFFIX} \
+    --sbindir=/sbin \
+    --bindir=/bin \
+    --mandir=/usr/man \
+    --docdir=/usr/doc/$PKGNAME-$VERSION \
+    --enable-shared \
+    --disable-static \
+    --with-udevdir=/lib/udev \
+    --with-dracutdir=/lib/dracut \
+    --without-blkid \
+    --build=$ARCH-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cp -a \
+    AUTHORS DISCLAIMER META README* OPENSOLARIS* \
+    $PKG/usr/doc/$PKGNAME-$VERSION
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+chown -R root:root .
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ]; then
+    ADD=$(ls /var/log/packages/ | sed -ne 's/\(spl\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+    requiredbuilder -y -v -s $CWD $PKG
+    cat $CWD/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+fi
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-${VERSION}_${KERNVER}-$ARCH-$BUILD$TAG.$PKGTYPE
+
+if [ "$1" == "--cleanup" ]; then
+    rm -rf $TMP
+fi

@@ -1,3 +1,9 @@
+Fri Mar 29 05:00:28 CET 2013
+-----------------------------
+	new file:   database/mdbtools/mdbtools.SlackBuild
+	new file:   development/spl/spl.SlackBuild
+	new file:   system/zfs/zfs.SlackBuild
+
 Tue Mar 26 05:00:30 CET 2013
 -----------------------------
 	new file:   libraries/libtorrent-rt/libtorrent-rt.SlackBuild
