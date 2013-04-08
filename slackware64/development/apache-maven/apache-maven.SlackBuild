@@ -1,12 +1,10 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Packager Andrea Sciucca ( gohanz at infinito.it)
-# Thanks to H.Hanson script.
-# Modified by miklos < ardutu at gmail dot com >
-# 
-# Slackware build script for google-chrome
-# Official Site: https://www.google.com/intl/it/chrome/browser/
+# Written by miklos < ardutu at gmail dot com >
+
+# Slackware build script for apache-maven
+# Official Site: http://maven.apache.org
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -30,20 +28,16 @@
 set -e
 
 # Basic information.
-PKGNAME=google-chrome
-BUILD=${BUILD:-3}
+PKGNAME=apache-maven
+VERSION=${VERSION:-3.0.5}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-# Just in case:
-case "$ARCH" in
-  i?86) DEBARCH="i386" ; LIBDIRSUFFIX="" ; ARCH=i386 ;;
-  x86_64) DEBARCH="amd64" ; LIBDIRSUFFIX="64" ;;
-esac
-SOURCE=https://dl.google.com/linux/direct/google-chrome-stable_current'_'$DEBARCH.deb
+SOURCE="http://mirror.nohup.it/apache/maven/maven-3/$VERSION/binaries/${PKGNAME}-${VERSION}-bin.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS=""
-SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="LICENSE.txt README.txt NOTICE.txt"
+SLKFILES="apache-maven.sh apache-maven.csh" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -68,9 +62,6 @@ DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
 if [ ! -e "$CWD/$TAR" ];then
   wget "$SOURCE" -O "$CWD/$TAR"
 fi
-
-# Get the real version, thanks to Fred Richards.
-VERSION=$(ar p google-chrome-stable_current'_'$DEBARCH.deb control.tar.gz | tar zxO ./control | grep Version | awk '{print $2}' | cut -d- -f1)
  
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
@@ -92,62 +83,26 @@ fi
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-ar -x $CWD/$TAR || exit 1
+tar xvf $CWD/$TAR
+cd $PKGNAME-$VERSION
 
-cd $PKG
-# Decompress the source tarball
-tar xf $TMP/data.tar.lzma || exit 1
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
 
-chmod 0755 $PKG # Put this back.
-rm -rf etc/ # The cron job is debian/ubuntu only.
+mkdir -p $PKG/usr/share/maven $PKG/usr/bin $PKG/etc/profile.d
+cp -a bin/ boot/ conf/ lib/ $PKG/usr/share/maven/
+(
+    cd $PKG/usr/bin
+    ln -s ../share/maven/bin/mvn mvn
+    ln -s ../share/maven/bin/mvnDebug mvnDebug
+    ln -s ../share/maven/bin/mvnyjp mvnyjp
+)
 
-# Installing menu voice
-( mkdir -p $PKG/usr/share/applications
-cd $PKG/usr/share/applications
-ln -s /opt/google/chrome/google-chrome.desktop . )
-
-# Installing icons directory
-cd $PKG/opt/google/chrome
-for res in 16 22 24 32 48 64 128 256 ;do
-  dir=${PKG}/usr/share/icons/hicolor/${res}x${res}/apps
-  mkdir -p ${dir}
-  install -m0644 product_logo_${res}.png \
-                 ${dir}/${PKGNAME}.png || exit 1 
-done
-
-
-# Fix default mandir
-mkdir -p $PKG/usr/man/man1
-mv $PKG/usr/share/man/man1/* $PKG/usr/man/man1
-rm -r $PKG/usr/share/man
-
-
-# Also add the slack-desk file and this slackbuild to the package
-mkdir -p $PKG/install
-cat $CWD/slack-desc > $PKG/install/slack-desc
-
-# Building some symlinks to mozilla libraries inside the /install/doinst.sh
-cat << EOF > $PKG/install/doinst.sh
-chmod 4755 /opt/google/chrome/chrome-sandbox
-EOF
-
-# Building some post-install execution script 	
-	echo "if [ -x /usr/bin/update-mime-database ]; then
-  /usr/bin/update-mime-database /usr/share/mime &> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/update-desktop-database ]; then
-  /usr/bin/update-desktop-database 1> /dev/null 2> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
-	echo "if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  /usr/bin/gtk-update-icon-cache  -f -q /usr/share/icons/hicolor 1> /dev/null 2> /dev/null
-fi" >> $PKG/install/doinst.sh
-	echo "" >> $PKG/install/doinst.sh
+cp $CWD/apache-maven.{sh,csh} $PKG/etc/profile.d/
 
 # Documentations
-#mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
-#cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
@@ -180,7 +135,6 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(google-chrome-pam-solibs\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi

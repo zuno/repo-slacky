@@ -6,14 +6,14 @@
 # leave one space after the ':'.
 
       |-----handy-ruler------------------------------------------------------|
-ffmpeg: FFmpeg (Multimedia Player, Server And Encoder)
-ffmpeg:
-ffmpeg: FFmpeg is a complete solution to record, convert and stream audio and
-ffmpeg: video. It includes libavcodec, the leading audio/video  codec library
-ffmpeg: FFmpeg  is  developed  under  Linux, but  it  can compiled under most
-ffmpeg: operating systems, including Windows.
-ffmpeg:
-ffmpeg:
-ffmpeg:
-ffmpeg:
-ffmpeg:
+libnut: Libnut (NUT Multimedia Files Library)
+libnut:
+libnut: Library and tools to create NUT multimedia files
+libnut:
+libnut:
+libnut:
+libnut:
+libnut:
+libnut:
+libnut:
+libnut:

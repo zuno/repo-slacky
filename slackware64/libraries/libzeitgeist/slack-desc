@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+libzeitgeist: libzeitgeist ( Zeitgeist Client Library )
+libzeitgeist:
+libzeitgeist: The project provides a client library for applications that want to 
+libzeitgeist: interact with the Zeitgeist daemon. The library is written in C using
+libzeitgeist: glib and provides an asynchronous GObject oriented API.
+libzeitgeist:
+libzeitgeist:
+libzeitgeist:
+libzeitgeist:
+libzeitgeist:
+libzeitgeist:

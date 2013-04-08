@@ -12,8 +12,8 @@ google-chrome: Google Chrome is a browser that combines a minimal design with
 google-chrome: sophisticated  technology  to  make the web faster, safer, and
 google-chrome: easier.
 google-chrome:
-google-chrome:                     *** W A R N I N G ***
-google-chrome:     Google Chrome work with some Seamonkey-Solibs libraries.
-google-chrome:            Do not remove Seamonkey-Solibs package.
+google-chrome:
+google-chrome:
+google-chrome:
 google-chrome:
 google-chrome:

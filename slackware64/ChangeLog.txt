@@ -1,3 +1,14 @@
+Mon Apr  8 05:01:46 CEST 2013
+-----------------------------
+	copied:     multimedia/ffmpeg/ffmpeg.SlackBuild -> development/apache-maven/apache-maven.SlackBuild
+	new file:   libraries/libnut/libnut.SlackBuild
+	copied:     multimedia/ffmpeg/ffmpeg.SlackBuild -> libraries/libzeitgeist/libzeitgeist.SlackBuild
+	copied:     multimedia/ffmpeg/ffmpeg.SlackBuild -> libraries/yajl/yajl.SlackBuild
+	modified:   multimedia/ffmpeg/ffmpeg.SlackBuild
+	modified:   network/google-chrome/google-chrome.SlackBuild
+	copied:     multimedia/ffmpeg/ffmpeg.SlackBuild -> utilities/Xdialog/Xdialog.SlackBuild
+	copied:     multimedia/ffmpeg/ffmpeg.SlackBuild -> utilities/archivemail/archivemail.SlackBuild
+
 Fri Mar 29 05:00:28 CET 2013
 -----------------------------
 	new file:   database/mdbtools/mdbtools.SlackBuild

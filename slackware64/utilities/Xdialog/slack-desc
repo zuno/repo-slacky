@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+Xdialog: Xdialog (Dialog X Replacement)
+Xdialog:
+Xdialog: Xdialog is designed to be a drop in replacement for the cdialog
+Xdialog: program. It converts any terminal based program  into a program
+Xdialog: with an X-windows  interface. The dialogs are easier to see and
+Xdialog: use  and the treeview adds an extra dimension to the  way menus
+Xdialog: can be displayed.
+Xdialog:
+Xdialog:
+Xdialog:
+Xdialog:
