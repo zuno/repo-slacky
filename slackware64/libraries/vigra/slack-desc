@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+vigra: VIGRA (Vision with Generic Algorithms)
+vigra:
+vigra: It's a novel computer vision library that puts its main  emphasize on
+vigra: customizable  algorithms  and  data  structures.  By  using  template
+vigra: techniques similar to those in the C++ Standard Template Library, you
+vigra: can easily adapt any VIGRA component to the needs of your application
+vigra: without thereby giving up execution speed.
+vigra:
+vigra:
+vigra:
+vigra:
