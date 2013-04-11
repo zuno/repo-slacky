@@ -1,3 +1,13 @@
+Thu Apr 11 05:02:30 CEST 2013
+-----------------------------
+	modified:   development/fltk/fltk.SlackBuild
+	modified:   multimedia/LiVES/LiVES.SlackBuild
+	modified:   multimedia/kdenlive/kdenlive.SlackBuild
+	modified:   multimedia/smplayer/smplayer.SlackBuild
+	modified:   network/opera/opera.SlackBuild
+	modified:   network/snort/snort.SlackBuild
+	modified:   utilities/nut/nut.SlackBuild
+
 Thu Mar 28 05:01:35 CET 2013
 -----------------------------
 	new file:   graphic/evolvotron/evolvotron.SlackBuild

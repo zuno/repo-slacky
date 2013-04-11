@@ -1,6 +1,6 @@
-diff -urN nut-18.5/Makefile nut-18.5.orig/Makefile
---- nut-18.5/Makefile	2013-01-04 02:59:32.000000000 +0100
-+++ nut-18.5.orig/Makefile	2013-01-09 21:14:22.365028324 +0100
+diff -urN nut-18.7/Makefile nut-18.7.src/Makefile
+--- nut-18.7/Makefile	2013-04-08 08:05:27.000000000 +0200
++++ nut-18.7.src/Makefile	2013-04-10 18:44:57.171221925 +0200
 @@ -1,4 +1,4 @@
 -prefix = /usr/local
 +prefix = /usr

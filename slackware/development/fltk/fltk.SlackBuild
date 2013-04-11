@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=fltk
-VERSION=${VERSION:-1.3.1}
+VERSION=${VERSION:-1.3.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
@@ -101,13 +101,15 @@ make install DESTDIR=$PKG
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/{examples,html,pdf}
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
 
-wget http://ftp.easysw.com/pub/fltk/$VERSION/$PKGNAME-$VERSION-docs-html.tar.gz
-tar xzvf $CWD/$PKGNAME-$VERSION-docs-html.tar.gz
-cp -a $PKGNAME-$VERSION/documentation/html $PKG/usr/doc/$PKGNAME-$VERSION
-wget http://ftp.easysw.com/pub/fltk/$VERSION/$PKGNAME-$VERSION-docs-pdf.tar.gz
-tar xzvf $CWD/$PKGNAME-$VERSION-docs-pdf.tar.gz
-cp -a $PKGNAME-$VERSION/documentation/fltk.pdf $PKG/usr/doc/$PKGNAME-$VERSION/pdf
- 
+( cd $CWD
+  wget http://ftp.easysw.com/pub/fltk/$VERSION/$PKGNAME-$VERSION-docs-html.tar.gz
+  tar xzvf $PKGNAME-$VERSION-docs-html.tar.gz
+  cp -a $PKGNAME-$VERSION/documentation/html $PKG/usr/doc/$PKGNAME-$VERSION
+  wget http://ftp.easysw.com/pub/fltk/$VERSION/$PKGNAME-$VERSION-docs-pdf.tar.gz
+  tar xzvf $PKGNAME-$VERSION-docs-pdf.tar.gz
+  cp -a $PKGNAME-$VERSION/documentation/fltk.pdf $PKG/usr/doc/$PKGNAME-$VERSION/pdf
+)
+
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
 for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do

@@ -3,8 +3,6 @@ attica >= 0.4.0-i486-1
 attr >= 2.4.46-i486-1
 bzip2 >= 1.0.6-i486-1
 cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
-dvdauthor >= 0.7.1-i486-1sl
-dvgrab >= 3.5-i486-7sl
 expat >= 2.0.1-i486-2
 fontconfig >= 2.9.0-i486-1
 freetype >= 2.4.11-i486-1_slack14.0
@@ -42,7 +40,6 @@ phonon >= 4.6.0-i486-1
 qca >= 2.0.2-i486-1
 qjson >= 0.7.1-i486-5sl
 qt >= 4.8.2-i486-4
-recordmydesktop >= 0.3.8.1-i486-6sl
 soprano >= 2.7.6-i486-1
 strigi >= 0.7.7-i486-2
 udev >= 182-i486-5

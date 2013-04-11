@@ -37,7 +37,7 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=smplayer
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.8.3}
+VERSION=${VERSION:-0.8.4}
 FREEVER=${FREEVER:-20120919}
 NONFVER=${NONFVER:-0.1.1}
 ARCH=${ARCH:-i486}
@@ -45,7 +45,7 @@ JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/0.8.3/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/0.8.4/$PKGNAME-$VERSION.tar.bz2"
 
 # Download sorce tarball if still not present
 if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then

@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=kdenlive
-VERSION=${VERSION:-0.9.4}
+VERSION=${VERSION:-0.9.6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
@@ -138,11 +138,9 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cd $PKG
 chown -R root:root $PKG
 
-if [ -x /usr/bin/requiredbuilder ];then
-ADD=$(ls /var/log/packages/ | sed -ne 's/\(dvdauthor\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(dvgrab\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(recordmydesktop\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
-requiredbuilder -y -v -s  $CWD $PKG
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
