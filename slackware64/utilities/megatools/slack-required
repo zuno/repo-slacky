@@ -1,0 +1,10 @@
+curl >= 7.29.0-x86_64-2_slack14.0
+cyrus-sasl >= 2.1.23-x86_64-4
+fuse >= 2.8.5-x86_64-1
+glib2 >= 2.32.4-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+libffi >= 3.0.11-x86_64-1
+libidn >= 1.25-x86_64-2
+openldap-client >= 2.4.31-x86_64-2
+openssl >= 1.0.1e-x86_64-1_slack14.0 | openssl-solibs >= 1.0.1e-x86_64-1_slack14.0
+zlib >= 1.2.6-x86_64-1

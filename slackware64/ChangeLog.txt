@@ -1,3 +1,7 @@
+Sat Apr 13 05:00:27 CEST 2013
+-----------------------------
+	new file:   utilities/megatools/megatools.SlackBuild
+
 Fri Apr 12 05:00:38 CEST 2013
 -----------------------------
 	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild

@@ -1,0 +1,18 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+         |-----handy-ruler------------------------------------------------------|
+megatools: megatools - command line client for Mega.co.nz
+megatools:
+megatools: Megatools is a collection of programs for accessing Mega service
+megatools: from a command line of your desktop or server.
+megatools: Megatools allow you to copy individual files as well as entire
+megatools: directory trees to and from the cloud. You can also perform
+megatools: streaming downloads for example to preview videos and audio files,
+megatools: without needing to download the entire file.
+megatools: You can register account using a 'megareg' tool, with the benefit
+megatools: of having true control of your encryption keys.
+megatools:
