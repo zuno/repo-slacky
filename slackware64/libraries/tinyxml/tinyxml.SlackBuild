@@ -1,12 +1,12 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# Written by Larry Hajali <larryhaja[at]gmail[dot]com>
+# Adapted to slacky's standard by miklos ( ardutu at gmail dot com )
+# 
+# Slackware build script for tinyxml
+# Official Site: http://www.grinninglizard.com/tinyxml/
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -29,16 +29,16 @@
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.4}
+PKGNAME=tinyxml
+VERSION=${VERSION:-2.6.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/tinyxml/tinyxml_2_6_2.tar.gz"
 TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="Changelog *.txt"
-SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
+DIR=$PKGNAME
+DOCS="changes.txt readme.txt"
+SLKFILES="*.patch" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -86,13 +86,30 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
+# Define TINYXML_USE_STL to YES and use custom SLKCFLAGS.
+sed -i -e '/^TINYXML_USE_STL/s|=.*|= YES|' -e "s|-O3|$SLKCFLAGS|" Makefile
+# Permanently define TINYXML_USE_STL in tinyxml.h.
+patch -p1 < $CWD/tinyxml-2.5.3-stl.patch
+# Fix for bug
+# http://trac.filezilla-project.org/ticket/5473
+# http://sourceforge.net/tracker/index.php?func=detail&aid=3031828&group_id=13559&atid=313559
+patch -p0 < $CWD/entity.patch
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+make
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
-make $JOBS
-make install DESTDIR=$PKG
+g++ -v $SLKCFLAGS -Wall -Wno-unknown-pragmas -Wno-format -shared -o \
+  lib${PKGNAME}.so.0.${VERSION} -Wl,-soname,lib${PKGNAME}.so.0 *.o
+
+mkdir -p $PKG/usr/{include,lib${LIBDIRSUFFIX}}
+install -m 0755 lib${PKGNAME}.so.0.${VERSION} $PKG/usr/lib${LIBDIRSUFFIX}
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+    ln -s lib${PKGNAME}.so.0.${VERSION} lib${PKGNAME}.so.0
+    ln -s lib${PKGNAME}.so.0.${VERSION} lib${PKGNAME}.so
+)
+install -m 0644 $PKGNAME.h tinystr.h $PKG/usr/include
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -110,6 +127,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG

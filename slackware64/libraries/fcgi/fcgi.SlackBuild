@@ -1,12 +1,12 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# Copyright 2011 David Spencer, Baildon, West Yorkshire, U.K.
+# Adapted to slacky's standard by miklos ( ardutu at gmail dot com )
+# 
+# Slackware build script for fcgi
+# Official Site: http://www.fastcgi.com/
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -29,16 +29,16 @@
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.4}
+PKGNAME=fcgi
+VERSION=${VERSION:-2.4.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://www.fastcgi.com/dist/${PKGNAME}-${VERSION}.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="Changelog *.txt"
-SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="LICENSE.TERMS doc/*.html doc/*.htm images/ doc/fastcgi-prog-guide/ doc/fastcgi-whitepaper"
+SLKFILES="fcgi-2.4.0-*.patch" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -86,13 +86,40 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
+ 
+# Fix compilation by recent gcc (thanks to Debian)
+cat $CWD/fcgi-2.4.0-gcc44-fix-include.patch | patch -p1
+# Fix type of socket ClientData (thanks to Gentoo)
+cat $CWD/fcgi-2.4.0-clientdata-pointer.patch | patch -p1
+# Fix image paths in html docs (thanks to Gentoo)
+cat $CWD/fcgi-2.4.0-html-updates.patch | patch -p1
 
+libtoolize --copy --force
+# Create some empty files to make autoreconf happy
+touch INSTALL NEWS AUTHORS ChangeLog COPYING
+autoreconf -vf
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PRGNAM-$VERSION \
+  --disable-static \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
+
+mkdir -p $PKG/usr/man/man{1,3}
+cp -a doc/*.1 $PKG/usr/man/man1/
+cp -a doc/*.3 $PKG/usr/man/man3/
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -110,6 +137,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG

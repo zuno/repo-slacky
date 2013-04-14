@@ -1,12 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Andrea Sciucca Gohanz ( gohanz at infinito.it )
-# Last build from miklos < ardutu at gmail dot com >
-
-# Slackware build script for smplayer
-# Official Site: http://smplayer.sourceforge.net
-
+# Written by miklos < ardutu at gmail dot com >
+# 
+# Slackware build script for gslapt
+# Official Site: http://software.jaos.org/
+#
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -24,20 +23,20 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Require: slapt-get
 
 set -e
 
 # Basic information.
-PKGNAME=smplayer
-VERSION=${VERSION:-0.8.4}
+PKGNAME=gslapt
+VERSION=${VERSION:-0.5.3h}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/project/smplayer/SMPlayer/$VERSION/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://software.jaos.org/source/gslapt/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="Changelog *.txt"
+DOCS="AUTHORS ChangeLog COPYING FAQ NEWS README TODO"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -86,16 +85,28 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
-
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-sed -i '2s|/local||;8s|/share.*|/doc/'"$PKGNAME-$VERSION"'|;78,80s|share/||g' Makefile
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+mv $PKG/usr/share/doc/gslapt/* $PKG/usr/doc/$PKGNAME-$VERSION/
+rm -r $PKG/usr/share/doc
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
  
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
@@ -110,6 +121,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG
