@@ -1,3 +1,11 @@
+Mon Apr 15 05:02:57 CEST 2013
+-----------------------------
+	new file:   libraries/fcgi/fcgi.SlackBuild
+	modified:   libraries/libmicrohttpd/libmicrohttpd.SlackBuild
+	new file:   libraries/libnfs/libnfs.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Thu Apr 11 05:02:30 CEST 2013
 -----------------------------
 	modified:   development/fltk/fltk.SlackBuild

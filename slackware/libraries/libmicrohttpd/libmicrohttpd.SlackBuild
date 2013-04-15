@@ -29,7 +29,7 @@
 set -e
 
 PKGNAME=libmicrohttpd
-VERSION=${VERSION:-0.9.22}
+VERSION=${VERSION:-0.9.26}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}

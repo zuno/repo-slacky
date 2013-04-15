@@ -9,7 +9,6 @@ expat >= 2.0.1-i486-2
 fontconfig >= 2.9.0-i486-1
 freetype >= 2.4.10-i486-1
 gamin >= 0.1.10-i486-5
-gcc >= 4.7.1-i486-1
 gdk-pixbuf2 >= 2.26.1-i486-2
 glib2 >= 2.32.4-i486-1
 glibc-solibs >= 2.15-i486-7
