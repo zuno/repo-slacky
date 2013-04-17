@@ -1,3 +1,8 @@
+Wed Apr 17 05:00:29 CEST 2013
+-----------------------------
+	new file:   graphic/converseen/converseen.SlackBuild
+	new file:   graphic/nomacs/nomacs.SlackBuild
+
 Tue Apr 16 05:01:19 CEST 2013
 -----------------------------
 	new file:   graphic/digikam/digikam.SlackBuild
