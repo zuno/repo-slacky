@@ -1,3 +1,7 @@
+Thu Apr 18 05:00:27 CEST 2013
+-----------------------------
+	new file:   system/fuseiso/fuseiso.SlackBuild
+
 Wed Apr 17 05:00:29 CEST 2013
 -----------------------------
 	new file:   graphic/converseen/converseen.SlackBuild
