@@ -24,6 +24,8 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Files: rc.zfs.gz
 
 set -e
 
@@ -31,7 +33,7 @@ PKGNAME=zfs
 VERSION=${VERSION:-0.6.1}
 KERNVER=$(uname -r)
 ARCH=x86_64  # Using it on a 32-bits architecture is strongly unrecommended.
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 PKGTYPE=${PKGTYPE:-txz}
 SOURCE="http://archive.zfsonlinux.org/downloads/zfsonlinux/$PKGNAME/$PKGNAME-$VERSION.tar.gz"
@@ -78,11 +80,18 @@ CXXFLAGS="$SLKCFLAGS" \
     --enable-shared \
     --disable-static \
     --with-udevdir=/lib/udev \
-    --with-dracutdir=/lib/dracut \
+    --with-dracutdir=/usr/lib/dracut \
     --without-blkid \
     --build=$ARCH-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
+
+# Fixing INIT service's path, and replace the standard LSB SysV zfs
+# service with a Slackware-compliant one.
+mv $PKG/etc/init.d $PKG/etc/rc.d
+rm $PKG/etc/rc.d/$PKGNAME
+zcat $CWD/rc.$PKGNAME.gz > $PKG/etc/rc.d/rc.$PKGNAME
+chmod 755 $PKG/etc/rc.d/rc.$PKGNAME
 
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cp -a \
