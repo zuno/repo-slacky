@@ -1,3 +1,8 @@
+Tue Apr 23 05:03:29 CEST 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+
 Mon Apr 22 05:00:35 CEST 2013
 -----------------------------
 	modified:   system/zfs/zfs.SlackBuild

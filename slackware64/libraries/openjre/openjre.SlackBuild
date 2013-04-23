@@ -7,6 +7,7 @@
 
 # Written by Eric Hameleers < alien at slackware.com >
 # Adapted to slacky's standard by miklos < ardutu at gmail dot com >
+# Last build from Luca De Pandis < lucadepandis@gmail.com >
 
 # Slackware build script for openjre
 # Official Site: http://openjre.java.net/
@@ -32,13 +33,13 @@ set -e
 
 # Basic information. 
 PKGNAME=openjre
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
-JOBS=${JOBS:-"-j2"}
+JOBS=${JOBS:-"-j4"}
 ARCH=${ARCH:-x86_64}
 DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
 SLKFILES="doinst.sh generate-cacerts.pl openjre.sh openjre.csh *.diff swing.properties" #extra files to include in slackbuild distribution
-ICEDTEAVER=${ICEDTEAVER:-2.3.8}
+ICEDTEAVER=${ICEDTEAVER:-2.3.9}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
