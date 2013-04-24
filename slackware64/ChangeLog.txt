@@ -1,3 +1,8 @@
+Wed Apr 24 05:00:33 CEST 2013
+-----------------------------
+	modified:   graphic/converseen/converseen.SlackBuild
+	modified:   network/filezilla/filezilla.SlackBuild
+
 Tue Apr 23 05:03:29 CEST 2013
 -----------------------------
 	modified:   development/openjdk/openjdk.SlackBuild
