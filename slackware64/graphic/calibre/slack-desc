@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+calibre: Calibre (E-Book Management)
+calibre:
+calibre: Calibre is  a free  and open source  E-Book library  management
+calibre: application developed by users of E-Books for  users of E-Books
+calibre: It has a cornucopia of features divided into the following main
+calibre: categories: Library Management - E-Book conversion - Syncing to
+calibre: E-Book  reader devices -  Downloading  news  from the  web  and
+calibre: converting  it  into  E-Book form - Comprehensive e-book viewer
+calibre: Content server for online access to your book collection.
+calibre: 
+calibre: 

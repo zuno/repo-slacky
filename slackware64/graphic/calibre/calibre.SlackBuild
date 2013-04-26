@@ -1,0 +1,171 @@
+#!/bin/sh
+ 
+# Heavily based on the Slackware 14.0 SlackBuild
+# Written by Luciano Fattore (luffatt at gmail dot com)
+# Thank to Larry Hajali <larryhaja[at]gmail[dot]com>
+# Last build from 6c33c (seic33c AT gmail DOT com)
+# Patches from Alien Bob and SlackBuild.org
+# 
+# Slackware build script for calibre
+# Official Site: http://calibre-ebook.com/
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Require:
+
+set -e
+
+PKGNAME=calibre
+VERSION=${VERSION:-0.9.27}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-x86_64}
+SOURCE="http://downloads.sourceforge.net/$PKGNAME/$PKGNAME-$VERSION.tar.xz"
+TAR=
+DIR=$PKGNAME
+DOCS="COPYRIGHT INSTALL LICENSE.rtf Changelog.yaml LICENSE README"
+SLKFILES="*.png *.desktop *patch"
+
+JOBS=${JOBS:--j2}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+ 
+CHOST="i486"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
+fi
+
+rm -rf $TMP
+mkdir -p $TMP/$PKGNAME $PKG $OUTPUT
+cd $TMP/$PKGNAM
+tar xvf $CWD/$TAR
+cd $DIR
+
+patch -p1 < $CWD/remove-desktop-integration.patch
+patch -p1 < $CWD/calibre-module-fix.patch
+patch -p1 < $CWD/fix-shebangs.patch
+patch -p1 < $CWD/calibre_noqthack.patch
+
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+python setup.py install \
+--root=$PKG \
+--prefix=/usr \
+--bindir=/usr/bin \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--sharedir=/usr/share \
+--staging-bindir=$PKG/usr/bin \
+--staging-libdir=$PKG/usr/lib${LIBDIRSUFFIX} \
+--staging-sharedir=$PKG/usr/share
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+
+mkdir -p $PKG/usr/share/applications
+cp -a $CWD/*.desktop $PKG/usr/share/applications
+mkdir -p $PKG/usr/share/icons/hicolor/
+
+( cd $PKG/usr/share/icons/hicolor
+  for res in 16 22 24 32 48 64 72 96 128 ; do
+    dir=${res}x${res}/apps
+    mkdir -p ${dir}
+    convert $CWD/calibre-gui.png -depth 8 -filter Lanczos \
+           -resize ${res}x${res} ${dir}/calibre-gui.png 
+    convert $CWD/calibre-viewer.png -depth 8 -filter Lanczos \
+           -resize ${res}x${res} ${dir}/calibre-viewer.png       
+  done
+)
+# remove fonts liberation-fonts-ttf and linking them to those already installed
+( 
+ cd $PKG/usr/share/calibre/fonts/liberation/
+ for FONT in *.ttf ; do
+ rm $FONT
+ ln -sf /usr/share/fonts/TTF/$FONT
+ done
+)
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT calibre-gui.png calibre-viewer.png calibre-ebook-viewer.desktop calibre-gui.desktop $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+chown -R root:root $PKG
+ 
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  ADD=$(ls /var/log/packages/ | sed -ne 's/\(beautifulsoup4\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(Imaging\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(cssselect\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(cssutils\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(dnspython\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(lxml\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(mechanize\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(psutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(pycrypto\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(ez_setup\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(netifaces\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(PyQt\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+  -e 's/\(python-dateutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
+  requiredbuilder -y -v -s $CWD $PKG
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+fi
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+ 
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP
+fi
