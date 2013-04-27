@@ -1,14 +1,13 @@
 #!/bin/sh
- 
+
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Luciano Fattore (luffatt at gmail dot com)
-# Thank to Larry Hajali <larryhaja[at]gmail[dot]com>
-# Last build from 6c33c (seic33c AT gmail DOT com)
-# Patches from Alien Bob and SlackBuild.org
-# 
-# Slackware build script for calibre
-# Official Site: http://calibre-ebook.com/
-#
+
+# # Written by Loris Vincenzi ( http://www.slacky.eu )
+# Last build from 6c33c ( seic33c [at] gmail [dot] com)
+# Slackware build script for pycrypto
+# Official Site: http://www.pycrypto.org/
+# Patches from ...
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -26,33 +25,46 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Requirements:
 
 set -e
 
-PKGNAME=calibre
-VERSION=${VERSION:-0.9.27}
-BUILD=${BUILD:-2}
+# Basic information.
+PKGNAME=pycrypto
+VERSION=${VERSION:-2.6}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/$PKGNAME/$PKGNAME-$VERSION.tar.xz"
-TAR=
-DIR=$PKGNAME
-DOCS="COPYRIGHT INSTALL LICENSE.rtf Changelog.yaml LICENSE README"
-SLKFILES="*.png *.desktop *patch"
+SOURCE="http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-$VERSION.tar.gz"
+TAR=      # empty = auto
+DIR=      # empty = auto
+DOCS="ACKS ChangeLog COPYRIGHT PKG-INFO README TODO Doc/"
+SLKFILES=""
 
+# If EULA
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])"
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
+fi
+
+# Do not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
- 
-if [ ! -e "$CWD/$TAR" ];then
-  wget "$SOURCE" -O "$CWD/$TAR"
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
+
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE -O "$CWD/$TAR"
 fi
- 
+
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -69,59 +81,27 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
+### Preparing Source
 rm -rf $TMP
-mkdir -p $TMP/$PKGNAME $PKG $OUTPUT
-cd $TMP/$PKGNAM
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
 
-patch -p1 < $CWD/remove-desktop-integration.patch
-patch -p1 < $CWD/calibre-module-fix.patch
-patch -p1 < $CWD/fix-shebangs.patch
-patch -p1 < $CWD/calibre_noqthack.patch
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-python setup.py install \
---root=$PKG \
---prefix=/usr \
---bindir=/usr/bin \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---sharedir=/usr/share \
---staging-bindir=$PKG/usr/bin \
---staging-libdir=$PKG/usr/lib${LIBDIRSUFFIX} \
---staging-sharedir=$PKG/usr/share
+python setup.py install --root=$PKG
 
+
+# Documentation
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
 
-mkdir -p $PKG/usr/share/applications
-cp -a $CWD/*.desktop $PKG/usr/share/applications
-mkdir -p $PKG/usr/share/icons/hicolor/
-
-( cd $PKG/usr/share/icons/hicolor
-  for res in 16 22 24 32 48 64 72 96 128 ; do
-    dir=${res}x${res}/apps
-    mkdir -p ${dir}
-    convert $CWD/calibre-gui.png -depth 8 -filter Lanczos \
-           -resize ${res}x${res} ${dir}/calibre-gui.png 
-    convert $CWD/calibre-viewer.png -depth 8 -filter Lanczos \
-           -resize ${res}x${res} ${dir}/calibre-viewer.png       
-  done
-)
-# remove fonts liberation-fonts-ttf and linking them to those already installed
-( 
- cd $PKG/usr/share/calibre/fonts/liberation/
- for FONT in *.ttf ; do
- rm $FONT
- ln -sf /usr/share/fonts/TTF/$FONT
- done
-)
-
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT calibre-gui.png calibre-viewer.png calibre-ebook-viewer.desktop calibre-gui.desktop $SLKFILES;do
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -145,27 +125,14 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
 chown -R root:root $PKG
- 
+
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(beautifulsoup4\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(Imaging\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(cssselect\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(cssutils\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(dnspython\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(lxml\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(mechanize\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(psutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(pycrypto\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(ez_setup\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(netifaces\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(PyQt\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(python-dateutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
-  requiredbuilder -y -v -s $CWD $PKG
+  requiredbuilder -y -v -s $CWD $PKG # add "-c -b" if you have binary files in /usr/share
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
- 
+
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP
 fi
