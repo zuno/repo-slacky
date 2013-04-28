@@ -1,3 +1,8 @@
+Sun Apr 28 05:04:24 CEST 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+
 Mon Apr 15 05:02:57 CEST 2013
 -----------------------------
 	new file:   libraries/fcgi/fcgi.SlackBuild
