@@ -1,10 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by miklos < ardutu at gmail dot com >
-#
-# Slackware build script for mongodb
-# Official Site: http://www.mongodb.org/
+# Written by Savino Pio Liguori ( jimmy_page_89 AT hotmail DOT it )
+# Last build from miklos < ardutu at gmail dot com >
+# 
+# Slackware build script for dosbox
+# Official Site: http://dosbox.sourceforge.net/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,21 +24,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Require: SDL_sound
 
 set -e
 
 # Basic information.
-PKGNAME=mongodb
-VERSION=${VERSION:-2.4.3}
-BUILD=${BUILD:-1}
+PKGNAME=dosbox
+VERSION=${VERSION:-0.74}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://downloads.mongodb.org/src/${PKGNAME}-src-r${VERSION}.tar.gz"
+SOURCE="http://downloads.sourceforge.net/dosbox/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="APACHE-2.0.txt GNU-AGPL-3.0.txt README"
-SLKFILES="libdir.patch" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS"
+SLKFILES="gcc46.patch dosbox.desktop" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -79,17 +80,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-if ! grep -q "^mongodb:" /etc/group; then
-  echo "Group mongodb not found!!! You must have this group in order to build package. Try the following command"
-  echo "groupadd mongodb &>/dev/null"
-  exit 1
-fi
-if ! grep -q "^mongodb:" /etc/passwd; then
-  echo "User mongodb not found!!! You must have this user in order to build package. Try the following command"
-  echo "useradd -d /var/lib/mongodb -s /bin/false -c \"Mongodb user\" -g mongodb mongodb &>/dev/null"
-  exit 1
-fi
-
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
@@ -97,30 +87,32 @@ cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
  
+# Fix building with gcc>= 4.6.x, thanks to archlinux people
+patch -p1 < $CWD/gcc46.patch
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-patch -p0 < $CWD/libdir.patch
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
-#build from source
-scons --use-system-boost=yes --use-system-pcre=yes --ssl=yes --sharedclient
-scons --prefix=$PKG/usr install 
+# Add a desktop file to create a menu entry
+install -D -m 0644 $CWD/dosbox.desktop \
+  $PKG/usr/share/applications/dosbox.desktop
 
-#copy man pages
-mkdir -p $PKG/usr/man/man1
-cp -a debian/*.1 $PKG/usr/man/man1
-
-#copy configuration file
-mkdir -p $PKG/etc/mongodb
-cat debian/mongodb.conf > $PKG/etc/mongodb/mongodb.conf.new
-
-#copy startup script
-mkdir -p $PKG/etc/rc.d
-cat $CWD/rc.mongod > $PKG/etc/rc.d/rc.mongod.new
-
-#make database dir
-mkdir -p $PKG/var/lib/mongodb $PKG/var/log/mongodb
-chown -R mongodb.mongodb $PKG/var/lib/mongodb $PKG/var/log/mongodb
+# Add the dosbox.ico file to /usr/share/pixmaps
+install -D -m 0644 src/dosbox.ico $PKG/usr/share/pixmaps/dosbox.ico
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -138,6 +130,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG

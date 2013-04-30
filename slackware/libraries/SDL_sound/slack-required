@@ -1,0 +1,20 @@
+cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
+flac >= 1.2.1-i486-3
+glibc-solibs >= 2.15-i486-7
+libX11 >= 1.5.0-i486-1
+libXau >= 1.0.7-i486-1
+libXdmcp >= 1.1.1-i486-1
+libXext >= 1.3.1-i486-1
+libXrandr >= 1.3.2-i486-1
+libXrender >= 0.9.7-i486-1
+libmikmod >= 3.1.12-i486-9sl
+libmodplug >= 0.8.8.4-i486-1sl
+libogg >= 1.3.0-i486-1
+libvorbis >= 1.3.3-i486-1
+libxcb >= 1.8.1-i486-1
+physfs >= 2.0.3-i486-1sl
+sdl >= 1.2.14-i486-5
+smpeg >= 20121030-i486-1sl
+speex >= 1.2rc1-i486-8sl
+svgalib >= 1.9.25-i486-2
+zlib >= 1.2.6-i486-1

@@ -2,9 +2,9 @@
  
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
-#
-# Slackware build script for mongodb
-# Official Site: http://www.mongodb.org/
+# 
+# Slackware build script for SDL_sound
+# Official Site: http://icculus.org/SDL_sound/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,21 +23,21 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Require: libmikmod libmodplug physfs smpeg speex 
 
 set -e
 
 # Basic information.
-PKGNAME=mongodb
-VERSION=${VERSION:-2.4.3}
-BUILD=${BUILD:-1}
+PKGNAME=SDL_sound
+VERSION=${VERSION:-1.0.3}
+BUILD=${BUILD:-4}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="http://downloads.mongodb.org/src/${PKGNAME}-src-r${VERSION}.tar.gz"
+SOURCE="http://icculus.org/SDL_sound/downloads/$PKGNAME-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="APACHE-2.0.txt GNU-AGPL-3.0.txt README"
-SLKFILES="libdir.patch" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="CHANGELOG COPYING CREDITS INSTALL README TODO"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -79,17 +79,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
-if ! grep -q "^mongodb:" /etc/group; then
-  echo "Group mongodb not found!!! You must have this group in order to build package. Try the following command"
-  echo "groupadd mongodb &>/dev/null"
-  exit 1
-fi
-if ! grep -q "^mongodb:" /etc/passwd; then
-  echo "User mongodb not found!!! You must have this user in order to build package. Try the following command"
-  echo "useradd -d /var/lib/mongodb -s /bin/false -c \"Mongodb user\" -g mongodb mongodb &>/dev/null"
-  exit 1
-fi
-
 ### Preparing Source
 rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
@@ -100,27 +89,21 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-patch -p0 < $CWD/libdir.patch
-
-#build from source
-scons --use-system-boost=yes --use-system-pcre=yes --ssl=yes --sharedclient
-scons --prefix=$PKG/usr install 
-
-#copy man pages
-mkdir -p $PKG/usr/man/man1
-cp -a debian/*.1 $PKG/usr/man/man1
-
-#copy configuration file
-mkdir -p $PKG/etc/mongodb
-cat debian/mongodb.conf > $PKG/etc/mongodb/mongodb.conf.new
-
-#copy startup script
-mkdir -p $PKG/etc/rc.d
-cat $CWD/rc.mongod > $PKG/etc/rc.d/rc.mongod.new
-
-#make database dir
-mkdir -p $PKG/var/lib/mongodb $PKG/var/log/mongodb
-chown -R mongodb.mongodb $PKG/var/lib/mongodb $PKG/var/log/mongodb
+# Customize as you need
+CFLAGS="$SLKCFLAGS -I/usr/include/smpeg" \
+CXXFLAGS="$SLKCFLAGS -I/usr/include/smpeg" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --enable-shared=yes \
+  --enable-static=no \
+  --enable-mpglib=no \
+  --build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -138,6 +121,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG
