@@ -31,7 +31,7 @@ set -e
 # Basic information.
 PKGNAME=mkvtoolnix-gtk
 SRCNAME=mkvtoolnix
-VERSION=${VERSION:-6.0.0}
+VERSION=${VERSION:-6.2.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}

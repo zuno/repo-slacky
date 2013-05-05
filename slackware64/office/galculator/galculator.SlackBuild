@@ -29,14 +29,14 @@ set -e
 
 # Basic information.
 PKGNAME=galculator
-VERSION=${VERSION:-2.0}
+VERSION=${VERSION:-2.1.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 SOURCE="http://downloads.sourceforge.net/${PKGNAME}/${PKGNAME}-${VERSION}.tar.bz2"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="AUTHORS COPYING ChangeLog INSTALL README THANKS NEWS TODO doc/shortcuts"
+DOCS="AUTHORS COPYING ChangeLog INSTALL README THANKS NEWS doc/shortcuts"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages

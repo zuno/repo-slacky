@@ -29,8 +29,8 @@ set -e
 
 # Basic information.
 PKGNAME=clamav
-VERSION=${VERSION:-0.97.7}
-BUILD=${BUILD:-4}
+VERSION=${VERSION:-0.97.8}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
 SOURCE="http://downloads.sourceforge.net/project/clamav/clamav/$VERSION/$PKGNAME-$VERSION.tar.gz"

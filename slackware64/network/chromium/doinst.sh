@@ -1,6 +1,4 @@
-if [ -e usr/bin/chromium-sandbox ]; then
-  chmod 4755 usr/bin/chromium_sandbox
-fi
+chmod 4755 /usr/lib64/chromium/chromium_sandbox
 
 if [ -x /usr/bin/update-desktop-database ]; then
     usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1

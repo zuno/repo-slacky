@@ -33,17 +33,18 @@ set -e
 
 PKGNAME=chromium
 #VERSION=${VERSION:-SNAPSHOT} # Set to SNAPSHOT to install the latest release.
-#VERSION=${VERSION:-21.0.1180.13} # or set an exact realese
-VERSION=${VERSION:-25} # or set your prefered major version
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-28.0.1497.1} # or set an exact realese
+#VERSION=${VERSION:-28} # or set your prefered major version
+BUILD=${BUILD:-5}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
+CONTINUE=${CONTINUE:-0}
 SOURCE="http://commondatastorage.googleapis.com/chromium-browser-official"
 if [ "$VERSION" == "SNAPSHOT" ];then
   VERSION=.
 fi
 VERSION=$(wget http://src.chromium.org/viewvc/chrome/releases/?view=log -O - -q|grep DEPS|awk '{print $7}'|grep -m1 ^$VERSION)
-SOURCE=$SOURCE/chromium-$VERSION.tar.bz2
+SOURCE=$SOURCE/chromium-$VERSION.tar.xz
 TAR=      # empty = auto
 DIR=      # empty = auto
 DOCS="AUTHORS  Android.mk  DEPS  LICENSE  OWNERS  PRESUBMIT.py  WATCHLISTS"
@@ -125,17 +126,17 @@ if [ "$CONFIGURE" == "1" ];then
     -Drelease_extra_cflags="$SLKCFLAGS ${CFLAGS}" \
     -Dffmpeg_branding=Chrome \
     -Dproprietary_codecs=1 \
-    -Duse_system_libjpeg=0 \
-    -Duse_system_libxslt=0 \
+    -Duse_system_libjpeg=1 \
+    -Duse_system_libxslt=1 \
     -Duse_system_libxml=0 \
     -Duse_system_speex=0 \
-    -Duse_system_flac=0 \
+    -Duse_system_flac=1 \
     -Duse_system_libwebp=0 \
-    -Duse_system_bzip2=0 \
-    -Duse_system_zlib=0 \
-    -Duse_system_libpng=0 \
+    -Duse_system_bzip2=1 \
+    -Duse_system_zlib=1 \
+    -Duse_system_libpng=1 \
     -Duse_system_ffmpeg=0 \
-    -Duse_system_yasm=0 \
+    -Duse_system_yasm=1 \
     -Duse_system_libevent=0 \
     -Dremove_webcore_debug_symbols=1 \
     -Duse_system_ssl=0 \
@@ -147,10 +148,9 @@ if [ "$CONFIGURE" == "1" ];then
     -Dlinux_fpic=1 \
     -Dbuild_ffmpegsumo=1 \
     -Duse_openssl=0 \
-    -Djavascript_engine=v8 \
+    -Duse_pulseaudio=0 \
     $([ "${ARCH}" == 'i686' ] && echo '-Ddisable_sse2=1')
 fi
-
 
 ### Building Chrome executable
 CXXFLAGS="-include /usr/include/expat.h -include unistd.h" \

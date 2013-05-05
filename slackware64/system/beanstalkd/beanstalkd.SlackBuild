@@ -29,14 +29,14 @@ set -e
 
 # Basic information.
 PKGNAME=beanstalkd
-VERSION=${VERSION:-1.8}
+VERSION=${VERSION:-1.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="https://github.com/downloads/kr/beanstalkd/${PKGNAME}-${VERSION}.tar.gz"
-TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="LICENSE NEWS.md README doc/protocol.txt"
+SOURCE="https://github.com/kr/beanstalkd/archive/v${VERSION}.tar.gz"
+TAR=$PKGNAME-$VERSION.tar.gz
+DIR=
+DOCS="LICENSE News README doc/protocol.txt"
 SLKFILES="beanstalkd.conf rc.beanstalkd" # all files needed to the slackbuild (except slack-desc etc..)
 
 if ! grep -q "^beanstalkd:" /etc/group; then

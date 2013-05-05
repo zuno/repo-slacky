@@ -1,3 +1,12 @@
+Sun May  5 05:03:16 CEST 2013
+-----------------------------
+	modified:   database/mongodb/mongodb.SlackBuild
+	modified:   multimedia/mkvtoolnix-gtk/mkvtoolnix-gtk.SlackBuild
+	modified:   network/chromium/chromium.SlackBuild
+	modified:   office/galculator/galculator.SlackBuild
+	modified:   system/beanstalkd/beanstalkd.SlackBuild
+	modified:   system/clamav/clamav.SlackBuild
+
 Fri May  3 05:00:52 CEST 2013
 -----------------------------
 	modified:   graphic/calibre/calibre.SlackBuild
