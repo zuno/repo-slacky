@@ -1,0 +1,20 @@
+recordmydestop dispone anche di due frontend grafici chiamati:
+- gtk-recordmydesktop
+- qt-recordmydesktop
+disponibili sempre su http://recordmydesktop.iovar.org (per scaricarli c'è poi un link a sourceforge).
+Al fine di evitare confusione per l'aggiunta di troppe dipendenze (dichiarate per gtk-recordmydektop sono solo pyGTK>2.4 e python-gnome-extras, ma probabilmente ci saranno altre dipendenze da soddisfare per questi programmi), dato che il frontend rende più agevole l'uso del programma, ma non aggiunge alcuna funzionalità, ho preferito pacchettizzare solo il programma di registrazione vero e proprio. 
+Quando le Qt4 entreranno a far parte della slackware ufficiale, se nessun altro lo avrà già fatto prima, pacchettizzerò anche qt-recordmydesktop, che si appoggia alle Qt4 e a PyQt4.
+
+Dato che però può essere comodo registrare solo il contenuto di una finestra, ecco un modo per selezionarne solo una:
+
+recordmydesktop -windowid $(xwininfo |grep "Window id:"|sed  -e "s/xwininfo\:\ Window id:\ // ;s/\ .*//" )
+
+apparirà una croce, cliccando sulla finestra di interesse, d'ora in poi verrà registrata la PORZIONE GEOMETRICA DI SCHERMO DA ESSA OCCUPATA AL MOMENTO DEL CLIC (la finestra non andrà dunque mossa); se si vuole smettere di registrare basta dare un ctrl+c dalla finestra di terminale da cui si è impartito il comando, attendendo qualche istante perché venga codificato il video.
+
+La pagina di manuale consiglia di far codificare il filmato al termine della registrazione, per evitare un eccessivo carico alla cpu. Si sconsiglia in sostanza di usare l'opzione --on-the-fly-encoding soprattutto se allo stesso tempo, per ridurre le dimensioni del file di output, si sta abbassando la qualità del video.
+Nella stessa pagina di manuale sono illustrate diverse opzioni e consigli d'uso.
+Viene registrato anche l'audio, il file di output è nel formato libero ogv.
+
+Non ho inserito questa piccola nota nella documentazione del pacchetto perché, a parte gli accenni ai front-end grafici, non aggiunge nulla alla pagina del manuale di cui è una modesta sintesi.
+
+Gabriele Inghirami (albatros su slacky.it)
