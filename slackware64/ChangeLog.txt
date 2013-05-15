@@ -1,3 +1,8 @@
+Wed May 15 05:00:41 CEST 2013
+-----------------------------
+	new file:   development/bluefish/bluefish.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Tue May 14 05:00:33 CEST 2013
 -----------------------------
 	new file:   multimedia/gtk-recordmydesktop/gtk-recordmydesktop.SlackBuild
