@@ -1,3 +1,8 @@
+Thu May 16 05:02:00 CEST 2013
+-----------------------------
+	modified:   development/bluefish/bluefish.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Wed May  8 05:03:05 CEST 2013
 -----------------------------
 	modified:   network/chromium/chromium.SlackBuild

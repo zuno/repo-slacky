@@ -30,7 +30,7 @@ set -e
 
 # Basic information. 
 PKGNAME=flash-player-plugin
-VERSION=${VERSION:-11.2.202.280}
+VERSION=${VERSION:-11.2.202.285}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i386}
