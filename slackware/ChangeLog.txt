@@ -1,3 +1,7 @@
+Mon May 20 05:01:46 CEST 2013
+-----------------------------
+	modified:   multimedia/vlc/vlc.SlackBuild
+
 Thu May 16 05:02:00 CEST 2013
 -----------------------------
 	modified:   development/bluefish/bluefish.SlackBuild
