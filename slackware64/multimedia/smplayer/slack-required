@@ -4,7 +4,7 @@ expat >= 2.0.1-x86_64-2
 fontconfig >= 2.9.0-x86_64-1
 freetype >= 2.4.10-x86_64-1
 glib2 >= 2.32.4-x86_64-1
-glibc-solibs >= 2.15-x86_64-7
+glibc-solibs >= 2.15-x86_64-7 | skype_static >= 4.2.0.11-x86_64-3sl
 libICE >= 1.0.8-x86_64-1
 libSM >= 1.2.1-x86_64-1
 libX11 >= 1.5.0-x86_64-1
