@@ -9,7 +9,7 @@ dbus >= 1.4.20-i486-3
 dbus-glib >= 0.98-i486-1
 expat >= 2.0.1-i486-2
 fontconfig >= 2.9.0-i486-1
-freetype >= 2.4.10-i486-1
+freetype >= 2.4.11-i486-1_slack14.0
 gdk-pixbuf2 >= 2.26.1-i486-2
 glib2 >= 2.32.4-i486-1
 glibc-solibs >= 2.15-i486-7
@@ -32,7 +32,7 @@ libgcrypt >= 1.5.0-i486-1
 libgpg-error >= 1.10-i486-1
 libpng >= 1.4.12-i486-1
 libxcb >= 1.8.1-i486-1
-openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+openssl >= 1.0.1e-i486-1_slack14.0 | openssl-solibs >= 1.0.1c-i486-3
 pango >= 1.30.1-i486-1
 pixman >= 0.26.2-i486-1
 udev >= 182-i486-5

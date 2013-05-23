@@ -6,7 +6,7 @@
 # leave one space after the ':'.
 
         |-----handy-ruler------------------------------------------------------|
-smplayer: SMplayer (Qt4 MPlayer GUI)
+smplayer: SMplayer (Qt4 Mplayer front-end)
 smplayer:
 smplayer: SMPlayer intends to be a complete front-end for MPlayer, from basic
 smplayer: features  like  playing  videos, DVDs, and  VCDs  to  more advanced

@@ -1,3 +1,8 @@
+Thu May 23 05:03:32 CEST 2013
+-----------------------------
+	modified:   multimedia/smplayer/smplayer.SlackBuild
+	modified:   network/skype/skype.SlackBuild
+
 Mon May 20 05:01:46 CEST 2013
 -----------------------------
 	modified:   multimedia/vlc/vlc.SlackBuild
