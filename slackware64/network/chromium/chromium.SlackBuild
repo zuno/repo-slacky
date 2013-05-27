@@ -33,7 +33,7 @@ set -e
 
 PKGNAME=chromium
 #VERSION=${VERSION:-SNAPSHOT} # Set to SNAPSHOT to install the latest release.
-VERSION=${VERSION:-28.0.1497.1} # or set an exact realese
+VERSION=${VERSION:-29.0.1517.3} # or set an exact realese
 #VERSION=${VERSION:-28} # or set your prefered major version
 BUILD=${BUILD:-5}
 TAG=${TAG:-sl}

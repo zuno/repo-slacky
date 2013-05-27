@@ -1,3 +1,8 @@
+Mon May 27 05:01:43 CEST 2013
+-----------------------------
+	modified:   development/apache-ant/apache-ant.SlackBuild
+	modified:   network/chromium/chromium.SlackBuild
+
 Wed May 22 05:02:31 CEST 2013
 -----------------------------
 	modified:   development/geany/geany.SlackBuild
