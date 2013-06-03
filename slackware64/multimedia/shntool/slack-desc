@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' 
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also customary
+# to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+shntool: ShnTool (WAVE Data Processor)
+shntool:
+shntool: ShnTool  is  a  multi-purpose WAVE data processing and reporting
+shntool: utility. File formats are abstracted  from  its  core, so it can
+shntool: process any file that contains WAVE data, compressed or not type
+shntool: provided  there exists a format module to handle that particular
+shntool: file.
+shntool:
+shntool:
+shntool:
+shntool:

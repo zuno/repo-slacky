@@ -1,3 +1,12 @@
+Mon Jun  3 05:00:47 CEST 2013
+-----------------------------
+	new file:   desktop/kde-gtk-config/kde-gtk-config.SlackBuild
+	new file:   desktop/qtcurve-gtk2/qtcurve-gtk2.SlackBuild
+	modified:   graphic/calibre/calibre.SlackBuild
+	new file:   multimedia/cuetools/cuetools.SlackBuild
+	new file:   multimedia/gcue2tracks/gcue2tracks.SlackBuild
+	new file:   multimedia/shntool/shntool.SlackBuild
+
 Mon May 27 05:01:43 CEST 2013
 -----------------------------
 	modified:   development/apache-ant/apache-ant.SlackBuild

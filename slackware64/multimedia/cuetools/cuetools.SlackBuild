@@ -1,14 +1,14 @@
 #!/bin/sh
- 
+
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by Luciano Fattore (luffatt at gmail dot com)
-# Thank to Larry Hajali <larryhaja[at]gmail[dot]com>
-# Last build from 6c33c (seic33c AT gmail DOT com)
-# Patches from Alien Bob and SlackBuild.org
-# 
-# Slackware build script for calibre
-# Official Site: http://calibre-ebook.com/
-#
+
+# Written by Tommaso D'Anna aka tasodan ( www.slacky.eu )
+# Last build from 6c33c ( seic33c [at] gmail [dot] com )
+
+# Slackware build script for cuetools
+# Official Site: http://developer.berlios.de/projects/cuetools
+# Patches from ...
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -26,33 +26,47 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require:
+# Requirements:
 
 set -e
 
-PKGNAME=calibre
-VERSION=${VERSION:-0.9.33}
+
+# Basic information.
+PKGNAME=cuetools
+VERSION=${VERSION:-1.3.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://downloads.sourceforge.net/$PKGNAME/$PKGNAME-$VERSION.tar.xz"
-TAR=
-DIR=$PKGNAME
-DOCS="COPYRIGHT INSTALL LICENSE* Changelog.yaml LICENSE* README*"
-SLKFILES="*.patch"
+SOURCE="http://download.berlios.de/$PKGNAME/$PKGNAME-$VERSION.tar.gz"
+TAR=      # empty = auto
+DIR=      # empty = auto
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO"
+SLKFILES="cuetag.patch.gz"
 
+# If EULA
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])"
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
+fi
+
+# Do not touch following if not needed
 JOBS=${JOBS:--j2}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-$CWD}
 TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
- 
-if [ ! -e "$CWD/$TAR" ];then
-  wget "$SOURCE" -O "$CWD/$TAR"
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
+
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE -O "$CWD/$TAR"
 fi
- 
+
 CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -69,63 +83,44 @@ elif [ "$ARCH" = "x86_64" ]; then
   CHOST="x86_64"
 fi
 
+### Preparing Source
 rm -rf $TMP
-mkdir -p $TMP/$PKGNAME $PKG $OUTPUT
-cd $TMP/$PKGNAM
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
 
-patch -p1 < $CWD/remove-desktop-integration.patch
-patch -p1 < $CWD/calibre-module-fix.patch
-patch -p1 < $CWD/fix-shebangs.patch
-patch -p1 < $CWD/calibre_noqthack.patch
+zcat $CWD/cuetag.patch.gz | patch -p0
+sed \
+  -e 's/--import-vc-from/--import-tags-from/' \
+  -e 's/--remove-vc-all/--remove-all-tags/' \
+  -i extras/cuetag.sh
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# calibre 0.9.33 fail to build because don't find src/caliblre/plugins directory
-# so we create one ;)
-mkdir -p src/calibre/plugins/
+# Customize as you need
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --build=$CHOST-slackware-linux
+make $JOBS
+make install DESTDIR=$PKG
 
-python setup.py install \
---root=$PKG \
---prefix=/usr \
---bindir=/usr/bin \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---sharedir=/usr/share \
---staging-bindir=$PKG/usr/bin \
---staging-libdir=$PKG/usr/lib${LIBDIRSUFFIX} \
---staging-sharedir=$PKG/usr/share
+install -m755 extras/cuetag.sh $PKG/usr/bin/cuetag
 
+# Documentation
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
 cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
 
-mkdir -p $PKG/usr/share/applications
-cp -a $CWD/*.desktop $PKG/usr/share/applications
-mkdir -p $PKG/usr/share/icons/hicolor/
-
-( cd $PKG/usr/share/icons/hicolor
-  for res in 16 22 24 32 48 64 72 96 128 ; do
-    dir=${res}x${res}/apps
-    mkdir -p ${dir}
-    convert $CWD/calibre-gui.png -depth 8 -filter Lanczos \
-           -resize ${res}x${res} ${dir}/calibre-gui.png 
-    convert $CWD/calibre-viewer.png -depth 8 -filter Lanczos \
-           -resize ${res}x${res} ${dir}/calibre-viewer.png       
-  done
-)
-# remove fonts liberation-fonts-ttf and linking them to those already installed
-( 
- cd $PKG/usr/share/calibre/fonts/liberation/
- for FONT in *.ttf ; do
- rm $FONT
- ln -sf /usr/share/fonts/TTF/$FONT
- done
-)
-
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $CWD
-for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT calibre-gui.png calibre-viewer.png calibre-ebook-viewer.desktop calibre-gui.desktop $SLKFILES;do
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
   [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
 done
 
@@ -149,27 +144,14 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
 chown -R root:root $PKG
- 
+
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(beautifulsoup4\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(Imaging\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(cssselect\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(cssutils\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(dnspython\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(lxml\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(mechanize\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(psutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(pycrypto\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(ez_setup\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(netifaces\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(PyQt\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
-  -e 's/\(python-dateutil\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
-  requiredbuilder -y -v -s $CWD $PKG
+  requiredbuilder -y -v -s $CWD $PKG # add "-c -b" if you have binary files in /usr/share
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
 
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
- 
+
 if [ "$1" = "--cleanup" ]; then
   rm -rf $TMP
 fi
