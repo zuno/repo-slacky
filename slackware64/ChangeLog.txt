@@ -1,3 +1,7 @@
+Tue Jun  4 05:00:28 CEST 2013
+-----------------------------
+	new file:   multimedia/mac/mac.SlackBuild
+
 Mon Jun  3 05:00:47 CEST 2013
 -----------------------------
 	new file:   desktop/kde-gtk-config/kde-gtk-config.SlackBuild

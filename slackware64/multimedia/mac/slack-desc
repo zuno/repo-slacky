@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+mac: MAC (Monkey's Audio Codec)
+mac:
+mac: Monkey's Audio is a fast and easy way to compress digital  music
+mac: Unlike  traditional  methods  such  as  mp3,  ogg,  or  lqt that
+mac: permanently  discard  quality to save space, Monkey's Audio only
+mac: makes perfect, bit-for-bit  copies of your music.  That means it
+mac: always sounds perfect  exactly the same as the original.
+mac:
+mac:
+mac:
+mac:
