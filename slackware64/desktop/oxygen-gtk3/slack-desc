@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+oxygen-gtk3: Oxygen-Gtk3 (Gtk Engine Theme)
+oxygen-gtk3:
+oxygen-gtk3: Oxygen-Gtk3 is a port of the  default KDE widget theme (Oxygen), to
+oxygen-gtk3: GTK. Its primary goal is to ensure visual consistency  between gtk
+oxygen-gtk3: and qt-based applications running under KDE. A secondary objective
+oxygen-gtk3: is to also have a stand-alone  nice  looking  gtk theme that would
+oxygen-gtk3: behave well on other Desktop Environments.
+oxygen-gtk3:
+oxygen-gtk3:
+oxygen-gtk3:
+oxygen-gtk3:
