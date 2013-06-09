@@ -1,0 +1,185 @@
+#!/bin/sh
+
+# Heavily based on the Slackware 14.0 SlackBuild
+
+# Written by Andrea Sciucca ( gohanz at infinito.it)
+# Last build from 6c33c  ( seic33c [at] gmail [dot] com )
+
+# Slackware build script for QMPlay2
+# Official Site: http://zaps166.sourceforge.net/?app=QMPlay2
+# Patches from ...
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Required: celt, enca, faac, ffmpeg, lame, libaacplus, libass, libbluray, libgsm, libmodplug
+# Required: libva, libvpx, libxavs, openal-soft, opencore-amr, openjpeg
+# Required: opus, orc, portaudio, rtmpdump, schroedinger, speex
+# Required: twolame, vo-aacenc, vo-amrwbenc, x264, xvidcore
+#
+set -e
+
+
+# Basic information.
+PKGNAME=QMPlay2
+VERSION=${VERSION:-25V2013}
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-x86_64}
+SOURCE="http://downloads.sourceforge.net/project/zaps166/QMPlay2/$PKGNAME-src-$VERSION.tar.bz2"
+TAR=      # empty = auto
+DIR=$PKGNAME-src      # empty = auto
+DOCS="COPYING ChangeLog INSTALL TODO"
+SLKFILES="*.png"
+
+# If EULA
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])"
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
+fi
+
+# Do not touch following if not needed
+JOBS=${JOBS:--j2}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|.tgz|)$//')}
+
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE -O "$CWD/$TAR"
+fi
+
+# Set compiling FLAGS
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+fi
+
+### Preparing Source
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+tar xvf $CWD/$TAR
+cd $DIR
+# Building translations
+lrelease QMPlay2.pro
+mkdir -p app/share/qmplay2/lang
+mv lang/*.qm app/share/qmplay2/lang
+
+# Disable Pulseaudio plugin. 
+sed -i 's_unix:!mac: SUBDIRS += XVideo PulseAudio_#unix:!mac: SUBDIRS += XVideo PulseAudio_' src/modules/modules.pro
+chmod -R u+w,go+r-w,a-s .
+chown -R root:root .
+
+# Building QMPlay2 package
+
+mkdir -p $PKG/usr/bin
+cat << EOF > $PKG/usr/bin/qmplay2
+#!/bin/bash
+cd /usr/share/qmplay2
+exec /usr/share/qmplay2/QMPlay2
+EOF
+
+chmod 755 $PKG/usr/bin/*
+
+# Configure:
+
+qmake  PREFIX=/usr QMAKE_LIBS="$SLKLDFLAGS" QMAKE_CFLAGS="$SLKCFLAGS" QMAKE_CXXFLAGS="$SLKCFLAGS" -o Makefile QMPlay2.pro
+
+# Build and install:
+LDFLAGS="$SLKLDFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+make $JOBS
+
+install -m 0755 -p -D QMPlay2 $PKG/usr/share/qmplay2/QMPlay2
+cp -R src/modules/Extensions/Scripts app/share/qmplay2/BrowserEngine
+cp ChangeLog app/share/qmplay2
+cp -a -r {app,lang} $PKG/usr/share/qmplay2
+
+# Installing desktop menu file and icons
+
+install -m 644 -p -D  $CWD/QMPlay2.png  $PKG/usr/share/pixmaps/QMPlay2.png 
+
+mkdir -p $PKG/usr/share/applications
+cat << EOF > $PKG/usr/share/applications/$PKGNAME.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=QMPlay2
+GenericName=Media Player
+GenericName[it]=Lettore Multimediale
+Comment=Qt4 multi-platform media player 
+Comment[it]=Lettore multimediale multipiattaforma scritto in Qt4
+Icon=QMPlay2
+Exec=qmplay2
+Terminal=false
+StartupNotify=true
+Categories=Application;Qt;AudioVideo;
+EOF
+
+# Documentation
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+chown -R root:root $PKG
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -c -b -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+fi
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP
+fi
