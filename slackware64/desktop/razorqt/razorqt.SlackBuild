@@ -34,14 +34,14 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=razorqt
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-0.5.1}
+VERSION=${VERSION:-0.5.2}
 ARCH=${ARCH:-x86_64}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 # Download sorce tarball if still not present
-SOURCE="https://github.com/downloads/Razor-qt/razor-qt/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://razor-qt.org/downloads/$PKGNAME-$VERSION.tar.bz2"
 
 if [ ! -e $CWD/$PKGNAME-$VERSION.tar.bz2 ]; then
  wget --no-check-certificate $SOURCE

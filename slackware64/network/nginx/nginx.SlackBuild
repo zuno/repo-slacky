@@ -29,7 +29,7 @@ set -e
 
 # Basic information.
 PKGNAME=nginx
-VERSION=${VERSION:-1.2.8}
+VERSION=${VERSION:-1.4.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
@@ -130,7 +130,13 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-imap \
   --with-mail \
   --with-mail_ssl_module \
-  --with-imap_ssl_module  
+  --with-imap_ssl_module \
+  --with-http_gunzip_module \
+  --http-scgi-temp-path=/var/tmp/nginx_scgi_temp \
+  --http-uwsgi-temp-path=/var/tmp/nginx_uwsgi_temp \
+  --with-http_spdy_module \
+  --with-http_stub_status_module \
+  --with-file-aio
 
 make $JOBS 
 make install DESTDIR=$PKG

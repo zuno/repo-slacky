@@ -1,0 +1,12 @@
+curl >= 7.27.0-x86_64-2
+cxxlibs >= 6.0.17-x86_64-1
+cyrus-sasl >= 2.1.23-x86_64-4
+glib2 >= 2.32.4-x86_64-1
+glibc-solibs >= 2.15-x86_64-7
+libidn >= 1.25-x86_64-2
+libmediainfo >= 0.7.63-x86_64-1sl
+libmms >= 0.6.2-x86_64-2sl
+libzen >= 0.4.29-x86_64-2sl
+openldap-client >= 2.4.31-x86_64-2
+openssl >= 1.0.1c-x86_64-3 | openssl-solibs >= 1.0.1c-x86_64-3
+zlib >= 1.2.6-x86_64-1

@@ -1,10 +1,11 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by miklos < ardutu at gmail dot com >
+# Copyright 2010-2012  Binh Nguyen <binhvng@gmail.com>
+# Modified by miklos < ardutu at gmail dot com >
 # 
-# Slackware build script for gmtk
-# Official Site: http://code.google.com/p/gmtk/
+# Slackware build script for libzen
+# Official Site: http://mediainfo.sourceforge.net/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,15 +29,15 @@
 set -e
 
 # Basic information.
-PKGNAME=gmtk
-VERSION=${VERSION:-1.0.8}
-BUILD=${BUILD:-1}
+PKGNAME=libzen
+VERSION=${VERSION:-0.4.29}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://gmtk.googlecode.com/files/${PKGNAME}-${VERSION}.tar.gz"
+SOURCE="http://downloads.sourceforge.net/zenlib/${PKGNAME}_${VERSION}.tar.bz2"
 TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README"
+DIR="ZenLib"
+DOCS="*.txt Doc/ Source/Doc/Documentation.html"
 SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
@@ -89,22 +90,36 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
+cd Project/GNU/Library
+./autogen
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
-  --enable-static=no \
-  --enable-gsettings \
-  --enable-gtk3=no \
+  --infodir=/usr/info \
   --docdir=/usr/doc/$PKGNAME-$VERSION \
-  --build=$CHOST-slackware-linux
+  --localedir=/usr/share/locale \
+  --disable-static \
+  --enable-shared \
+  --build=$ARCH-slackware-linux
+
 make $JOBS
 make install DESTDIR=$PKG
+
+cd -
+# A header has been forgotten during the "make install"
+install -m 0644 -D Source/ZenLib/BitStream_Fast.h $PKG/usr/include/ZenLib/BitStream_Fast.h
+
+# Correct version number in .pc file
+sed -i "s/^Version: .*$/Version: $VERSION/" $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/libzen.pc
+
+# Create Documentation using doxygen
+( cd Source/Doc && doxygen Doxyfile )
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -122,6 +137,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG

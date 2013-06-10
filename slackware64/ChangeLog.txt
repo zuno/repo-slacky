@@ -1,3 +1,15 @@
+Mon Jun 10 05:01:04 CEST 2013
+-----------------------------
+	modified:   desktop/razorqt/razorqt.SlackBuild
+	modified:   graphic/rawtherapee/rawtherapee.SlackBuild
+	modified:   libraries/gmtk/gmtk.SlackBuild
+	new file:   libraries/libmediainfo/libmediainfo.SlackBuild
+	new file:   libraries/libmms/libmms.SlackBuild
+	new file:   libraries/libzen/libzen.SlackBuild
+	modified:   multimedia/gnome-mplayer/gnome-mplayer.SlackBuild
+	new file:   multimedia/mediainfo/mediainfo.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+
 Sun Jun  9 05:00:35 CEST 2013
 -----------------------------
 	new file:   multimedia/QMPlay2/QMPlay2.SlackBuild
