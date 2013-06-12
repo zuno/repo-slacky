@@ -5,13 +5,13 @@
 # make exactly 11 lines for the formatting to be correct.  It's also
 # customary to leave one space after the ':'.
 
-            |-----handy-ruler----------------------------------------------------|
-libmediainfo: Libmediainfo (MediaInfo Support Library)
+            |-----handy-ruler------------------------------------------------------|
+libmediainfo: libmediainfo (library for mediainfo)
 libmediainfo:
-libmediainfo: This package includes the shared library and the development
-libmediainfo: support files.
+libmediainfo: This package includes the shared library and the development support
+libmediainfo: files.
 libmediainfo:
-libmediainfo:
+libmediainfo: Homepage: http://mediainfo.sourceforge.net/
 libmediainfo:
 libmediainfo:
 libmediainfo:

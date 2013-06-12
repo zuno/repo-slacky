@@ -5,13 +5,13 @@
 # make exactly 11 lines for the formatting to be correct.  It's also
 # customary to leave one space after the ':'.
 
-      |-----handy-ruler----------------------------------------------------|
-libzen: Libzen (MediaInfo Support Library)
+      |-----handy-ruler------------------------------------------------------|
+libzen: libzen (mandatory library for libmediainfo)
 libzen:
 libzen: This package includes the shared library and the development support
 libzen: files.
 libzen:
-libzen:
+libzen: Homepage: http://mediainfo.sourceforge.net/
 libzen:
 libzen:
 libzen:

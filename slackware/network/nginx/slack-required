@@ -2,7 +2,7 @@ GeoIP >= 1.4.8-i486-2sl
 bzip2 >= 1.0.6-i486-1
 expat >= 2.0.1-i486-2
 fontconfig >= 2.9.0-i486-1
-freetype >= 2.4.10-i486-1
+freetype >= 2.4.11-i486-1_slack14.0
 gd >= 2.0.35-i486-4
 glibc-solibs >= 2.15-i486-7
 libX11 >= 1.5.0-i486-1
@@ -16,7 +16,7 @@ libpng >= 1.4.12-i486-1
 libxcb >= 1.8.1-i486-1
 libxml2 >= 2.8.0-i486-1
 libxslt >= 1.1.26-i486-2
-openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+openssl >= 1.0.1e-i486-1_slack14.0 | openssl-solibs >= 1.0.1c-i486-3
 pcre >= 8.12-i486-1
 perl >= 5.16.1-i486-1
 xz >= 5.0.4-i486-1

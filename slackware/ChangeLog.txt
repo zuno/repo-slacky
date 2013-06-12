@@ -1,3 +1,12 @@
+Wed Jun 12 05:01:48 CEST 2013
+-----------------------------
+	modified:   libraries/libmediainfo/libmediainfo.SlackBuild
+	modified:   libraries/libzen/libzen.SlackBuild
+	modified:   multimedia/mediainfo/mediainfo.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+	modified:   system/beanstalkd/beanstalkd.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Thu May 23 05:03:32 CEST 2013
 -----------------------------
 	modified:   multimedia/smplayer/smplayer.SlackBuild

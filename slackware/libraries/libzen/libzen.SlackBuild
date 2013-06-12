@@ -1,10 +1,11 @@
 #!/bin/sh
+ 
 # Heavily based on the Slackware 14.0 SlackBuild
-# http://mediainfo.sourceforge.net/
-# Packager Andrea Sciucca ( gohanz at infinito.it)
-# Thanks to Binh Nguyen <binhnguyen@fastmail.fm>
-# http://www.slacky.eu
-#
+# Copyright 2010-2012  Binh Nguyen <binhvng@gmail.com>
+# Modified by miklos < ardutu at gmail dot com >
+# 
+# Slackware build script for libzen
+# Official Site: http://mediainfo.sourceforge.net/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,138 +24,153 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
-#
-# Exit on most errors
+# Require:
+
 set -e
 
-
-# Set variables:
-CWD=`pwd`
-OUTPUT=${OUTPUT:-$CWD}
+# Basic information.
 PKGNAME=libzen
-TMP=${TMP:-/tmp/txz/$PKGNAME}
-PKG=$TMP/package
-VERSION=${VERSION:-0.4.28}
-ARCH=${ARCH:-i486}
-JOBS=${JOBS:--j2}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.4.29}
+BUILD=${BUILD:-2}
 TAG=${TAG:-sl}
+ARCH=${ARCH:-i486}
+SOURCE="http://downloads.sourceforge.net/zenlib/${PKGNAME}_${VERSION}.tar.bz2"
+TAR=      # empty = auto
+DIR="ZenLib"
+DOCS="*.txt Doc/ Source/Doc/Documentation.html"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
-SOURCE=http://downloads.sourceforge.net/zenlib/$PKGNAME'_'$VERSION.tar.bz2
-
-# Download sorce tarball if still not present
-if [ ! -e $CWD/$PKGNAME'_'$VERSION.tar.bz2 ]; then
-wget -c $SOURCE
+# An EULA for non-free packages
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])":
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
 fi
 
-# Set compiling FLAGS
+# Does not touch following if not needed
+JOBS=${JOBS:--j2}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+ 
+CHOST="i486"
 if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i486"
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-O2 -march=i686 -mtune=i686"; SLKLDFLAGS=""; LIBDIRSUFFIX=""; CHOST="i686"
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"; SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"; CHOST="x86_64"
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
 fi
 
-
-# Create building directory
-rm -rf $PKG
+### Preparing Source
+rm -rf $TMP
 mkdir -p $TMP $PKG $OUTPUT
-
-
-# Decompress the source tarball
 cd $TMP
-tar xvjf $CWD/$PKGNAME'_'$VERSION.tar.bz2
-
-echo -e "\E[0;32m+-------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild Libzen |\E[0;0m"
-echo -e "\E[0;32m+-------------------------+\E[0;0m"
-
-# Adjust permissions and ownerships
-cd ZenLib
+tar xvf $CWD/$TAR
+cd $DIR
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Building Libzen  package
 cd Project/GNU/Library
 ./autogen
 
-LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure 	--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libdir=/usr/lib${LIBDIRSUFFIX} \
-		--disable-static \
-		--enable-shared \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--docdir=/usr/doc/$PKGNAME-$VERSION \
-		--localedir=/usr/share/locale \
-		--program-prefix= \
-		--program-suffix= \
-		--build=$CHOST-slackware-linux
-echo -e "\E[0;32mPress any key to build the package!\E[0;0m"
-read
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
+  --localedir=/usr/share/locale \
+  --disable-static \
+  --enable-shared \
+  --build=$ARCH-slackware-linux
+
 make $JOBS
 make install DESTDIR=$PKG
 
 cd -
+# A header has been forgotten during the "make install"
+install -m 0644 -D Source/ZenLib/BitStream_Fast.h $PKG/usr/include/ZenLib/BitStream_Fast.h
+
+# Correct version number in .pc file
+sed -i "s/^Version: .*$/Version: $VERSION/" $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/libzen.pc
+
+# Create Documentation using doxygen
+( cd Source/Doc && doxygen Doxyfile )
+
+# Documentations
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
 
 
-# Strip binaries and shared objects, if present
+# Strip binary files
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
   find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
 )
 
-# Installing pkgconfig file
-mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
-cp -a Project/GNU/Library/libzen.pc $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
-sed -i -e 's/Version: /Version: '$VERSION'/g' $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/libzen.pc
 
-# Installing headers
-mkdir -p $PKG/usr/include
-cp -a Source/ZenLib  $PKG/usr/include
-find $PKG/usr/include -type f -a ! -name *.h -delete
-find $PKG/usr/include -type f -exec chmod 644 {} \;
-
-# Add documentation files: readme, changelog and so on
-(cd Source/Doc && doxygen Doxyfile )
-
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cp -a *.txt Doc/ Source/Doc/Documentation.html    $PKG/usr/doc/$PKGNAME-$VERSION
-chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/*
-
-
-
-# Also add the slack-desk file and this slackbuild to the package
+# Preparing to packaging
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
 
-
-
-
-
-# Find and print dependencies into slack-required file
 cd $PKG
 chown -R root:root $PKG
-if [ -x /usr/bin/requiredbuilder ];then
-requiredbuilder -y -v -s  $CWD $PKG
+ 
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi
-# Create txz package
+
+# Packaging
 /sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
-
-# Cleanup if enabled
+ 
 if [ "$1" = "--cleanup" ]; then
- rm -rf $TMP
+  rm -rf $TMP
 fi
-
-
-
