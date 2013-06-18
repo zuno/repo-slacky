@@ -1,3 +1,7 @@
+Tue Jun 18 05:01:30 CEST 2013
+-----------------------------
+	modified:   system/wine_gecko/wine_gecko.SlackBuild
+
 Wed Jun 12 05:01:48 CEST 2013
 -----------------------------
 	modified:   libraries/libmediainfo/libmediainfo.SlackBuild
