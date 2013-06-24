@@ -14,6 +14,7 @@ config() {
 config etc/java/jvm.cfg.new
 config etc/java/java.policy.new
 config etc/java/java.security.new
+config etc/java/nss.cfg.new
 
 if [ -x /usr/bin/update-desktop-database ]; then
   /usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1

@@ -1,49 +1,6 @@
-Mon Jun 10 05:01:04 CEST 2013
+Mon Jun 24 05:03:31 CEST 2013
 -----------------------------
-	modified:   desktop/razorqt/razorqt.SlackBuild
-	modified:   graphic/rawtherapee/rawtherapee.SlackBuild
-	modified:   libraries/gmtk/gmtk.SlackBuild
-	new file:   libraries/libmediainfo/libmediainfo.SlackBuild
-	new file:   libraries/libmms/libmms.SlackBuild
-	new file:   libraries/libzen/libzen.SlackBuild
-	modified:   multimedia/gnome-mplayer/gnome-mplayer.SlackBuild
-	new file:   multimedia/mediainfo/mediainfo.SlackBuild
-	modified:   network/nginx/nginx.SlackBuild
-
-Sun Jun  9 05:00:35 CEST 2013
------------------------------
-	new file:   multimedia/QMPlay2/QMPlay2.SlackBuild
-
-Wed Jun  5 05:00:32 CEST 2013
------------------------------
-	new file:   desktop/oxygen-gtk2/oxygen-gtk2.SlackBuild
-	new file:   desktop/oxygen-gtk3/oxygen-gtk3.SlackBuild
-
-Tue Jun  4 05:00:28 CEST 2013
------------------------------
-	new file:   multimedia/mac/mac.SlackBuild
-
-Mon Jun  3 05:00:47 CEST 2013
------------------------------
-	new file:   desktop/kde-gtk-config/kde-gtk-config.SlackBuild
-	new file:   desktop/qtcurve-gtk2/qtcurve-gtk2.SlackBuild
-	modified:   graphic/calibre/calibre.SlackBuild
-	new file:   multimedia/cuetools/cuetools.SlackBuild
-	new file:   multimedia/gcue2tracks/gcue2tracks.SlackBuild
-	new file:   multimedia/shntool/shntool.SlackBuild
-
-Mon May 27 05:01:43 CEST 2013
------------------------------
-	modified:   development/apache-ant/apache-ant.SlackBuild
-	modified:   network/chromium/chromium.SlackBuild
-
-Wed May 22 05:02:31 CEST 2013
------------------------------
-	modified:   development/geany/geany.SlackBuild
-	modified:   multimedia/smplayer/smplayer.SlackBuild
-	modified:   network/skype_static/skype_static.SlackBuild
-
-Mon May 20 05:06:11 CEST 2013
------------------------------
-	modified:   graphic/calibre/calibre.SlackBuild
+	modified:   development/openjdk/openjdk.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+	new file:   network/shellinabox/shellinabox.SlackBuild
 

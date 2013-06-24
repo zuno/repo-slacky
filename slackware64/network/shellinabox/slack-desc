@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+           |-----handy-ruler------------------------------------------------------|
+shellinabox: shellinabox - Web based AJAX terminal emulator
+shellinabox:
+shellinabox: Shell In A Box implements a web server that can export arbitrary 
+shellinabox: command line tools to a web based terminal emulator. 
+shellinabox: 
+shellinabox: This emulator is accessible to any JavaScript and CSS enabled 
+shellinabox: web browser and does not require any additional browser plugins.
+shellinabox: 
+shellinabox: 
+shellinabox: http://code.google.com/p/shellinabox/
+shellinabox: 
+
+
