@@ -1,3 +1,8 @@
+Thu Jun 27 05:04:42 CEST 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+
 Tue Jun 18 05:01:30 CEST 2013
 -----------------------------
 	modified:   system/wine_gecko/wine_gecko.SlackBuild

@@ -7,6 +7,7 @@
 
 # Written by Eric Hameleers < alien at slackware.com >
 # Adapted to slacky's standard by miklos < ardutu at gmail dot com >
+# Last build from Luca De Pandis < lucadepandis@gmail.com >
 
 # Slackware build script for openjre
 # Official Site: http://openjre.java.net/
@@ -32,13 +33,13 @@ set -e
 
 # Basic information. 
 PKGNAME=openjre
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
-JOBS=${JOBS:-"-j2"}
+JOBS=${JOBS:-"-j4"}
 ARCH=${ARCH:-i486}
-DOCS="AUTHORS COPYING HACKING INSTALL NEWS README* THANKYOU" #list of docs to include
+DOCS="AUTHORS COPYING HACKING INSTALL NEWS README*" #list of docs to include
 SLKFILES="doinst.sh generate-cacerts.pl openjre.sh openjre.csh *.diff swing.properties" #extra files to include in slackbuild distribution
-ICEDTEAVER=${ICEDTEAVER:-2.3.9}
+ICEDTEAVER=${ICEDTEAVER:-2.4.0}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
@@ -199,6 +200,8 @@ mv $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.policy $PKG/etc/java/j
 ln -sf /etc/java/java.policy $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.policy
 mv $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.security $PKG/etc/java/java.security.new
 ln -sf /etc/java/java.security $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/java.security
+mv $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/nss.cfg $PKG/etc/java/nss.cfg.new
+ln -sf /etc/java/nss.cfg $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/nss.cfg
 
 # NOTE:
 # The openjdk does not build a mozilla plugin: install icedtea-web instead.
