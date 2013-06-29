@@ -1,3 +1,8 @@
+Sat Jun 29 05:02:18 CEST 2013
+-----------------------------
+	modified:   network/google-chrome/google-chrome.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Mon Jun 24 05:03:31 CEST 2013
 -----------------------------
 	modified:   development/openjdk/openjdk.SlackBuild
