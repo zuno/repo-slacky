@@ -3,8 +3,8 @@
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
 # 
-# Slackware build script for lyx
-# Official Site: http://www.lyx.org
+# Slackware build script for shellinabox
+# Official Site: http://code.google.com/p/shellinabox/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,16 +28,16 @@
 set -e
 
 # Basic information.
-PKGNAME=lyx
-VERSION=${VERSION:-2.0.6}
+PKGNAME=shellinabox
+VERSION=${VERSION:-2.14}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-i486}
-SOURCE="ftp://ftp.lyx.org/pub/lyx/stable/2.0.x/${PKGNAME}-${VERSION}.tar.gz"
+SOURCE="http://shellinabox.googlecode.com/files/${PKGNAME}-${VERSION}.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
-DOCS="ABOUT-NLS ANNOUNCE COPYING INSTALL* NEWS README* RELEASE-NOTES UPGRADING"
-SLKFILES="lyx.desktop lyx.png" # all files needed to the slackbuild (except slack-desc etc..)
+DOCS="AUTHORS COPYING ChangeLog INSTALL* NEWS README* TODO "
+SLKFILES="fix-ssh.patch" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -86,6 +86,8 @@ cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
  
+patch -p0 < $CWD/fix-ssh.patch
+ 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
@@ -98,16 +100,10 @@ CXXFLAGS="$SLKCFLAGS" \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
-  --with-aspell \
-  --with-enchant \
-  --without-included-boost \
+  --docdir=/usr/doc/$PKGNAME-$VERSION \
   --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
-
-# Installing desktop file menu and icons
-install -m 644 -p -D $CWD/$PKGNAME.desktop  $PKG/usr/share/applications/lyx.desktop
-install -m 644 -p -D $CWD/lyx.png  $PKG/usr/share/pixmaps/lyx.png
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -125,6 +121,14 @@ if [ -d $PKG/usr/man ]; then
       for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
     )
 fi
+
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
 
 # Strip binary files
 ( cd $PKG

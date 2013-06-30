@@ -1,8 +1,7 @@
 alsa-lib >= 1.0.26-i486-1
+alsa-lib >= 1.0.26-i486-1 | alsa-utils >= 1.0.26-i486-1 | aspell >= 0.60.6-i486-1 | binutils >= 2.22.52.0.2-i486-2 | dev86 >= 0.16.17-i486-1 | libtasn1 >= 2.12-i486-1 | linuxdoc-tools >= 0.9.67-i486-2 | minicom >= 2.6-i486-1 | netatalk >= 2.2.3-i486-4 | netpbm >= 10.49.02-i486-1
 cxxlibs >= 6.0.17-i486-1 | gcc-g++ >= 4.7.1-i486-1
 cyrus-sasl >= 2.1.23-i486-4
-fontforge >= 20120731-i486-1sl
-gcc >= 4.7.1-i486-1
 gettext-tools >= 0.18.1.1-i486-3
 glib2 >= 2.32.4-i486-1
 glibc-solibs >= 2.15-i486-7
@@ -24,14 +23,14 @@ libffi >= 3.0.11-i486-1
 libgphoto2 >= 2.4.14-i486-2
 libtool >= 2.4.2-i486-1
 libxcb >= 1.8.1-i486-1
-libxml2 >= 2.8.0-i486-2_slack14.0
+libxml2 >= 2.8.0-i486-1
 mesa >= 8.0.4-i486-1
 mpg123 >= 1.14.4-i486-1
 openal-soft >= 1.14-i486-1sl
 openldap-client >= 2.4.31-i486-2
-openssl >= 1.0.1c-i486-3 | openssl-solibs >= 1.0.1c-i486-3
+openssl >= 1.0.1e-i486-1_slack14.0 | openssl-solibs >= 1.0.1c-i486-3
 util-linux >= 2.21.2-i486-5
 webcore-fonts >= 3.0-i686-7sl
-wine_gecko >= 1.8-i686-1sl
+wine_gecko >= 2.21-i686-1sl
 xz >= 5.0.4-i486-1
 zlib >= 1.2.6-i486-1

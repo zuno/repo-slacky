@@ -34,7 +34,7 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=wine
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.5.22}
+VERSION=${VERSION:-1.5.31}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
@@ -77,7 +77,10 @@ cd $PKGNAME-$VERSION
 chmod -R u+w,go+r-w,a-s .
 chown -R root:root .
 
+patch -p1 --verbose < $CWD/configure_asm.patch
+
 # Option to pass at the compilation process
+CCAS="/usr/bin/as" \
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -169,8 +172,7 @@ fi" >> $PKG/install/doinst.sh
 cd $PKG
 chown -R root:root $PKG
 if [ -x /usr/bin/requiredbuilder ];then
-ADD=$(ls /var/log/packages/ | sed -ne 's/\(fontforge\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
--e 's/\(webcore-fonts\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
+ADD=$(ls /var/log/packages/ | sed -ne 's/\(webcore-fonts\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2,/p' \
 -e 's/\(wine_gecko\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
 requiredbuilder -y -v -s  $CWD $PKG
 fi

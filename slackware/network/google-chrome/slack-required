@@ -36,5 +36,6 @@ openssl >= 1.0.1e-i486-1_slack14.0 | openssl-solibs >= 1.0.1c-i486-3
 pango >= 1.30.1-i486-1
 pixman >= 0.26.2-i486-1
 udev >= 182-i486-5
+udisks >= 1.0.4-i486-1 | udisks2 >= 1.98.0-i486-1 | util-linux >= 2.21.2-i486-5
 wget >= 1.14-i486-1
 zlib >= 1.2.6-i486-1

@@ -1,0 +1,12 @@
+diff -rupN shellinabox/service.c shellinabox.new/service.c
+--- shellinabox/service.c	2012-04-21 19:30:44.000000000 +0200
++++ shellinabox.new/service.c	2013-06-23 21:35:24.447977015 +0200
+@@ -152,7 +152,7 @@ void initService(struct Service *service
+     service->cmdline                        = stringPrintf(NULL,
+       "ssh -a -e none -i /dev/null -x -oChallengeResponseAuthentication=no "
+           "-oCheckHostIP=no -oClearAllForwardings=yes -oCompression=no "
+-          "-oControlMaster=no -oGSSAPIAuthentication=no "
++          "-oControlMaster=no "
+           "-oHostbasedAuthentication=no -oIdentitiesOnly=yes "
+           "-oKbdInteractiveAuthentication=yes -oPasswordAuthentication=yes "
+           "-oPreferredAuthentications=keyboard-interactive,password "
