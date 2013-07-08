@@ -1,0 +1,11 @@
+--- CMakeLists.txt	2013-06-30 11:50:55.000000000 +0200
++++ CMakeLists.txt.new	2013-07-06 09:12:25.018996693 +0200
+@@ -16,7 +16,7 @@ SET(REKONQ_SITE "http://rekonq.kde.org")
+ # ==================================================================================
+ # minimum cmake required
+ 
+-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9 FATAL_ERROR)
++CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8 FATAL_ERROR)
+ 
+ SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+ 

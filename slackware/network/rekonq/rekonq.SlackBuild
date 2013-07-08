@@ -35,14 +35,14 @@ OUTPUT=${OUTPUT:-$CWD}
 PKGNAME=rekonq
 TMP=${TMP:-/tmp/txz/$PKGNAME}
 PKG=$TMP/package
-VERSION=${VERSION:-1.3}
+VERSION=${VERSION:-2.3.2}
 ARCH=${ARCH:-i486}
 JOBS=${JOBS:--j2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 
 # Download sorce tarball if still not present
-SOURCE="http://downloads.sourceforge.net/project/rekonq/1.0/$PKGNAME-$VERSION.tar.bz2"
+SOURCE="http://downloads.sourceforge.net/project/rekonq/2.0/$PKGNAME-$VERSION.tar.bz2"
 
 if [ ! -e $PKGNAME-$VERSION.tar.bz2 ]; then
 wget -c $SOURCE
@@ -75,6 +75,8 @@ cd $PKGNAME-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+
+patch -p0 < $CWD/cmake-version.patch
 
 # Building Rekonq package
 ( mkdir -p  build \
