@@ -1,10 +1,10 @@
 #!/bin/sh
  
 # Heavily based on the Slackware 14.0 SlackBuild
-# Written by miklos < ardutu at gmail dot com >
+# Written by miklos < ardutu @ gmail dot com >
 # 
-# Slackware build script for midori
-# Official Site: http://software.twotoasts.de/?page=midori
+# Slackware build script for dropbox
+# Official Site: http://www.dropbox.com/
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -23,21 +23,26 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Require: libunique, webkitgtk, dconf
+# Require:
 
 set -e
 
 # Basic information.
-PKGNAME=midori
-VERSION=${VERSION:-0.5.2}
+PKGNAME=dropbox
+VERSION=${VERSION:-2.2.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="http://www.midori-browser.org/downloads/${PKGNAME}_${VERSION}_all_.tar.bz2"
+# Just in case:
+case "$ARCH" in
+  i?86) TARBALLARCH="x86" ; LIBDIRSUFFIX=""  ;;
+  x86_64) TARBALLARCH="x86_64" ; LIBDIRSUFFIX="64" ;;
+esac
+SOURCE="http://dl-web.dropbox.com/u/17/$PKGNAME-lnx.$TARBALLARCH-$VERSION.tar.gz"
 TAR=      # empty = auto
-DIR=$PKGNAME-$VERSION
-DOCS="AUTHORS COPYING ChangeLog EXPAT HACKING INSTALL README TODO TRANSLATE"
-SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
+DIR=.$PKGNAME-dist
+DOCS="README VERSION"
+SLKFILES="dropbox.desktop dropbox.png" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -89,25 +94,22 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./waf configure \
-   --prefix=/usr \
-   --libdir=/usr/lib$LIBDIRSUFFIX \
-   --docdir=/usr/doc/$PKGNAME-$VERSION \
-   --sysconfdir=/etc \
-   --localstatedir=/var \
-   --disable-gtk3 \
-   --disable-zeitgeist \
-   --enable-unique \
-   --enable-addons
-./waf build
-./waf install --destdir=$PKG
+# Building Dropbox package
+mkdir -p $PKG/usr/bin
+cat << EOF > $PKG/usr/bin/dropbox
+#!/bin/bash
+cd /opt/dropbox/
+exec /opt/dropbox/dropbox
+EOF
 
-# Don't clobber existing configs
-mv $PKG/etc/xdg/midori/search $PKG/etc/xdg/midori/search.new
-mv $PKG/etc/xdg/midori/extensions/adblock/config $PKG/etc/xdg/midori/extensions/adblock/config.new
+chmod 755 $PKG/usr/bin/*
+
+
+mkdir $PKG/opt
+mkdir -p $PKG/usr/bin
+cp -R ../.$PKGNAME-dist $PKG/opt/dropbox
+install -m 0644 -p -D $CWD/dropbox.desktop $PKG/usr/share/applications/dropbox.desktop
+install -m 0644 -p -D $CWD/dropbox.png     $PKG/usr/share/pixmaps/dropbox.png
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
@@ -126,13 +128,12 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
-# Strip binary files
-( cd $PKG
-  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
-)
-
+if [ -d $PKG/usr/info ]; then
+    ( cd $PKG/usr/info
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
 
 # Preparing to packaging
 mkdir -p $PKG/install
@@ -144,7 +145,6 @@ cd $PKG
 chown -R root:root $PKG
  
 if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
-  ADD=$(ls /var/log/packages/ | sed -ne 's/\(dconf\)-\([^-]\+-[^-]\+-[^-]\+\)/\1 >= \2/p') \
   requiredbuilder -y -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
   [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
 fi

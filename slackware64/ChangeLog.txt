@@ -1,3 +1,8 @@
+Fri Jul 12 05:00:46 CEST 2013
+-----------------------------
+	new file:   network/dropbox/dropbox.SlackBuild
+	modified:   network/midori/midori.SlackBuild
+
 Sat Jun 29 05:02:18 CEST 2013
 -----------------------------
 	modified:   network/google-chrome/google-chrome.SlackBuild
