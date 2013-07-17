@@ -39,7 +39,7 @@ JOBS=${JOBS:-"-j4"}
 ARCH=${ARCH:-i486}
 DOCS="AUTHORS COPYING HACKING INSTALL NEWS README*" #list of docs to include
 SLKFILES="doinst.sh generate-cacerts.pl openjre.sh openjre.csh *.diff swing.properties" #extra files to include in slackbuild distribution
-ICEDTEAVER=${ICEDTEAVER:-2.4.0}
+ICEDTEAVER=${ICEDTEAVER:-2.4.1}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-$ICEDTEAVER.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto

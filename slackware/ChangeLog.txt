@@ -1,3 +1,9 @@
+Wed Jul 17 05:05:02 CEST 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+	modified:   network/dropbox/dropbox.SlackBuild
+
 Tue Jul  9 05:01:30 CEST 2013
 -----------------------------
 	modified:   network/midori/midori.SlackBuild
