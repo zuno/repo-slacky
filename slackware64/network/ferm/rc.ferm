@@ -1,0 +1,21 @@
+#!/bin/bash
+
+CONFIG_FILE=/etc/ferm/main.conf
+
+case "$1" in
+    start)
+	/usr/sbin/ferm $CONFIG_FILE || exit 1
+	;;
+    stop)
+	/usr/sbin/ferm -F $CONFIG_FILE || exit 1
+	;;
+    restart)
+	$0 stop
+	$0 start
+	;;
+    *)
+	echo "usage: rc.ferm {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+	

@@ -1,3 +1,11 @@
+Wed Jul 24 05:03:35 CEST 2013
+-----------------------------
+	modified:   development/openjdk/openjdk.SlackBuild
+	modified:   libraries/openjre/openjre.SlackBuild
+	new file:   network/ferm/ferm.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Fri Jul 12 05:00:46 CEST 2013
 -----------------------------
 	new file:   network/dropbox/dropbox.SlackBuild
