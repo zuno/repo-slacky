@@ -1,3 +1,7 @@
+Thu Jul 25 05:00:30 CEST 2013
+-----------------------------
+	modified:   libraries/icedtea-web/icedtea-web.SlackBuild
+
 Wed Jul 24 05:03:35 CEST 2013
 -----------------------------
 	modified:   development/openjdk/openjdk.SlackBuild
