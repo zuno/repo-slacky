@@ -1,3 +1,10 @@
+Fri Jul 26 05:01:48 CEST 2013
+-----------------------------
+	modified:   libraries/icedtea-web/icedtea-web.SlackBuild
+	new file:   network/ferm/ferm.SlackBuild
+	modified:   network/nginx/nginx.SlackBuild
+	modified:   system/flash-player-plugin/flash-player-plugin.SlackBuild
+
 Wed Jul 17 05:05:02 CEST 2013
 -----------------------------
 	modified:   development/openjdk/openjdk.SlackBuild

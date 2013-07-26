@@ -31,15 +31,15 @@ set -e
 
 # Basic information. 
 PKGNAME=icedtea-web
-VERSION=${VERSION:-1.3.1}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-1.4}
+BUILD=${BUILD:-3}
 TAG=${TAG:-sl}
-ARCH=${ARCH:-i686}
+ARCH=${ARCH:-i486}
 SOURCE="http://icedtea.classpath.org/download/source/icedtea-web-$VERSION.tar.gz"
 TAR=      # empty = auto
 DIR=      # empty = auto
 DOCS="AUTHORS COPYING ChangeLog NEWS README"
-SLKFILES=""
+SLKFILES="openjdk-hotfix.patch"
 
 # If EULA
 if [ -e EULA.TXT ];then
@@ -88,6 +88,8 @@ cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
 
+#patch to fix openjdk7 nullpointer.. thanks to arch's crew
+patch -p1 < $CWD/openjdk-hotfix.patch
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
@@ -109,7 +111,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-jre-home=/usr/lib${LIBDIRSUFFIX}/java/jre \
   --with-pkgversion=$(cat /etc/slackware-version |tr ' ' '-')-$ARCH \
   --disable-docs \
-  --with-gtk=2 \
   --build=$CHOST-slackware-linux
 make $JOBS
 make install DESTDIR=$PKG
