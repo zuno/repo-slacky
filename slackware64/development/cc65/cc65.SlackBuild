@@ -2,9 +2,9 @@
  
 # Heavily based on the Slackware 14.0 SlackBuild
 # Written by miklos < ardutu at gmail dot com >
-# 
-# Slackware build script for lyx
-# Official Site: http://www.lyx.org
+#
+# Slackware build script for cc65
+# Official Site: http://www.cc65.org
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -28,16 +28,16 @@
 set -e
 
 # Basic information.
-PKGNAME=lyx
-VERSION=${VERSION:-2.0.6}
-BUILD=${BUILD:-1}
+PKGNAME=cc65
+VERSION=${VERSION:-2.13.3}
+BUILD=${BUILD:-4}
 TAG=${TAG:-sl}
 ARCH=${ARCH:-x86_64}
-SOURCE="ftp://ftp.lyx.org/pub/lyx/stable/2.0.x/${PKGNAME}-${VERSION}.tar.gz"
+SOURCE="ftp://ftp.musoftware.de/pub/uz/cc65/${PKGNAME}-sources-${VERSION}.tar.bz2"
 TAR=      # empty = auto
-DIR=      # empty = auto
-DOCS="ABOUT-NLS ANNOUNCE COPYING INSTALL* NEWS README* RELEASE-NOTES UPGRADING"
-SLKFILES="lyx.desktop lyx.png" # all files needed to the slackbuild (except slack-desc etc..)
+DIR=$PKGNAME-$VERSION
+DOCS="announce.txt"
+SLKFILES="" # all files needed to the slackbuild (except slack-desc etc..)
 
 # An EULA for non-free packages
 if [ -e EULA.TXT ];then
@@ -81,7 +81,7 @@ fi
 
 ### Preparing Source
 rm -rf $TMP
-mkdir -p $TMP $PKG $OUTPUT
+mkdir -p $TMP $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild $OUTPUT
 cd $TMP
 tar xvf $CWD/$TAR
 cd $DIR
@@ -89,23 +89,17 @@ cd $DIR
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# Customize as you need
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --mandir=/usr/man \
-  --without-included-boost \
-  --build=$CHOST-slackware-linux
-make $JOBS
-make install DESTDIR=$PKG
+# external CFLAGS not honored, fix 'em with perlery:
+find . -name gcc.mak | xargs perl -i -pe \
+		  'if(/^CFLAGS\s*=/) { s/-g\b//; s/-O\d/'"$SLKCFLAGS"'/; }'
 
-# Installing desktop file menu and icons
-install -m 644 -p -D $CWD/$PKGNAME.desktop  $PKG/usr/share/applications/lyx.desktop
-install -m 644 -p -D $CWD/lyx.png  $PKG/usr/share/pixmaps/lyx.png
+make -f make/gcc.mak prefix=/usr libdir=/usr/lib$LIBDIRSUFFIX
+make -f make/gcc.mak install prefix=$PKG/usr libdir=$PKG/usr/lib$LIBDIRSUFFIX docdir=$PKG/usr/doc/$PKGNAME-$VERSION
+
+# easier to cleanup afterwards than force 'make install' to do the docs right:
+( cd $PKG/usr/doc/$PKGNAME-$VERSION && mv cc65/* . && rmdir cc65 )
+
+rmdir $PKG/usr/share # why is this even created? *shrug*
 
 # Documentations
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
