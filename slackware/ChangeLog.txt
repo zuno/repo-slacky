@@ -1,3 +1,8 @@
+Tue Jul 30 05:02:09 CEST 2013
+-----------------------------
+	new file:   development/cc65/cc65.SlackBuild
+	new file:   development/google-go-lang/google-go-lang.SlackBuild
+
 Fri Jul 26 05:01:48 CEST 2013
 -----------------------------
 	modified:   libraries/icedtea-web/icedtea-web.SlackBuild

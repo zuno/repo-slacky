@@ -1,3 +1,7 @@
+Tue Jul 30 05:07:07 CEST 2013
+-----------------------------
+	modified:   development/google-go-lang/google-go-lang.SlackBuild
+
 Mon Jul 29 05:00:35 CEST 2013
 -----------------------------
 	new file:   system/file-roller/file-roller.SlackBuild
